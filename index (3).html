@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter — Free Online Word Count Tool | ToolKit</title>
+  <meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs and reading time instantly. No sign up required.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .stat-pill {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .stat-pill.active {
+      border-color: var(--accent);
+      background: #fff8f5;
+    }
+
+    .stat-pill .pill-val {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--ink);
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-pill.active .pill-val { color: var(--accent); }
+
+    .stat-pill .pill-label {
+      font-size: 0.72rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+
+    .reading-time {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 10px;
+      margin-top: 14px;
+      font-size: 0.9rem;
+    }
+
+    .reading-time strong {
+      font-family: var(--font-head);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      border-radius: 8px;
+    }
+
+    .density-bar {
+      margin-top: 20px;
+    }
+
+    .density-bar h3 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--ink-soft);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .word-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      margin: 3px;
+    }
+
+    .word-chip .chip-count {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.7rem;
+      padding: 1px 5px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../age-calculator/index.html">Age Calc</a></li>
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
+    <li><a href="../qr-generator/index.html">QR Gen</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+
+  <h1 class="page-title">Word Counter</h1>
+  <p class="page-subtitle">Paste or type your text below. Results update in real time.</p>
+
+  <!-- Ad slot top -->
+  <!-- <ins class="adsbygoogle" ...></ins> -->
+
+  <div class="tool-card">
+    <div class="toolbar">
+      <button class="btn btn-outline btn-sm" onclick="clearText()">Clear</button>
+      <button class="btn btn-outline btn-sm" onclick="copyText()">Copy All</button>
+    </div>
+
+    <div class="form-group">
+      <textarea id="textInput" placeholder="Start typing or paste your text here..." oninput="analyzeText()"></textarea>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-pill" id="pill-words">
+        <span class="pill-val" id="wordCount">0</span>
+        <span class="pill-label">Words</span>
+      </div>
+      <div class="stat-pill" id="pill-chars">
+        <span class="pill-val" id="charCount">0</span>
+        <span class="pill-label">Characters</span>
+      </div>
+      <div class="stat-pill">
+        <span class="pill-val" id="charNoSpace">0</span>
+        <span class="pill-label">No Spaces</span>
+      </div>
+      <div class="stat-pill">
+        <span class="pill-val" id="sentenceCount">0</span>
+        <span class="pill-label">Sentences</span>
+      </div>
+      <div class="stat-pill">
+        <span class="pill-val" id="paraCount">0</span>
+        <span class="pill-label">Paragraphs</span>
+      </div>
+    </div>
+
+    <div class="reading-time" id="readingTime">
+      ⏱ Reading time: <strong>—</strong>
+    </div>
+
+    <div class="density-bar" id="densitySection" style="display:none; margin-top:24px;">
+      <h3>Top Keywords</h3>
+      <div id="keywordChips"></div>
+    </div>
+  </div>
+
+  <!-- Ad slot bottom -->
+  <!-- <ins class="adsbygoogle" ...></ins> -->
+
+</div>
+
+<footer>
+  <p>© 2025 ToolKit · <a href="#">Privacy Policy</a> · <a href="../index.html">All Tools</a></p>
+</footer>
+
+<script>
+  function analyzeText() {
+    const text = document.getElementById('textInput').value;
+    const words = text.trim() === '' ? [] : text.trim().split(/\s+/).filter(w => w.length > 0);
+    const chars = text.length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const sentences = text.trim() === '' ? 0 : (text.match(/[^.!?]*[.!?]+/g) || []).length;
+    const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+    const wc = words.length;
+
+    document.getElementById('wordCount').textContent = wc.toLocaleString();
+    document.getElementById('charCount').textContent = chars.toLocaleString();
+    document.getElementById('charNoSpace').textContent = charsNoSpace.toLocaleString();
+    document.getElementById('sentenceCount').textContent = sentences.toLocaleString();
+    document.getElementById('paraCount').textContent = paragraphs.toLocaleString();
+
+    // Active state
+    ['pill-words','pill-chars'].forEach(id => document.getElementById(id).classList.remove('active'));
+    if (wc > 0) document.getElementById('pill-words').classList.add('active');
+    if (chars > 0) document.getElementById('pill-chars').classList.add('active');
+
+    // Reading time
+    const rt = document.getElementById('readingTime');
+    if (wc === 0) {
+      rt.innerHTML = '⏱ Reading time: <strong>—</strong>';
+    } else {
+      const mins = Math.ceil(wc / 200);
+      const secs = Math.round((wc / 200) * 60);
+      rt.innerHTML = secs < 60
+        ? `⏱ Reading time: <strong>~${secs} seconds</strong> (${wc} words at 200 wpm)`
+        : `⏱ Reading time: <strong>~${mins} minute${mins > 1 ? 's' : ''}</strong> (${wc} words at 200 wpm)`;
+    }
+
+    // Keywords
+    const densitySection = document.getElementById('densitySection');
+    if (wc >= 10) {
+      const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','was','are','were','it','this','that','be','as','by','from','have','has','had','not','we','i','you','he','she','they','do','did','will','would','could','should','my','your','our','their','its','so','if','up','out','about','what','which','who','how','all','more','no','can','just','than','then','there','been','into','some','also']);
+      const freq = {};
+      words.forEach(w => {
+        const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+        if (clean.length > 2 && !stopWords.has(clean)) freq[clean] = (freq[clean] || 0) + 1;
+      });
+      const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
+      if (sorted.length > 0) {
+        densitySection.style.display = 'block';
+        document.getElementById('keywordChips').innerHTML = sorted.map(([w, c]) =>
+          `<span class="word-chip">${w}<span class="chip-count">${c}</span></span>`
+        ).join('');
+      } else {
+        densitySection.style.display = 'none';
+      }
+    } else {
+      densitySection.style.display = 'none';
+    }
+  }
+
+  function clearText() {
+    document.getElementById('textInput').value = '';
+    analyzeText();
+  }
+
+  function copyText() {
+    const text = document.getElementById('textInput').value;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.toolbar .btn-outline:nth-child(2)');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy All', 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

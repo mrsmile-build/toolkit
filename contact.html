@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | ToolKit</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">Tool<span>Kit</span></a>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="index.html">← Home</a>
+  <h1 class="page-title">Contact Us</h1>
+  <p class="page-subtitle">Have a question, bug report, or tool suggestion? We'd love to hear from you.</p>
+  <div class="tool-card">
+    <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label for="c-name">Your Name</label>
+        <input type="text" id="c-name" name="name" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label for="c-email">Email Address</label>
+        <input type="email" id="c-email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="c-msg">Message</label>
+        <textarea id="c-msg" name="message" placeholder="Tell us what's on your mind..." style="min-height:130px" required></textarea>
+      </div>
+      <button class="btn" type="submit" id="submitBtn">Send Message →</button>
+    </form>
+
+    <div id="successMsg" style="display:none; margin-top:20px; padding:20px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; color:#166534; font-size:0.95rem;">
+      ✅ <strong>Message sent!</strong> We'll get back to you as soon as possible.
+    </div>
+  </div>
+</div>
+<footer>
+  <p>© 2025 ToolKit · <a href="privacy.html">Privacy Policy</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></p>
+</footer>
+<script>
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(e.target.action, {
+        method: 'POST',
+        body: new FormData(e.target),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } else {
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      }
+    } catch {
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again.');
+    }
+  }
+</script>
+</body>
+</html>

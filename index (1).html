@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentage Calculator — Solve Any % Problem | ToolKit</title>
+  <meta name="description" content="Free percentage calculator. Find what percent of a number is, percentage increase or decrease, percentage difference, and more.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .calc-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 9px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--ink-soft);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    .tab-btn:hover:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .calc-panel { display: none; }
+    .calc-panel.active { display: block; }
+
+    .equation-display {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin-bottom: 20px;
+      letter-spacing: -0.2px;
+    }
+
+    .answer-box {
+      background: var(--ink);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .answer-box.show { display: block; }
+
+    .answer-box .answer-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+
+    .answer-box .answer-value {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+
+    .answer-box .answer-value .highlight { color: var(--accent); }
+
+    .answer-box .answer-equation {
+      margin-top: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.82rem;
+    }
+
+    .inline-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .inline-row input {
+      flex: 1;
+      min-width: 80px;
+    }
+
+    .inline-row .connector {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../age-calculator/index.html">Age Calc</a></li>
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../qr-generator/index.html">QR Gen</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+
+  <h1 class="page-title">Percentage Calculator</h1>
+  <p class="page-subtitle">Select the type of percentage problem you want to solve.</p>
+
+  <div class="tool-card">
+    <div class="calc-tabs">
+      <button class="tab-btn active" onclick="switchTab('basic', this)">X% of Y</button>
+      <button class="tab-btn" onclick="switchTab('whatpct', this)">X is what % of Y</button>
+      <button class="tab-btn" onclick="switchTab('increase', this)">% Increase</button>
+      <button class="tab-btn" onclick="switchTab('decrease', this)">% Decrease</button>
+      <button class="tab-btn" onclick="switchTab('difference', this)">% Difference</button>
+    </div>
+
+    <!-- PANEL 1: X% of Y -->
+    <div class="calc-panel active" id="panel-basic">
+      <div class="equation-display">What is <strong>X%</strong> of <strong>Y</strong>?</div>
+      <div class="inline-row">
+        <input type="number" id="b-pct" placeholder="e.g. 20">
+        <span class="connector">% of</span>
+        <input type="number" id="b-num" placeholder="e.g. 500">
+      </div>
+      <br>
+      <button class="btn" onclick="calcBasic()">Calculate →</button>
+      <div class="answer-box" id="ans-basic">
+        <div class="answer-label">Answer</div>
+        <div class="answer-value" id="val-basic">—</div>
+        <div class="answer-equation" id="eq-basic">—</div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: X is what % of Y -->
+    <div class="calc-panel" id="panel-whatpct">
+      <div class="equation-display"><strong>X</strong> is what percent of <strong>Y</strong>?</div>
+      <div class="inline-row">
+        <input type="number" id="w-num" placeholder="e.g. 50">
+        <span class="connector">is what % of</span>
+        <input type="number" id="w-total" placeholder="e.g. 200">
+      </div>
+      <br>
+      <button class="btn" onclick="calcWhatPct()">Calculate →</button>
+      <div class="answer-box" id="ans-whatpct">
+        <div class="answer-label">Answer</div>
+        <div class="answer-value" id="val-whatpct">—</div>
+        <div class="answer-equation" id="eq-whatpct">—</div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: % Increase -->
+    <div class="calc-panel" id="panel-increase">
+      <div class="equation-display">Increase <strong>X</strong> by <strong>Y%</strong></div>
+      <div class="inline-row">
+        <input type="number" id="i-original" placeholder="Original value">
+        <span class="connector">increased by</span>
+        <input type="number" id="i-pct" placeholder="% amount">
+        <span class="connector">%</span>
+      </div>
+      <br>
+      <button class="btn" onclick="calcIncrease()">Calculate →</button>
+      <div class="answer-box" id="ans-increase">
+        <div class="answer-label">New Value</div>
+        <div class="answer-value" id="val-increase">—</div>
+        <div class="answer-equation" id="eq-increase">—</div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: % Decrease -->
+    <div class="calc-panel" id="panel-decrease">
+      <div class="equation-display">Decrease <strong>X</strong> by <strong>Y%</strong></div>
+      <div class="inline-row">
+        <input type="number" id="d-original" placeholder="Original value">
+        <span class="connector">decreased by</span>
+        <input type="number" id="d-pct" placeholder="% amount">
+        <span class="connector">%</span>
+      </div>
+      <br>
+      <button class="btn" onclick="calcDecrease()">Calculate →</button>
+      <div class="answer-box" id="ans-decrease">
+        <div class="answer-label">New Value</div>
+        <div class="answer-value" id="val-decrease">—</div>
+        <div class="answer-equation" id="eq-decrease">—</div>
+      </div>
+    </div>
+
+    <!-- PANEL 5: % Difference -->
+    <div class="calc-panel" id="panel-difference">
+      <div class="equation-display">Percentage change from <strong>X</strong> to <strong>Y</strong></div>
+      <div class="inline-row">
+        <input type="number" id="df-from" placeholder="From (original)">
+        <span class="connector">→</span>
+        <input type="number" id="df-to" placeholder="To (new value)">
+      </div>
+      <br>
+      <button class="btn" onclick="calcDiff()">Calculate →</button>
+      <div class="answer-box" id="ans-difference">
+        <div class="answer-label">Percentage Change</div>
+        <div class="answer-value" id="val-difference">—</div>
+        <div class="answer-equation" id="eq-difference">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 ToolKit · <a href="#">Privacy Policy</a> · <a href="../index.html">All Tools</a></p>
+</footer>
+
+<script>
+  function switchTab(name, el) {
+    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function showAns(id, val, eq) {
+    const box = document.getElementById('ans-' + id);
+    document.getElementById('val-' + id).innerHTML = val;
+    document.getElementById('eq-' + id).textContent = eq;
+    box.classList.add('show');
+  }
+
+  function fmt(n) {
+    return parseFloat(n.toFixed(4)).toLocaleString();
+  }
+
+  function calcBasic() {
+    const pct = parseFloat(document.getElementById('b-pct').value);
+    const num = parseFloat(document.getElementById('b-num').value);
+    if (isNaN(pct) || isNaN(num)) { alert('Fill in both fields.'); return; }
+    const result = (pct / 100) * num;
+    showAns('basic', `<span class="highlight">${fmt(result)}</span>`, `${pct}% × ${num} = ${fmt(result)}`);
+  }
+
+  function calcWhatPct() {
+    const num = parseFloat(document.getElementById('w-num').value);
+    const total = parseFloat(document.getElementById('w-total').value);
+    if (isNaN(num) || isNaN(total) || total === 0) { alert('Fill in both fields.'); return; }
+    const result = (num / total) * 100;
+    showAns('whatpct', `<span class="highlight">${fmt(result)}%</span>`, `(${num} ÷ ${total}) × 100 = ${fmt(result)}%`);
+  }
+
+  function calcIncrease() {
+    const orig = parseFloat(document.getElementById('i-original').value);
+    const pct = parseFloat(document.getElementById('i-pct').value);
+    if (isNaN(orig) || isNaN(pct)) { alert('Fill in both fields.'); return; }
+    const increase = (pct / 100) * orig;
+    const result = orig + increase;
+    showAns('increase', `<span class="highlight">${fmt(result)}</span>`, `${orig} + (${pct}% of ${orig}) = ${orig} + ${fmt(increase)} = ${fmt(result)}`);
+  }
+
+  function calcDecrease() {
+    const orig = parseFloat(document.getElementById('d-original').value);
+    const pct = parseFloat(document.getElementById('d-pct').value);
+    if (isNaN(orig) || isNaN(pct)) { alert('Fill in both fields.'); return; }
+    const decrease = (pct / 100) * orig;
+    const result = orig - decrease;
+    showAns('decrease', `<span class="highlight">${fmt(result)}</span>`, `${orig} − (${pct}% of ${orig}) = ${orig} − ${fmt(decrease)} = ${fmt(result)}`);
+  }
+
+  function calcDiff() {
+    const from = parseFloat(document.getElementById('df-from').value);
+    const to = parseFloat(document.getElementById('df-to').value);
+    if (isNaN(from) || isNaN(to) || from === 0) { alert('Fill in both fields.'); return; }
+    const diff = ((to - from) / Math.abs(from)) * 100;
+    const sign = diff >= 0 ? '+' : '';
+    const color = diff >= 0 ? 'var(--accent)' : '#ef4444';
+    showAns('difference',
+      `<span style="color:${color}">${sign}${fmt(diff)}%</span>`,
+      `((${to} − ${from}) ÷ ${from}) × 100 = ${sign}${fmt(diff)}%`
+    );
+  }
+</script>
+
+</body>
+</html>

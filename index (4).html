@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator — Find Your Exact Age | ToolKit</title>
+  <meta name="description" content="Free online age calculator. Find your exact age in years, months, and days. See how long until your next birthday and more.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .age-display {
+      background: var(--ink);
+      border-radius: 14px;
+      padding: 32px;
+      margin-top: 28px;
+      display: none;
+    }
+
+    .age-display.show { display: block; }
+
+    .age-main {
+      font-family: var(--font-head);
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .age-main span { color: var(--accent); }
+
+    .age-sub {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      font-weight: 300;
+    }
+
+    .age-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .age-unit {
+      background: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+
+    .age-unit .unit-val {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      display: block;
+    }
+
+    .age-unit .unit-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 500;
+    }
+
+    .birthday-card {
+      background: rgba(255,92,0,0.15);
+      border: 1px solid rgba(255,92,0,0.3);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .birthday-card .bday-icon { font-size: 1.4rem; }
+
+    .birthday-card strong { color: var(--accent); }
+
+    .extra-facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .fact-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .fact-item .fact-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .fact-item .fact-val {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    @media (max-width: 480px) {
+      .age-breakdown { grid-template-columns: repeat(3, 1fr); }
+      .extra-facts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
+    <li><a href="../qr-generator/index.html">QR Gen</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+
+  <h1 class="page-title">Age Calculator</h1>
+  <p class="page-subtitle">Find your exact age and how many days until your next birthday.</p>
+
+  <div class="tool-card">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="birthDate">Your Date of Birth</label>
+        <input type="date" id="birthDate" max="">
+      </div>
+      <div class="form-group">
+        <label for="calcDate">Calculate Age As Of</label>
+        <input type="date" id="calcDate">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calculateAge()">Calculate Age →</button>
+
+    <div class="age-display" id="ageDisplay">
+      <div class="age-main" id="ageMain">—</div>
+      <div class="age-sub" id="ageSub">—</div>
+
+      <div class="age-breakdown">
+        <div class="age-unit">
+          <span class="unit-val" id="totalMonths">—</span>
+          <span class="unit-label">Total Months</span>
+        </div>
+        <div class="age-unit">
+          <span class="unit-val" id="totalWeeks">—</span>
+          <span class="unit-label">Total Weeks</span>
+        </div>
+        <div class="age-unit">
+          <span class="unit-val" id="totalDays">—</span>
+          <span class="unit-label">Total Days</span>
+        </div>
+      </div>
+
+      <div class="birthday-card">
+        <span class="bday-icon">🎂</span>
+        <div id="birthdayMsg">—</div>
+      </div>
+
+      <div class="extra-facts">
+        <div class="fact-item">
+          <div class="fact-label">Day of Birth</div>
+          <div class="fact-val" id="dayOfBirth">—</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">Next Birthday</div>
+          <div class="fact-val" id="nextBirthday">—</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">Hours Lived</div>
+          <div class="fact-val" id="hoursLived">—</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">Zodiac Sign</div>
+          <div class="fact-val" id="zodiacSign">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 ToolKit · <a href="#">Privacy Policy</a> · <a href="../index.html">All Tools</a></p>
+</footer>
+
+<script>
+  // Set defaults
+  const today = new Date();
+  document.getElementById('calcDate').value = today.toISOString().split('T')[0];
+  document.getElementById('birthDate').max = today.toISOString().split('T')[0];
+
+  function calculateAge() {
+    const birthVal = document.getElementById('birthDate').value;
+    const calcVal = document.getElementById('calcDate').value;
+
+    if (!birthVal) { alert('Please enter your date of birth.'); return; }
+
+    const birth = new Date(birthVal);
+    const calc = new Date(calcVal);
+
+    if (birth > calc) { alert('Birth date cannot be after the calculation date.'); return; }
+
+    let years = calc.getFullYear() - birth.getFullYear();
+    let months = calc.getMonth() - birth.getMonth();
+    let days = calc.getDate() - birth.getDate();
+
+    if (days < 0) {
+      months--;
+      const prevMonth = new Date(calc.getFullYear(), calc.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    if (months < 0) { years--; months += 12; }
+
+    const diffMs = calc - birth;
+    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalMonths = years * 12 + months;
+    const hoursLived = (totalDays * 24).toLocaleString();
+
+    // Display
+    document.getElementById('ageMain').innerHTML =
+      `${years}<span>y</span> ${months}<span>m</span> ${days}<span>d</span>`;
+    document.getElementById('ageSub').textContent =
+      `${years} year${years!==1?'s':''}, ${months} month${months!==1?'s':''}, ${days} day${days!==1?'s':''}`;
+    document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
+    document.getElementById('totalWeeks').textContent = totalWeeks.toLocaleString();
+    document.getElementById('totalDays').textContent = totalDays.toLocaleString();
+    document.getElementById('hoursLived').textContent = hoursLived;
+
+    // Day of birth
+    const days_of_week = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    document.getElementById('dayOfBirth').textContent = days_of_week[birth.getDay()];
+
+    // Next birthday
+    const nextBday = new Date(calc.getFullYear(), birth.getMonth(), birth.getDate());
+    if (nextBday <= calc) nextBday.setFullYear(calc.getFullYear() + 1);
+    const daysUntil = Math.round((nextBday - calc) / (1000 * 60 * 60 * 24));
+    document.getElementById('nextBirthday').textContent =
+      daysUntil === 0 ? 'Today! 🎉' : `in ${daysUntil} days`;
+    document.getElementById('birthdayMsg').innerHTML =
+      daysUntil === 0
+        ? `<strong>Happy Birthday!</strong> 🎉 You're turning ${years + 1} today!`
+        : `Your next birthday is in <strong>${daysUntil} day${daysUntil!==1?'s':''}</strong> — you'll turn ${years + 1}`;
+
+    // Zodiac
+    const m = birth.getMonth() + 1, d = birth.getDate();
+    const signs = [
+      [1,20,'Capricorn ♑'],[2,19,'Aquarius ♒'],[3,20,'Pisces ♓'],[4,20,'Aries ♈'],
+      [5,21,'Taurus ♉'],[6,21,'Gemini ♊'],[7,22,'Cancer ♋'],[8,23,'Leo ♌'],
+      [9,23,'Virgo ♍'],[10,23,'Libra ♎'],[11,22,'Scorpio ♏'],[12,22,'Sagittarius ♐'],
+      [13,0,'Capricorn ♑']
+    ];
+    let zodiac = 'Capricorn ♑';
+    for (let i = 0; i < signs.length - 1; i++) {
+      if (m === signs[i][0] && d >= signs[i][1]) { zodiac = signs[i+1][2]; break; }
+      if (m === signs[i][0] && d < signs[i][1]) { zodiac = signs[i][2]; break; }
+    }
+    document.getElementById('zodiacSign').textContent = zodiac;
+
+    document.getElementById('ageDisplay').classList.add('show');
+  }
+</script>
+
+</body>
+</html>
