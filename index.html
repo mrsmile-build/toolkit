@@ -3,340 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loan Calculator — Monthly Payment & Interest | ToolKit</title>
-  <meta name="description" content="Free loan calculator. Calculate your monthly payment, total interest paid, and full loan cost for any loan amount and interest rate.">
+  <title>ToolKit — Free Online Utility Tools</title>
+  <meta name="description" content="Free online tools for everyday tasks. Word counter, age calculator, loan calculator, percentage calculator, and QR code generator — fast, clean, no ads clutter.">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    .currency-input {
-      position: relative;
-    }
-
-    .currency-input .prefix {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-weight: 600;
-      color: var(--ink-soft);
-      font-size: 1rem;
-      pointer-events: none;
-    }
-
-    .currency-input input {
-      padding-left: 30px;
-    }
-
-    .loan-result {
-      display: none;
-      margin-top: 28px;
-    }
-
-    .loan-result.show { display: block; }
-
-    .primary-result {
-      background: var(--ink);
-      border-radius: 14px;
-      padding: 28px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
-    .primary-result .label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    .primary-result .amount {
-      font-family: var(--font-head);
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -1.5px;
-      line-height: 1;
-    }
-
-    .primary-result .amount span { color: var(--accent); }
-
-    .primary-result .sublabel {
-      color: rgba(255,255,255,0.4);
-      font-size: 0.82rem;
-      margin-top: 6px;
-    }
-
-    .loan-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .summary-box {
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .summary-box .s-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ink-soft);
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-
-    .summary-box .s-val {
-      font-family: var(--font-head);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .interest-warning {
-      padding: 14px 18px;
-      border-radius: 10px;
-      font-size: 0.875rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .interest-warning.low {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #166534;
-    }
-
-    .interest-warning.medium {
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #92400e;
-    }
-
-    .interest-warning.high {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #991b1b;
-    }
-
-    /* Progress bar */
-    .breakdown-bar {
-      margin-top: 20px;
-    }
-
-    .breakdown-bar h3 {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--ink-soft);
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    .bar-track {
-      height: 12px;
-      background: var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    .bar-fill-principal {
-      height: 100%;
-      background: var(--ink);
-      border-radius: 10px 0 0 10px;
-      display: inline-block;
-      transition: width 0.6s ease;
-    }
-
-    .bar-fill-interest {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 0 10px 10px 0;
-      display: inline-block;
-      transition: width 0.6s ease;
-    }
-
-    .bar-legend {
-      display: flex;
-      gap: 20px;
-      font-size: 0.8rem;
-      color: var(--ink-soft);
-    }
-
-    .bar-legend span {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    @media (max-width: 480px) {
-      .loan-summary { grid-template-columns: 1fr 1fr; }
-    }
+    .hero{padding:64px 0 48px;text-align:center}
+    .hero-eyebrow{display:inline-block;background:var(--accent);color:#fff;font-family:var(--font-head);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:5px 12px;border-radius:20px;margin-bottom:18px}
+    .hero h1{font-family:var(--font-head);font-size:clamp(2.2rem,6vw,3.5rem);font-weight:800;letter-spacing:-2px;line-height:1.1;max-width:600px;margin:0 auto 16px}
+    .hero h1 span{color:var(--accent)}
+    .hero p{color:var(--ink-soft);font-size:1.05rem;max-width:480px;margin:0 auto;font-weight:300}
+    .tools-section{margin-top:16px}
+    .section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+    .tool-link{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;text-decoration:none;color:inherit;display:block;transition:border-color .2s,box-shadow .2s,transform .2s;position:relative;overflow:hidden}
+    .tool-link::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);transform:scaleY(0);transition:transform .25s ease;border-radius:0 2px 2px 0}
+    .tool-link:hover{border-color:var(--accent);box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+    .tool-link:hover::before{transform:scaleY(1)}
+    .tool-icon{font-size:1.8rem;margin-bottom:14px;display:block}
+    .tool-name{font-family:var(--font-head);font-size:1.05rem;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
+    .tool-desc{font-size:.85rem;color:var(--ink-soft);line-height:1.5;font-weight:300}
+    .tool-arrow{position:absolute;top:24px;right:20px;font-size:1.1rem;color:var(--border);transition:color .2s,transform .2s}
+    .tool-link:hover .tool-arrow{color:var(--accent);transform:translateX(3px)}
+    .why-section{margin-top:60px;padding:40px;background:var(--ink);border-radius:18px;color:#fff}
+    .why-section h2{font-family:var(--font-head);font-size:1.5rem;font-weight:800;letter-spacing:-.5px;margin-bottom:24px}
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .why-item h3{font-family:var(--font-head);font-size:.95rem;font-weight:700;margin-bottom:6px;color:var(--accent)}
+    .why-item p{font-size:.85rem;color:rgba(255,255,255,.6);font-weight:300;line-height:1.6}
+    @media(max-width:600px){.why-grid{grid-template-columns:1fr;gap:18px}.why-section{padding:28px 20px}.hero{padding:40px 0 32px}}
   </style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="index.html">Tool<span>Kit</span></a>
   <ul class="nav-links">
     <li><a href="word-counter/index.html">Word Counter</a></li>
     <li><a href="age-calculator/index.html">Age Calc</a></li>
-    <li><a href="percentage-calculator/index.html">% Calc</a></li>
+    <li><a href="loan-calculator/index.html">Loan Calc</a></li>
     <li><a href="qr-generator/index.html">QR Gen</a></li>
   </ul>
 </nav>
-
 <div class="page-wrapper">
-  <a class="back-link" href="index.html">← All Tools</a>
-
-  <h1 class="page-title">Loan Calculator</h1>
-  <p class="page-subtitle">Calculate your monthly payment and total interest for any loan.</p>
-
-  <div class="tool-card">
-    <div class="form-row">
-      <div class="form-group">
-        <label for="loanAmount">Loan Amount</label>
-        <div class="currency-input">
-          <span class="prefix">$</span>
-          <input type="number" id="loanAmount" placeholder="10,000" min="0" step="100">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="interestRate">Annual Interest Rate (%)</label>
-        <input type="number" id="interestRate" placeholder="6.5" min="0" max="100" step="0.1">
-      </div>
+  <section class="hero">
+    <span class="hero-eyebrow">100% Free · No Sign Up</span>
+    <h1>Simple tools that<br><span>actually work.</span></h1>
+    <p>Fast, clean utilities for your everyday tasks. No clutter, no accounts, no nonsense.</p>
+  </section>
+  <section class="tools-section">
+    <div class="section-label">All Tools</div>
+    <div class="tools-grid">
+      <a class="tool-link" href="word-counter/index.html">
+        <span class="tool-arrow">→</span>
+        <span class="tool-icon">📝</span>
+        <div class="tool-name">Word Counter</div>
+        <div class="tool-desc">Count words, characters, sentences, and reading time instantly.</div>
+      </a>
+      <a class="tool-link" href="age-calculator/index.html">
+        <span class="tool-arrow">→</span>
+        <span class="tool-icon">🎂</span>
+        <div class="tool-name">Age Calculator</div>
+        <div class="tool-desc">Find your exact age in years, months, days — and your next birthday.</div>
+      </a>
+      <a class="tool-link" href="loan-calculator/index.html">
+        <span class="tool-arrow">→</span>
+        <span class="tool-icon">💰</span>
+        <div class="tool-name">Loan Calculator</div>
+        <div class="tool-desc">Calculate monthly payments, total interest, and total cost for any loan.</div>
+      </a>
+      <a class="tool-link" href="percentage-calculator/index.html">
+        <span class="tool-arrow">→</span>
+        <span class="tool-icon">📊</span>
+        <div class="tool-name">Percentage Calculator</div>
+        <div class="tool-desc">Solve any percentage problem: find %, increase, decrease, and difference.</div>
+      </a>
+      <a class="tool-link" href="qr-generator/index.html">
+        <span class="tool-arrow">→</span>
+        <span class="tool-icon">🔳</span>
+        <div class="tool-name">QR Code Generator</div>
+        <div class="tool-desc">Generate QR codes for any link, text, or contact info. Download free.</div>
+      </a>
     </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="loanTerm">Loan Term</label>
-        <input type="number" id="loanTerm" placeholder="5" min="1">
-      </div>
-      <div class="form-group">
-        <label for="termUnit">Term Unit</label>
-        <select id="termUnit">
-          <option value="years">Years</option>
-          <option value="months">Months</option>
-        </select>
-      </div>
+  </section>
+  <section class="why-section">
+    <h2>Why ToolKit?</h2>
+    <div class="why-grid">
+      <div class="why-item"><h3>⚡ Instant</h3><p>No loading screens. No sign-ups. Open and use immediately from any device.</p></div>
+      <div class="why-item"><h3>📱 Mobile-first</h3><p>Designed to work perfectly on phones, tablets, and desktops.</p></div>
+      <div class="why-item"><h3>🔒 Private</h3><p>Everything runs in your browser. Nothing is sent to any server.</p></div>
     </div>
-
-    <button class="btn" onclick="calculateLoan()">Calculate →</button>
-
-    <div class="loan-result" id="loanResult">
-      <div class="primary-result">
-        <div class="label">Monthly Payment</div>
-        <div class="amount" id="monthlyPayment">—</div>
-        <div class="sublabel" id="paymentSublabel">per month</div>
-      </div>
-
-      <div class="loan-summary">
-        <div class="summary-box">
-          <div class="s-label">Principal</div>
-          <div class="s-val" id="principalTotal">—</div>
-        </div>
-        <div class="summary-box">
-          <div class="s-label">Total Interest</div>
-          <div class="s-val" id="totalInterest">—</div>
-        </div>
-        <div class="summary-box">
-          <div class="s-label">Total Cost</div>
-          <div class="s-val" id="totalCost">—</div>
-        </div>
-      </div>
-
-      <div class="interest-warning" id="interestWarning"></div>
-
-      <div class="breakdown-bar">
-        <h3>Payment Breakdown</h3>
-        <div class="bar-track">
-          <span class="bar-fill-principal" id="barPrincipal" style="width:0%"></span><span class="bar-fill-interest" id="barInterest" style="width:0%"></span>
-        </div>
-        <div class="bar-legend">
-          <span><span class="dot" style="background:var(--ink)"></span>Principal <span id="principalPct">—</span></span>
-          <span><span class="dot" style="background:var(--accent)"></span>Interest <span id="interestPct">—</span></span>
-        </div>
-      </div>
-    </div>
-  </div>
+  </section>
 </div>
-
 <footer>
-  <p>© 2025 ToolKit · <a href="#">Privacy Policy</a> · <a href="index.html">All Tools</a></p>
+  <p>© 2025 ToolKit · <a href="privacy.html">Privacy Policy</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></p>
 </footer>
-
-<script>
-  function fmt(n) {
-    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function calculateLoan() {
-    const principal = parseFloat(document.getElementById('loanAmount').value);
-    const annualRate = parseFloat(document.getElementById('interestRate').value);
-    let term = parseFloat(document.getElementById('loanTerm').value);
-    const unit = document.getElementById('termUnit').value;
-
-    if (!principal || principal <= 0) { alert('Please enter a valid loan amount.'); return; }
-    if (isNaN(annualRate) || annualRate < 0) { alert('Please enter a valid interest rate.'); return; }
-    if (!term || term <= 0) { alert('Please enter a valid loan term.'); return; }
-
-    const months = unit === 'years' ? term * 12 : term;
-    const monthlyRate = annualRate / 100 / 12;
-
-    let monthlyPayment;
-    if (monthlyRate === 0) {
-      monthlyPayment = principal / months;
-    } else {
-      monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
-    }
-
-    const totalCost = monthlyPayment * months;
-    const totalInterest = totalCost - principal;
-
-    document.getElementById('monthlyPayment').textContent = fmt(monthlyPayment);
-    document.getElementById('paymentSublabel').textContent = `for ${months} month${months!==1?'s':''}`;
-    document.getElementById('principalTotal').textContent = fmt(principal);
-    document.getElementById('totalInterest').textContent = fmt(totalInterest);
-    document.getElementById('totalCost').textContent = fmt(totalCost);
-
-    const interestRatio = totalInterest / principal;
-    const pPct = Math.round((principal / totalCost) * 100);
-    const iPct = 100 - pPct;
-
-    document.getElementById('barPrincipal').style.width = pPct + '%';
-    document.getElementById('barInterest').style.width = iPct + '%';
-    document.getElementById('principalPct').textContent = pPct + '%';
-    document.getElementById('interestPct').textContent = iPct + '%';
-
-    const warning = document.getElementById('interestWarning');
-    if (interestRatio < 0.2) {
-      warning.className = 'interest-warning low';
-      warning.innerHTML = `✅ Great rate! You'll pay only ${fmt(totalInterest)} in interest — that's ${Math.round(interestRatio*100)}% of your loan.`;
-    } else if (interestRatio < 0.5) {
-      warning.className = 'interest-warning medium';
-      warning.innerHTML = `⚠️ You'll pay ${fmt(totalInterest)} in interest — ${Math.round(interestRatio*100)}% of your loan amount.`;
-    } else {
-      warning.className = 'interest-warning high';
-      warning.innerHTML = `🔴 High interest cost: ${fmt(totalInterest)} — ${Math.round(interestRatio*100)}% of your principal. Consider a shorter term or lower rate.`;
-    }
-
-    document.getElementById('loanResult').classList.add('show');
-  }
-</script>
-
 </body>
 </html>
