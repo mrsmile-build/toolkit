@@ -3,116 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age Calculator — Find Your Exact Age | ToolKit</title>
-  <meta name="description" content="Free online age calculator. Find your exact age in years, months, and days. See how long until your next birthday and more.">
+  <title>Percentage Calculator — Solve Any % Problem | ToolKit</title>
+  <meta name="description" content="Free percentage calculator. Find what percent of a number is, percentage increase or decrease, percentage difference, and more.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .age-display {
+    .calc-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 9px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--ink-soft);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
       background: var(--ink);
-      border-radius: 14px;
-      padding: 32px;
-      margin-top: 28px;
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    .tab-btn:hover:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .calc-panel { display: none; }
+    .calc-panel.active { display: block; }
+
+    .equation-display {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin-bottom: 20px;
+      letter-spacing: -0.2px;
+    }
+
+    .answer-box {
+      background: var(--ink);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 20px;
       display: none;
     }
 
-    .age-display.show { display: block; }
+    .answer-box.show { display: block; }
 
-    .age-main {
+    .answer-box .answer-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+
+    .answer-box .answer-value {
       font-family: var(--font-head);
-      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-size: 2.5rem;
       font-weight: 800;
       color: #fff;
-      letter-spacing: -2px;
+      letter-spacing: -1.5px;
       line-height: 1;
-      margin-bottom: 4px;
     }
 
-    .age-main span { color: var(--accent); }
+    .answer-box .answer-value .highlight { color: var(--accent); }
 
-    .age-sub {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.9rem;
-      margin-bottom: 28px;
-      font-weight: 300;
+    .answer-box .answer-equation {
+      margin-top: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.82rem;
     }
 
-    .age-breakdown {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .age-unit {
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 16px 12px;
-      text-align: center;
-    }
-
-    .age-unit .unit-val {
-      font-family: var(--font-head);
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #fff;
-      display: block;
-    }
-
-    .age-unit .unit-label {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.45);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      font-weight: 500;
-    }
-
-    .birthday-card {
-      background: rgba(255,92,0,0.15);
-      border: 1px solid rgba(255,92,0,0.3);
-      border-radius: 10px;
-      padding: 16px;
+    .inline-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.85);
-    }
-
-    .birthday-card .bday-icon { font-size: 1.4rem; }
-
-    .birthday-card strong { color: var(--accent); }
-
-    .extra-facts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: 10px;
+      flex-wrap: wrap;
     }
 
-    .fact-item {
-      background: rgba(255,255,255,0.05);
-      border-radius: 8px;
-      padding: 12px;
+    .inline-row input {
+      flex: 1;
+      min-width: 80px;
     }
 
-    .fact-item .fact-label {
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 4px;
-    }
-
-    .fact-item .fact-val {
+    .inline-row .connector {
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 0.95rem;
-      color: rgba(255,255,255,0.9);
-    }
-
-    @media (max-width: 480px) {
-      .age-breakdown { grid-template-columns: repeat(3, 1fr); }
-      .extra-facts { grid-template-columns: 1fr; }
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -122,8 +116,8 @@
   <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
   <ul class="nav-links">
     <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../age-calculator/index.html">Age Calc</a></li>
     <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
-    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
     <li><a href="../qr-generator/index.html">QR Gen</a></li>
   </ul>
 </nav>
@@ -131,64 +125,102 @@
 <div class="page-wrapper">
   <a class="back-link" href="../index.html">← All Tools</a>
 
-  <h1 class="page-title">Age Calculator</h1>
-  <p class="page-subtitle">Find your exact age and how many days until your next birthday.</p>
+  <h1 class="page-title">Percentage Calculator</h1>
+  <p class="page-subtitle">Select the type of percentage problem you want to solve.</p>
 
   <div class="tool-card">
-    <div class="form-row">
-      <div class="form-group">
-        <label for="birthDate">Your Date of Birth</label>
-        <input type="date" id="birthDate" max="">
+    <div class="calc-tabs">
+      <button class="tab-btn active" onclick="switchTab('basic', this)">X% of Y</button>
+      <button class="tab-btn" onclick="switchTab('whatpct', this)">X is what % of Y</button>
+      <button class="tab-btn" onclick="switchTab('increase', this)">% Increase</button>
+      <button class="tab-btn" onclick="switchTab('decrease', this)">% Decrease</button>
+      <button class="tab-btn" onclick="switchTab('difference', this)">% Difference</button>
+    </div>
+
+    <!-- PANEL 1: X% of Y -->
+    <div class="calc-panel active" id="panel-basic">
+      <div class="equation-display">What is <strong>X%</strong> of <strong>Y</strong>?</div>
+      <div class="inline-row">
+        <input type="number" id="b-pct" placeholder="e.g. 20">
+        <span class="connector">% of</span>
+        <input type="number" id="b-num" placeholder="e.g. 500">
       </div>
-      <div class="form-group">
-        <label for="calcDate">Calculate Age As Of</label>
-        <input type="date" id="calcDate">
+      <br>
+      <button class="btn" onclick="calcBasic()">Calculate →</button>
+      <div class="answer-box" id="ans-basic">
+        <div class="answer-label">Answer</div>
+        <div class="answer-value" id="val-basic">—</div>
+        <div class="answer-equation" id="eq-basic">—</div>
       </div>
     </div>
 
-    <button class="btn" onclick="calculateAge()">Calculate Age →</button>
-
-    <div class="age-display" id="ageDisplay">
-      <div class="age-main" id="ageMain">—</div>
-      <div class="age-sub" id="ageSub">—</div>
-
-      <div class="age-breakdown">
-        <div class="age-unit">
-          <span class="unit-val" id="totalMonths">—</span>
-          <span class="unit-label">Total Months</span>
-        </div>
-        <div class="age-unit">
-          <span class="unit-val" id="totalWeeks">—</span>
-          <span class="unit-label">Total Weeks</span>
-        </div>
-        <div class="age-unit">
-          <span class="unit-val" id="totalDays">—</span>
-          <span class="unit-label">Total Days</span>
-        </div>
+    <!-- PANEL 2: X is what % of Y -->
+    <div class="calc-panel" id="panel-whatpct">
+      <div class="equation-display"><strong>X</strong> is what percent of <strong>Y</strong>?</div>
+      <div class="inline-row">
+        <input type="number" id="w-num" placeholder="e.g. 50">
+        <span class="connector">is what % of</span>
+        <input type="number" id="w-total" placeholder="e.g. 200">
       </div>
-
-      <div class="birthday-card">
-        <span class="bday-icon">🎂</span>
-        <div id="birthdayMsg">—</div>
+      <br>
+      <button class="btn" onclick="calcWhatPct()">Calculate →</button>
+      <div class="answer-box" id="ans-whatpct">
+        <div class="answer-label">Answer</div>
+        <div class="answer-value" id="val-whatpct">—</div>
+        <div class="answer-equation" id="eq-whatpct">—</div>
       </div>
+    </div>
 
-      <div class="extra-facts">
-        <div class="fact-item">
-          <div class="fact-label">Day of Birth</div>
-          <div class="fact-val" id="dayOfBirth">—</div>
-        </div>
-        <div class="fact-item">
-          <div class="fact-label">Next Birthday</div>
-          <div class="fact-val" id="nextBirthday">—</div>
-        </div>
-        <div class="fact-item">
-          <div class="fact-label">Hours Lived</div>
-          <div class="fact-val" id="hoursLived">—</div>
-        </div>
-        <div class="fact-item">
-          <div class="fact-label">Zodiac Sign</div>
-          <div class="fact-val" id="zodiacSign">—</div>
-        </div>
+    <!-- PANEL 3: % Increase -->
+    <div class="calc-panel" id="panel-increase">
+      <div class="equation-display">Increase <strong>X</strong> by <strong>Y%</strong></div>
+      <div class="inline-row">
+        <input type="number" id="i-original" placeholder="Original value">
+        <span class="connector">increased by</span>
+        <input type="number" id="i-pct" placeholder="% amount">
+        <span class="connector">%</span>
+      </div>
+      <br>
+      <button class="btn" onclick="calcIncrease()">Calculate →</button>
+      <div class="answer-box" id="ans-increase">
+        <div class="answer-label">New Value</div>
+        <div class="answer-value" id="val-increase">—</div>
+        <div class="answer-equation" id="eq-increase">—</div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: % Decrease -->
+    <div class="calc-panel" id="panel-decrease">
+      <div class="equation-display">Decrease <strong>X</strong> by <strong>Y%</strong></div>
+      <div class="inline-row">
+        <input type="number" id="d-original" placeholder="Original value">
+        <span class="connector">decreased by</span>
+        <input type="number" id="d-pct" placeholder="% amount">
+        <span class="connector">%</span>
+      </div>
+      <br>
+      <button class="btn" onclick="calcDecrease()">Calculate →</button>
+      <div class="answer-box" id="ans-decrease">
+        <div class="answer-label">New Value</div>
+        <div class="answer-value" id="val-decrease">—</div>
+        <div class="answer-equation" id="eq-decrease">—</div>
+      </div>
+    </div>
+
+    <!-- PANEL 5: % Difference -->
+    <div class="calc-panel" id="panel-difference">
+      <div class="equation-display">Percentage change from <strong>X</strong> to <strong>Y</strong></div>
+      <div class="inline-row">
+        <input type="number" id="df-from" placeholder="From (original)">
+        <span class="connector">→</span>
+        <input type="number" id="df-to" placeholder="To (new value)">
+      </div>
+      <br>
+      <button class="btn" onclick="calcDiff()">Calculate →</button>
+      <div class="answer-box" id="ans-difference">
+        <div class="answer-label">Percentage Change</div>
+        <div class="answer-value" id="val-difference">—</div>
+        <div class="answer-equation" id="eq-difference">—</div>
       </div>
     </div>
   </div>
@@ -199,80 +231,69 @@
 </footer>
 
 <script>
-  // Set defaults
-  const today = new Date();
-  document.getElementById('calcDate').value = today.toISOString().split('T')[0];
-  document.getElementById('birthDate').max = today.toISOString().split('T')[0];
+  function switchTab(name, el) {
+    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    el.classList.add('active');
+  }
 
-  function calculateAge() {
-    const birthVal = document.getElementById('birthDate').value;
-    const calcVal = document.getElementById('calcDate').value;
+  function showAns(id, val, eq) {
+    const box = document.getElementById('ans-' + id);
+    document.getElementById('val-' + id).innerHTML = val;
+    document.getElementById('eq-' + id).textContent = eq;
+    box.classList.add('show');
+  }
 
-    if (!birthVal) { alert('Please enter your date of birth.'); return; }
+  function fmt(n) {
+    return parseFloat(n.toFixed(4)).toLocaleString();
+  }
 
-    const birth = new Date(birthVal);
-    const calc = new Date(calcVal);
+  function calcBasic() {
+    const pct = parseFloat(document.getElementById('b-pct').value);
+    const num = parseFloat(document.getElementById('b-num').value);
+    if (isNaN(pct) || isNaN(num)) { alert('Fill in both fields.'); return; }
+    const result = (pct / 100) * num;
+    showAns('basic', `<span class="highlight">${fmt(result)}</span>`, `${pct}% × ${num} = ${fmt(result)}`);
+  }
 
-    if (birth > calc) { alert('Birth date cannot be after the calculation date.'); return; }
+  function calcWhatPct() {
+    const num = parseFloat(document.getElementById('w-num').value);
+    const total = parseFloat(document.getElementById('w-total').value);
+    if (isNaN(num) || isNaN(total) || total === 0) { alert('Fill in both fields.'); return; }
+    const result = (num / total) * 100;
+    showAns('whatpct', `<span class="highlight">${fmt(result)}%</span>`, `(${num} ÷ ${total}) × 100 = ${fmt(result)}%`);
+  }
 
-    let years = calc.getFullYear() - birth.getFullYear();
-    let months = calc.getMonth() - birth.getMonth();
-    let days = calc.getDate() - birth.getDate();
+  function calcIncrease() {
+    const orig = parseFloat(document.getElementById('i-original').value);
+    const pct = parseFloat(document.getElementById('i-pct').value);
+    if (isNaN(orig) || isNaN(pct)) { alert('Fill in both fields.'); return; }
+    const increase = (pct / 100) * orig;
+    const result = orig + increase;
+    showAns('increase', `<span class="highlight">${fmt(result)}</span>`, `${orig} + (${pct}% of ${orig}) = ${orig} + ${fmt(increase)} = ${fmt(result)}`);
+  }
 
-    if (days < 0) {
-      months--;
-      const prevMonth = new Date(calc.getFullYear(), calc.getMonth(), 0);
-      days += prevMonth.getDate();
-    }
-    if (months < 0) { years--; months += 12; }
+  function calcDecrease() {
+    const orig = parseFloat(document.getElementById('d-original').value);
+    const pct = parseFloat(document.getElementById('d-pct').value);
+    if (isNaN(orig) || isNaN(pct)) { alert('Fill in both fields.'); return; }
+    const decrease = (pct / 100) * orig;
+    const result = orig - decrease;
+    showAns('decrease', `<span class="highlight">${fmt(result)}</span>`, `${orig} − (${pct}% of ${orig}) = ${orig} − ${fmt(decrease)} = ${fmt(result)}`);
+  }
 
-    const diffMs = calc - birth;
-    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const totalWeeks = Math.floor(totalDays / 7);
-    const totalMonths = years * 12 + months;
-    const hoursLived = (totalDays * 24).toLocaleString();
-
-    // Display
-    document.getElementById('ageMain').innerHTML =
-      `${years}<span>y</span> ${months}<span>m</span> ${days}<span>d</span>`;
-    document.getElementById('ageSub').textContent =
-      `${years} year${years!==1?'s':''}, ${months} month${months!==1?'s':''}, ${days} day${days!==1?'s':''}`;
-    document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
-    document.getElementById('totalWeeks').textContent = totalWeeks.toLocaleString();
-    document.getElementById('totalDays').textContent = totalDays.toLocaleString();
-    document.getElementById('hoursLived').textContent = hoursLived;
-
-    // Day of birth
-    const days_of_week = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    document.getElementById('dayOfBirth').textContent = days_of_week[birth.getDay()];
-
-    // Next birthday
-    const nextBday = new Date(calc.getFullYear(), birth.getMonth(), birth.getDate());
-    if (nextBday <= calc) nextBday.setFullYear(calc.getFullYear() + 1);
-    const daysUntil = Math.round((nextBday - calc) / (1000 * 60 * 60 * 24));
-    document.getElementById('nextBirthday').textContent =
-      daysUntil === 0 ? 'Today! 🎉' : `in ${daysUntil} days`;
-    document.getElementById('birthdayMsg').innerHTML =
-      daysUntil === 0
-        ? `<strong>Happy Birthday!</strong> 🎉 You're turning ${years + 1} today!`
-        : `Your next birthday is in <strong>${daysUntil} day${daysUntil!==1?'s':''}</strong> — you'll turn ${years + 1}`;
-
-    // Zodiac
-    const m = birth.getMonth() + 1, d = birth.getDate();
-    const signs = [
-      [1,20,'Capricorn ♑'],[2,19,'Aquarius ♒'],[3,20,'Pisces ♓'],[4,20,'Aries ♈'],
-      [5,21,'Taurus ♉'],[6,21,'Gemini ♊'],[7,22,'Cancer ♋'],[8,23,'Leo ♌'],
-      [9,23,'Virgo ♍'],[10,23,'Libra ♎'],[11,22,'Scorpio ♏'],[12,22,'Sagittarius ♐'],
-      [13,0,'Capricorn ♑']
-    ];
-    let zodiac = 'Capricorn ♑';
-    for (let i = 0; i < signs.length - 1; i++) {
-      if (m === signs[i][0] && d >= signs[i][1]) { zodiac = signs[i+1][2]; break; }
-      if (m === signs[i][0] && d < signs[i][1]) { zodiac = signs[i][2]; break; }
-    }
-    document.getElementById('zodiacSign').textContent = zodiac;
-
-    document.getElementById('ageDisplay').classList.add('show');
+  function calcDiff() {
+    const from = parseFloat(document.getElementById('df-from').value);
+    const to = parseFloat(document.getElementById('df-to').value);
+    if (isNaN(from) || isNaN(to) || from === 0) { alert('Fill in both fields.'); return; }
+    const diff = ((to - from) / Math.abs(from)) * 100;
+    const sign = diff >= 0 ? '+' : '';
+    const color = diff >= 0 ? 'var(--accent)' : '#ef4444';
+    showAns('difference',
+      `<span style="color:${color}">${sign}${fmt(diff)}%</span>`,
+      `((${to} − ${from}) ÷ ${from}) × 100 = ${sign}${fmt(diff)}%`
+    );
   }
 </script>
 

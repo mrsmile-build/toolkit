@@ -3,262 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Counter — Free Online Word Count Tool | ToolKit</title>
-  <meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs and reading time instantly. No sign up required.">
+  <title>Loan Calculator — Monthly Payment & Interest | ToolKit</title>
+  <meta name="description" content="Free loan calculator. Calculate your monthly payment, total interest paid, and full loan cost for any loan amount and interest rate.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .stat-pill {
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 12px;
-      text-align: center;
-      transition: border-color 0.2s;
-    }
-
-    .stat-pill.active {
-      border-color: var(--accent);
-      background: #fff8f5;
-    }
-
-    .stat-pill .pill-val {
-      font-family: var(--font-head);
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--ink);
-      display: block;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .stat-pill.active .pill-val { color: var(--accent); }
-
-    .stat-pill .pill-label {
-      font-size: 0.72rem;
-      color: var(--ink-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 500;
-    }
-
-    .reading-time {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 18px;
-      background: var(--ink);
-      color: #fff;
-      border-radius: 10px;
-      margin-top: 14px;
-      font-size: 0.9rem;
-    }
-
-    .reading-time strong {
-      font-family: var(--font-head);
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-sm {
-      padding: 8px 16px;
-      font-size: 0.82rem;
-      border-radius: 8px;
-    }
-
-    .density-bar {
-      margin-top: 20px;
-    }
-
-    .density-bar h3 {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--ink-soft);
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    .word-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      margin: 3px;
-    }
-
-    .word-chip .chip-count {
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--font-head);
-      font-weight: 700;
-      font-size: 0.7rem;
-      padding: 1px 5px;
-      border-radius: 10px;
-    }
+    .currency-input{position:relative}
+    .currency-input .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--ink-soft);font-size:1rem;pointer-events:none}
+    .currency-input input{padding-left:30px}
+    .loan-result{display:none;margin-top:28px}
+    .loan-result.show{display:block}
+    .primary-result{background:var(--ink);border-radius:14px;padding:28px;text-align:center;margin-bottom:14px}
+    .primary-result .label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px;font-weight:500}
+    .primary-result .amount{font-family:var(--font-head);font-size:clamp(2rem,6vw,3rem);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1}
+    .primary-result .amount span{color:var(--accent)}
+    .primary-result .sublabel{color:rgba(255,255,255,.4);font-size:.82rem;margin-top:6px}
+    .loan-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+    .summary-box{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+    .summary-box .s-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:6px;font-weight:500}
+    .summary-box .s-val{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--ink)}
+    .interest-warning{padding:14px 18px;border-radius:10px;font-size:.875rem;display:flex;align-items:center;gap:10px}
+    .interest-warning.low{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+    .interest-warning.medium{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+    .interest-warning.high{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+    .breakdown-bar{margin-top:20px}
+    .breakdown-bar h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin-bottom:12px;font-weight:600}
+    .bar-track{height:12px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px}
+    .bar-fill-principal{height:100%;background:var(--ink);border-radius:10px 0 0 10px;display:inline-block;transition:width .6s ease}
+    .bar-fill-interest{height:100%;background:var(--accent);border-radius:0 10px 10px 0;display:inline-block;transition:width .6s ease}
+    .bar-legend{display:flex;gap:20px;font-size:.8rem;color:var(--ink-soft)}
+    .bar-legend span{display:flex;align-items:center;gap:6px}
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    @media(max-width:480px){.loan-summary{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
   <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
     <li><a href="../age-calculator/index.html">Age Calc</a></li>
-    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
     <li><a href="../percentage-calculator/index.html">% Calc</a></li>
     <li><a href="../qr-generator/index.html">QR Gen</a></li>
   </ul>
 </nav>
-
 <div class="page-wrapper">
   <a class="back-link" href="../index.html">← All Tools</a>
-
-  <h1 class="page-title">Word Counter</h1>
-  <p class="page-subtitle">Paste or type your text below. Results update in real time.</p>
-
-  <!-- Ad slot top -->
-  <!-- <ins class="adsbygoogle" ...></ins> -->
-
+  <h1 class="page-title">Loan Calculator</h1>
+  <p class="page-subtitle">Calculate your monthly payment and total interest for any loan.</p>
   <div class="tool-card">
-    <div class="toolbar">
-      <button class="btn btn-outline btn-sm" onclick="clearText()">Clear</button>
-      <button class="btn btn-outline btn-sm" onclick="copyText()">Copy All</button>
-    </div>
-
-    <div class="form-group">
-      <textarea id="textInput" placeholder="Start typing or paste your text here..." oninput="analyzeText()"></textarea>
-    </div>
-
-    <div class="stats-bar">
-      <div class="stat-pill" id="pill-words">
-        <span class="pill-val" id="wordCount">0</span>
-        <span class="pill-label">Words</span>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="loanAmount">Loan Amount</label>
+        <div class="currency-input">
+          <span class="prefix">$</span>
+          <input type="number" id="loanAmount" placeholder="10,000" min="0" step="100">
+        </div>
       </div>
-      <div class="stat-pill" id="pill-chars">
-        <span class="pill-val" id="charCount">0</span>
-        <span class="pill-label">Characters</span>
-      </div>
-      <div class="stat-pill">
-        <span class="pill-val" id="charNoSpace">0</span>
-        <span class="pill-label">No Spaces</span>
-      </div>
-      <div class="stat-pill">
-        <span class="pill-val" id="sentenceCount">0</span>
-        <span class="pill-label">Sentences</span>
-      </div>
-      <div class="stat-pill">
-        <span class="pill-val" id="paraCount">0</span>
-        <span class="pill-label">Paragraphs</span>
+      <div class="form-group">
+        <label for="interestRate">Annual Interest Rate (%)</label>
+        <input type="number" id="interestRate" placeholder="6.5" min="0" max="100" step="0.1">
       </div>
     </div>
-
-    <div class="reading-time" id="readingTime">
-      ⏱ Reading time: <strong>—</strong>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="loanTerm">Loan Term</label>
+        <input type="number" id="loanTerm" placeholder="5" min="1">
+      </div>
+      <div class="form-group">
+        <label for="termUnit">Term Unit</label>
+        <select id="termUnit">
+          <option value="years">Years</option>
+          <option value="months">Months</option>
+        </select>
+      </div>
     </div>
-
-    <div class="density-bar" id="densitySection" style="display:none; margin-top:24px;">
-      <h3>Top Keywords</h3>
-      <div id="keywordChips"></div>
+    <button class="btn" onclick="calculateLoan()">Calculate →</button>
+    <div class="loan-result" id="loanResult">
+      <div class="primary-result">
+        <div class="label">Monthly Payment</div>
+        <div class="amount" id="monthlyPayment">—</div>
+        <div class="sublabel" id="paymentSublabel">per month</div>
+      </div>
+      <div class="loan-summary">
+        <div class="summary-box"><div class="s-label">Principal</div><div class="s-val" id="principalTotal">—</div></div>
+        <div class="summary-box"><div class="s-label">Total Interest</div><div class="s-val" id="totalInterest">—</div></div>
+        <div class="summary-box"><div class="s-label">Total Cost</div><div class="s-val" id="totalCost">—</div></div>
+      </div>
+      <div class="interest-warning" id="interestWarning"></div>
+      <div class="breakdown-bar">
+        <h3>Payment Breakdown</h3>
+        <div class="bar-track">
+          <span class="bar-fill-principal" id="barPrincipal" style="width:0%"></span><span class="bar-fill-interest" id="barInterest" style="width:0%"></span>
+        </div>
+        <div class="bar-legend">
+          <span><span class="dot" style="background:var(--ink)"></span>Principal <span id="principalPct">—</span></span>
+          <span><span class="dot" style="background:var(--accent)"></span>Interest <span id="interestPct">—</span></span>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Ad slot bottom -->
-  <!-- <ins class="adsbygoogle" ...></ins> -->
-
 </div>
-
 <footer>
-  <p>© 2025 ToolKit · <a href="#">Privacy Policy</a> · <a href="../index.html">All Tools</a></p>
+  <p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p>
 </footer>
-
 <script>
-  function analyzeText() {
-    const text = document.getElementById('textInput').value;
-    const words = text.trim() === '' ? [] : text.trim().split(/\s+/).filter(w => w.length > 0);
-    const chars = text.length;
-    const charsNoSpace = text.replace(/\s/g, '').length;
-    const sentences = text.trim() === '' ? 0 : (text.match(/[^.!?]*[.!?]+/g) || []).length;
-    const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
-    const wc = words.length;
-
-    document.getElementById('wordCount').textContent = wc.toLocaleString();
-    document.getElementById('charCount').textContent = chars.toLocaleString();
-    document.getElementById('charNoSpace').textContent = charsNoSpace.toLocaleString();
-    document.getElementById('sentenceCount').textContent = sentences.toLocaleString();
-    document.getElementById('paraCount').textContent = paragraphs.toLocaleString();
-
-    // Active state
-    ['pill-words','pill-chars'].forEach(id => document.getElementById(id).classList.remove('active'));
-    if (wc > 0) document.getElementById('pill-words').classList.add('active');
-    if (chars > 0) document.getElementById('pill-chars').classList.add('active');
-
-    // Reading time
-    const rt = document.getElementById('readingTime');
-    if (wc === 0) {
-      rt.innerHTML = '⏱ Reading time: <strong>—</strong>';
-    } else {
-      const mins = Math.ceil(wc / 200);
-      const secs = Math.round((wc / 200) * 60);
-      rt.innerHTML = secs < 60
-        ? `⏱ Reading time: <strong>~${secs} seconds</strong> (${wc} words at 200 wpm)`
-        : `⏱ Reading time: <strong>~${mins} minute${mins > 1 ? 's' : ''}</strong> (${wc} words at 200 wpm)`;
-    }
-
-    // Keywords
-    const densitySection = document.getElementById('densitySection');
-    if (wc >= 10) {
-      const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','was','are','were','it','this','that','be','as','by','from','have','has','had','not','we','i','you','he','she','they','do','did','will','would','could','should','my','your','our','their','its','so','if','up','out','about','what','which','who','how','all','more','no','can','just','than','then','there','been','into','some','also']);
-      const freq = {};
-      words.forEach(w => {
-        const clean = w.toLowerCase().replace(/[^a-z]/g, '');
-        if (clean.length > 2 && !stopWords.has(clean)) freq[clean] = (freq[clean] || 0) + 1;
-      });
-      const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
-      if (sorted.length > 0) {
-        densitySection.style.display = 'block';
-        document.getElementById('keywordChips').innerHTML = sorted.map(([w, c]) =>
-          `<span class="word-chip">${w}<span class="chip-count">${c}</span></span>`
-        ).join('');
-      } else {
-        densitySection.style.display = 'none';
-      }
-    } else {
-      densitySection.style.display = 'none';
-    }
-  }
-
-  function clearText() {
-    document.getElementById('textInput').value = '';
-    analyzeText();
-  }
-
-  function copyText() {
-    const text = document.getElementById('textInput').value;
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector('.toolbar .btn-outline:nth-child(2)');
-      btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy All', 2000);
-    });
+  function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function calculateLoan(){
+    const principal=parseFloat(document.getElementById('loanAmount').value);
+    const annualRate=parseFloat(document.getElementById('interestRate').value);
+    let term=parseFloat(document.getElementById('loanTerm').value);
+    const unit=document.getElementById('termUnit').value;
+    if(!principal||principal<=0){alert('Please enter a valid loan amount.');return}
+    if(isNaN(annualRate)||annualRate<0){alert('Please enter a valid interest rate.');return}
+    if(!term||term<=0){alert('Please enter a valid loan term.');return}
+    const months=unit==='years'?term*12:term;
+    const monthlyRate=annualRate/100/12;
+    let monthlyPayment;
+    if(monthlyRate===0){monthlyPayment=principal/months}
+    else{monthlyPayment=principal*(monthlyRate*Math.pow(1+monthlyRate,months))/(Math.pow(1+monthlyRate,months)-1)}
+    const totalCost=monthlyPayment*months;
+    const totalInterest=totalCost-principal;
+    document.getElementById('monthlyPayment').textContent=fmt(monthlyPayment);
+    document.getElementById('paymentSublabel').textContent=`for ${months} month${months!==1?'s':''}`;
+    document.getElementById('principalTotal').textContent=fmt(principal);
+    document.getElementById('totalInterest').textContent=fmt(totalInterest);
+    document.getElementById('totalCost').textContent=fmt(totalCost);
+    const interestRatio=totalInterest/principal;
+    const pPct=Math.round((principal/totalCost)*100);
+    const iPct=100-pPct;
+    document.getElementById('barPrincipal').style.width=pPct+'%';
+    document.getElementById('barInterest').style.width=iPct+'%';
+    document.getElementById('principalPct').textContent=pPct+'%';
+    document.getElementById('interestPct').textContent=iPct+'%';
+    const warning=document.getElementById('interestWarning');
+    if(interestRatio<0.2){warning.className='interest-warning low';warning.innerHTML=`✅ Great rate! You'll pay only ${fmt(totalInterest)} in interest.`}
+    else if(interestRatio<0.5){warning.className='interest-warning medium';warning.innerHTML=`⚠️ You'll pay ${fmt(totalInterest)} in interest — ${Math.round(interestRatio*100)}% of your loan.`}
+    else{warning.className='interest-warning high';warning.innerHTML=`🔴 High cost: ${fmt(totalInterest)} interest — consider a shorter term.`}
+    document.getElementById('loanResult').classList.add('show');
   }
 </script>
-
 </body>
 </html>

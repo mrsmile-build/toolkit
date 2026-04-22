@@ -3,110 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Percentage Calculator — Solve Any % Problem | ToolKit</title>
-  <meta name="description" content="Free percentage calculator. Find what percent of a number is, percentage increase or decrease, percentage difference, and more.">
+  <title>Word Counter — Free Online Word Count Tool | ToolKit</title>
+  <meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs and reading time instantly. No sign up required.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .calc-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+      margin-top: 24px;
     }
 
-    .tab-btn {
-      padding: 9px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      background: var(--bg);
-      font-family: var(--font-body);
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      color: var(--ink-soft);
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .tab-btn.active {
-      background: var(--ink);
-      border-color: var(--ink);
-      color: #fff;
-    }
-
-    .tab-btn:hover:not(.active) {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .calc-panel { display: none; }
-    .calc-panel.active { display: block; }
-
-    .equation-display {
+    .stat-pill {
       background: var(--bg);
       border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 14px 18px;
+      padding: 14px 12px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .stat-pill.active {
+      border-color: var(--accent);
+      background: #fff8f5;
+    }
+
+    .stat-pill .pill-val {
       font-family: var(--font-head);
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      margin-bottom: 20px;
-      letter-spacing: -0.2px;
-    }
-
-    .answer-box {
-      background: var(--ink);
-      border-radius: 12px;
-      padding: 24px;
-      margin-top: 20px;
-      display: none;
-    }
-
-    .answer-box.show { display: block; }
-
-    .answer-box .answer-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 8px;
-    }
-
-    .answer-box .answer-value {
-      font-family: var(--font-head);
-      font-size: 2.5rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      color: #fff;
-      letter-spacing: -1.5px;
+      color: var(--ink);
+      display: block;
       line-height: 1;
+      margin-bottom: 4px;
     }
 
-    .answer-box .answer-value .highlight { color: var(--accent); }
+    .stat-pill.active .pill-val { color: var(--accent); }
 
-    .answer-box .answer-equation {
-      margin-top: 8px;
-      color: rgba(255,255,255,0.4);
-      font-size: 0.82rem;
+    .stat-pill .pill-label {
+      font-size: 0.72rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
     }
 
-    .inline-row {
+    .reading-time {
       display: flex;
       align-items: center;
       gap: 10px;
+      padding: 14px 18px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 10px;
+      margin-top: 14px;
+      font-size: 0.9rem;
+    }
+
+    .reading-time strong {
+      font-family: var(--font-head);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
 
-    .inline-row input {
-      flex: 1;
-      min-width: 80px;
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      border-radius: 8px;
     }
 
-    .inline-row .connector {
+    .density-bar {
+      margin-top: 20px;
+    }
+
+    .density-bar h3 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--ink-soft);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .word-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      margin: 3px;
+    }
+
+    .word-chip .chip-count {
+      background: var(--accent);
+      color: #fff;
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      white-space: nowrap;
+      font-size: 0.7rem;
+      padding: 1px 5px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -115,9 +120,9 @@
 <nav>
   <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
   <ul class="nav-links">
-    <li><a href="../word-counter/index.html">Word Counter</a></li>
     <li><a href="../age-calculator/index.html">Age Calc</a></li>
     <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
     <li><a href="../qr-generator/index.html">QR Gen</a></li>
   </ul>
 </nav>
@@ -125,105 +130,58 @@
 <div class="page-wrapper">
   <a class="back-link" href="../index.html">← All Tools</a>
 
-  <h1 class="page-title">Percentage Calculator</h1>
-  <p class="page-subtitle">Select the type of percentage problem you want to solve.</p>
+  <h1 class="page-title">Word Counter</h1>
+  <p class="page-subtitle">Paste or type your text below. Results update in real time.</p>
+
+  <!-- Ad slot top -->
+  <!-- <ins class="adsbygoogle" ...></ins> -->
 
   <div class="tool-card">
-    <div class="calc-tabs">
-      <button class="tab-btn active" onclick="switchTab('basic', this)">X% of Y</button>
-      <button class="tab-btn" onclick="switchTab('whatpct', this)">X is what % of Y</button>
-      <button class="tab-btn" onclick="switchTab('increase', this)">% Increase</button>
-      <button class="tab-btn" onclick="switchTab('decrease', this)">% Decrease</button>
-      <button class="tab-btn" onclick="switchTab('difference', this)">% Difference</button>
+    <div class="toolbar">
+      <button class="btn btn-outline btn-sm" onclick="clearText()">Clear</button>
+      <button class="btn btn-outline btn-sm" onclick="copyText()">Copy All</button>
     </div>
 
-    <!-- PANEL 1: X% of Y -->
-    <div class="calc-panel active" id="panel-basic">
-      <div class="equation-display">What is <strong>X%</strong> of <strong>Y</strong>?</div>
-      <div class="inline-row">
-        <input type="number" id="b-pct" placeholder="e.g. 20">
-        <span class="connector">% of</span>
-        <input type="number" id="b-num" placeholder="e.g. 500">
-      </div>
-      <br>
-      <button class="btn" onclick="calcBasic()">Calculate →</button>
-      <div class="answer-box" id="ans-basic">
-        <div class="answer-label">Answer</div>
-        <div class="answer-value" id="val-basic">—</div>
-        <div class="answer-equation" id="eq-basic">—</div>
-      </div>
+    <div class="form-group">
+      <textarea id="textInput" placeholder="Start typing or paste your text here..." oninput="analyzeText()"></textarea>
     </div>
 
-    <!-- PANEL 2: X is what % of Y -->
-    <div class="calc-panel" id="panel-whatpct">
-      <div class="equation-display"><strong>X</strong> is what percent of <strong>Y</strong>?</div>
-      <div class="inline-row">
-        <input type="number" id="w-num" placeholder="e.g. 50">
-        <span class="connector">is what % of</span>
-        <input type="number" id="w-total" placeholder="e.g. 200">
+    <div class="stats-bar">
+      <div class="stat-pill" id="pill-words">
+        <span class="pill-val" id="wordCount">0</span>
+        <span class="pill-label">Words</span>
       </div>
-      <br>
-      <button class="btn" onclick="calcWhatPct()">Calculate →</button>
-      <div class="answer-box" id="ans-whatpct">
-        <div class="answer-label">Answer</div>
-        <div class="answer-value" id="val-whatpct">—</div>
-        <div class="answer-equation" id="eq-whatpct">—</div>
+      <div class="stat-pill" id="pill-chars">
+        <span class="pill-val" id="charCount">0</span>
+        <span class="pill-label">Characters</span>
+      </div>
+      <div class="stat-pill">
+        <span class="pill-val" id="charNoSpace">0</span>
+        <span class="pill-label">No Spaces</span>
+      </div>
+      <div class="stat-pill">
+        <span class="pill-val" id="sentenceCount">0</span>
+        <span class="pill-label">Sentences</span>
+      </div>
+      <div class="stat-pill">
+        <span class="pill-val" id="paraCount">0</span>
+        <span class="pill-label">Paragraphs</span>
       </div>
     </div>
 
-    <!-- PANEL 3: % Increase -->
-    <div class="calc-panel" id="panel-increase">
-      <div class="equation-display">Increase <strong>X</strong> by <strong>Y%</strong></div>
-      <div class="inline-row">
-        <input type="number" id="i-original" placeholder="Original value">
-        <span class="connector">increased by</span>
-        <input type="number" id="i-pct" placeholder="% amount">
-        <span class="connector">%</span>
-      </div>
-      <br>
-      <button class="btn" onclick="calcIncrease()">Calculate →</button>
-      <div class="answer-box" id="ans-increase">
-        <div class="answer-label">New Value</div>
-        <div class="answer-value" id="val-increase">—</div>
-        <div class="answer-equation" id="eq-increase">—</div>
-      </div>
+    <div class="reading-time" id="readingTime">
+      ⏱ Reading time: <strong>—</strong>
     </div>
 
-    <!-- PANEL 4: % Decrease -->
-    <div class="calc-panel" id="panel-decrease">
-      <div class="equation-display">Decrease <strong>X</strong> by <strong>Y%</strong></div>
-      <div class="inline-row">
-        <input type="number" id="d-original" placeholder="Original value">
-        <span class="connector">decreased by</span>
-        <input type="number" id="d-pct" placeholder="% amount">
-        <span class="connector">%</span>
-      </div>
-      <br>
-      <button class="btn" onclick="calcDecrease()">Calculate →</button>
-      <div class="answer-box" id="ans-decrease">
-        <div class="answer-label">New Value</div>
-        <div class="answer-value" id="val-decrease">—</div>
-        <div class="answer-equation" id="eq-decrease">—</div>
-      </div>
-    </div>
-
-    <!-- PANEL 5: % Difference -->
-    <div class="calc-panel" id="panel-difference">
-      <div class="equation-display">Percentage change from <strong>X</strong> to <strong>Y</strong></div>
-      <div class="inline-row">
-        <input type="number" id="df-from" placeholder="From (original)">
-        <span class="connector">→</span>
-        <input type="number" id="df-to" placeholder="To (new value)">
-      </div>
-      <br>
-      <button class="btn" onclick="calcDiff()">Calculate →</button>
-      <div class="answer-box" id="ans-difference">
-        <div class="answer-label">Percentage Change</div>
-        <div class="answer-value" id="val-difference">—</div>
-        <div class="answer-equation" id="eq-difference">—</div>
-      </div>
+    <div class="density-bar" id="densitySection" style="display:none; margin-top:24px;">
+      <h3>Top Keywords</h3>
+      <div id="keywordChips"></div>
     </div>
   </div>
+
+  <!-- Ad slot bottom -->
+  <!-- <ins class="adsbygoogle" ...></ins> -->
+
 </div>
 
 <footer>
@@ -231,69 +189,74 @@
 </footer>
 
 <script>
-  function switchTab(name, el) {
-    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('panel-' + name).classList.add('active');
-    el.classList.add('active');
+  function analyzeText() {
+    const text = document.getElementById('textInput').value;
+    const words = text.trim() === '' ? [] : text.trim().split(/\s+/).filter(w => w.length > 0);
+    const chars = text.length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const sentences = text.trim() === '' ? 0 : (text.match(/[^.!?]*[.!?]+/g) || []).length;
+    const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+    const wc = words.length;
+
+    document.getElementById('wordCount').textContent = wc.toLocaleString();
+    document.getElementById('charCount').textContent = chars.toLocaleString();
+    document.getElementById('charNoSpace').textContent = charsNoSpace.toLocaleString();
+    document.getElementById('sentenceCount').textContent = sentences.toLocaleString();
+    document.getElementById('paraCount').textContent = paragraphs.toLocaleString();
+
+    // Active state
+    ['pill-words','pill-chars'].forEach(id => document.getElementById(id).classList.remove('active'));
+    if (wc > 0) document.getElementById('pill-words').classList.add('active');
+    if (chars > 0) document.getElementById('pill-chars').classList.add('active');
+
+    // Reading time
+    const rt = document.getElementById('readingTime');
+    if (wc === 0) {
+      rt.innerHTML = '⏱ Reading time: <strong>—</strong>';
+    } else {
+      const mins = Math.ceil(wc / 200);
+      const secs = Math.round((wc / 200) * 60);
+      rt.innerHTML = secs < 60
+        ? `⏱ Reading time: <strong>~${secs} seconds</strong> (${wc} words at 200 wpm)`
+        : `⏱ Reading time: <strong>~${mins} minute${mins > 1 ? 's' : ''}</strong> (${wc} words at 200 wpm)`;
+    }
+
+    // Keywords
+    const densitySection = document.getElementById('densitySection');
+    if (wc >= 10) {
+      const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','was','are','were','it','this','that','be','as','by','from','have','has','had','not','we','i','you','he','she','they','do','did','will','would','could','should','my','your','our','their','its','so','if','up','out','about','what','which','who','how','all','more','no','can','just','than','then','there','been','into','some','also']);
+      const freq = {};
+      words.forEach(w => {
+        const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+        if (clean.length > 2 && !stopWords.has(clean)) freq[clean] = (freq[clean] || 0) + 1;
+      });
+      const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
+      if (sorted.length > 0) {
+        densitySection.style.display = 'block';
+        document.getElementById('keywordChips').innerHTML = sorted.map(([w, c]) =>
+          `<span class="word-chip">${w}<span class="chip-count">${c}</span></span>`
+        ).join('');
+      } else {
+        densitySection.style.display = 'none';
+      }
+    } else {
+      densitySection.style.display = 'none';
+    }
   }
 
-  function showAns(id, val, eq) {
-    const box = document.getElementById('ans-' + id);
-    document.getElementById('val-' + id).innerHTML = val;
-    document.getElementById('eq-' + id).textContent = eq;
-    box.classList.add('show');
+  function clearText() {
+    document.getElementById('textInput').value = '';
+    analyzeText();
   }
 
-  function fmt(n) {
-    return parseFloat(n.toFixed(4)).toLocaleString();
-  }
-
-  function calcBasic() {
-    const pct = parseFloat(document.getElementById('b-pct').value);
-    const num = parseFloat(document.getElementById('b-num').value);
-    if (isNaN(pct) || isNaN(num)) { alert('Fill in both fields.'); return; }
-    const result = (pct / 100) * num;
-    showAns('basic', `<span class="highlight">${fmt(result)}</span>`, `${pct}% × ${num} = ${fmt(result)}`);
-  }
-
-  function calcWhatPct() {
-    const num = parseFloat(document.getElementById('w-num').value);
-    const total = parseFloat(document.getElementById('w-total').value);
-    if (isNaN(num) || isNaN(total) || total === 0) { alert('Fill in both fields.'); return; }
-    const result = (num / total) * 100;
-    showAns('whatpct', `<span class="highlight">${fmt(result)}%</span>`, `(${num} ÷ ${total}) × 100 = ${fmt(result)}%`);
-  }
-
-  function calcIncrease() {
-    const orig = parseFloat(document.getElementById('i-original').value);
-    const pct = parseFloat(document.getElementById('i-pct').value);
-    if (isNaN(orig) || isNaN(pct)) { alert('Fill in both fields.'); return; }
-    const increase = (pct / 100) * orig;
-    const result = orig + increase;
-    showAns('increase', `<span class="highlight">${fmt(result)}</span>`, `${orig} + (${pct}% of ${orig}) = ${orig} + ${fmt(increase)} = ${fmt(result)}`);
-  }
-
-  function calcDecrease() {
-    const orig = parseFloat(document.getElementById('d-original').value);
-    const pct = parseFloat(document.getElementById('d-pct').value);
-    if (isNaN(orig) || isNaN(pct)) { alert('Fill in both fields.'); return; }
-    const decrease = (pct / 100) * orig;
-    const result = orig - decrease;
-    showAns('decrease', `<span class="highlight">${fmt(result)}</span>`, `${orig} − (${pct}% of ${orig}) = ${orig} − ${fmt(decrease)} = ${fmt(result)}`);
-  }
-
-  function calcDiff() {
-    const from = parseFloat(document.getElementById('df-from').value);
-    const to = parseFloat(document.getElementById('df-to').value);
-    if (isNaN(from) || isNaN(to) || from === 0) { alert('Fill in both fields.'); return; }
-    const diff = ((to - from) / Math.abs(from)) * 100;
-    const sign = diff >= 0 ? '+' : '';
-    const color = diff >= 0 ? 'var(--accent)' : '#ef4444';
-    showAns('difference',
-      `<span style="color:${color}">${sign}${fmt(diff)}%</span>`,
-      `((${to} − ${from}) ÷ ${from}) × 100 = ${sign}${fmt(diff)}%`
-    );
+  function copyText() {
+    const text = document.getElementById('textInput').value;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.toolbar .btn-outline:nth-child(2)');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy All', 2000);
+    });
   }
 </script>
 
