@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tip Calculator — Calculate and Split Bills | ToolKit</title>
+  <meta name="description" content="Free tip calculator. Calculate tip amount, total bill, and split between any number of people instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .tip-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}
+    .tip-btn{padding:11px 4px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;text-align:center}
+    .tip-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+    .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 14px}
+    .result-card{background:var(--ink);border-radius:12px;padding:20px;text-align:center}
+    .result-card.accent{background:var(--accent)}
+    .rc-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px;font-weight:500}
+    .rc-val{font-family:var(--font-head);font-size:1.8rem;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1}
+    .split-section{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:20px}
+    .split-section h3{font-family:var(--font-head);font-size:.85rem;font-weight:700;margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+    .split-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:.9rem}
+    .split-row:last-child{border-bottom:none}
+    .split-val{font-family:var(--font-head);font-weight:700;color:var(--ink)}
+    .people-counter{display:flex;align-items:center;gap:12px;margin-top:8px}
+    .cbtn{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+    .cval{font-family:var(--font-head);font-size:1.4rem;font-weight:800;min-width:32px;text-align:center}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
+    <li><a href="../bmi-calculator/index.html">BMI Calc</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Tip Calculator</h1>
+  <p class="page-subtitle">Calculate your tip and split the bill between friends.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Bill Amount ($)</label>
+      <input type="number" id="bill" placeholder="85.00" min="0" step="0.01" oninput="calc()">
+    </div>
+    <div class="form-group">
+      <label>Tip Percentage</label>
+      <div class="tip-btns">
+        <div class="tip-btn" onclick="setTip(10,this)">10%</div>
+        <div class="tip-btn" onclick="setTip(15,this)">15%</div>
+        <div class="tip-btn active" onclick="setTip(18,this)">18%</div>
+        <div class="tip-btn" onclick="setTip(20,this)">20%</div>
+        <div class="tip-btn" onclick="setTip(25,this)">25%</div>
+      </div>
+      <input type="number" id="customTip" placeholder="Custom %" min="0" oninput="setCustom(this.value)">
+    </div>
+    <div class="form-group">
+      <label>Number of People</label>
+      <div class="people-counter">
+        <button class="cbtn" onclick="changePeople(-1)">-</button>
+        <span class="cval" id="pCount">1</span>
+        <button class="cbtn" onclick="changePeople(1)">+</button>
+        <span style="font-size:.85rem;color:var(--ink-soft)">person(s)</span>
+      </div>
+    </div>
+    <div class="result-grid">
+      <div class="result-card"><div class="rc-label">Tip Amount</div><div class="rc-val" id="tipAmt">$0.00</div></div>
+      <div class="result-card accent"><div class="rc-label">Total Bill</div><div class="rc-val" id="totalBill">$0.00</div></div>
+    </div>
+    <div class="split-section">
+      <h3>Per Person</h3>
+      <div class="split-row"><span style="color:var(--ink-soft)">Bill per person</span><span class="split-val" id="billPP">$0.00</span></div>
+      <div class="split-row"><span style="color:var(--ink-soft)">Tip per person</span><span class="split-val" id="tipPP">$0.00</span></div>
+      <div class="split-row"><span style="color:var(--ink-soft)">Total per person</span><span class="split-val" id="totalPP" style="color:var(--accent)">$0.00</span></div>
+    </div>
+  </div>
+</div>
+<footer><p>2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+  let tipPct=18,people=1;
+  function fmt(n){return"$"+n.toFixed(2);}
+  function setTip(p,el){tipPct=p;document.querySelectorAll(".tip-btn").forEach(b=>b.classList.remove("active"));el.classList.add("active");document.getElementById("customTip").value="";calc();}
+  function setCustom(v){tipPct=parseFloat(v)||0;document.querySelectorAll(".tip-btn").forEach(b=>b.classList.remove("active"));calc();}
+  function changePeople(d){people=Math.max(1,people+d);document.getElementById("pCount").textContent=people;calc();}
+  function calc(){
+    const b=parseFloat(document.getElementById("bill").value)||0;
+    const t=b*(tipPct/100);const tot=b+t;
+    document.getElementById("tipAmt").textContent=fmt(t);
+    document.getElementById("totalBill").textContent=fmt(tot);
+    document.getElementById("billPP").textContent=fmt(b/people);
+    document.getElementById("tipPP").textContent=fmt(t/people);
+    document.getElementById("totalPP").textContent=fmt(tot/people);
+  }
+  calc();
+</script>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator — Strong Random Passwords | ToolKit</title>
+  <meta name="description" content="Free strong password generator. Generate secure random passwords instantly. Nothing is stored or sent anywhere.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .toggle-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+    .toggle-item{display:flex;align-items:center;gap:10px;padding:14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;background:var(--bg);transition:all .2s}
+    .toggle-item.active{border-color:var(--accent);background:#fff8f5}
+    .toggle-item input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+    .toggle-item label{font-size:.85rem;font-weight:500;cursor:pointer}
+    .length-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+    .length-row label{font-size:.8rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);white-space:nowrap;margin:0}
+    .length-row input[type=range]{flex:1;accent-color:var(--accent)}
+    .length-val{font-family:var(--font-head);font-weight:800;font-size:1.2rem;color:var(--accent);min-width:32px;text-align:center}
+    .pwd-output{background:var(--ink);border-radius:14px;padding:24px;margin-top:28px;display:none}
+    .pwd-output.show{display:block}
+    .pwd-display{font-family:monospace;font-size:1.1rem;color:#fff;word-break:break-all;line-height:1.6;margin-bottom:16px}
+    .pwd-actions{display:flex;gap:10px}
+    .strength-track{height:8px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden;margin:16px 0 6px}
+    .strength-fill{height:100%;border-radius:10px;transition:width .4s,background .4s}
+    .strength-label{font-size:.82rem;font-weight:600}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../bmi-calculator/index.html">BMI Calc</a></li>
+    <li><a href="../qr-generator/index.html">QR Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Password Generator</h1>
+  <p class="page-subtitle">Generate strong random passwords. Nothing is saved or sent anywhere.</p>
+  <div class="tool-card">
+    <div class="length-row">
+      <label>Length:</label>
+      <input type="range" id="pwdLength" min="6" max="64" value="16" oninput="document.getElementById('lenVal').textContent=this.value">
+      <span class="length-val" id="lenVal">16</span>
+    </div>
+    <div class="toggle-group">
+      <div class="toggle-item active" onclick="toggle('Upper',this)"><input type="checkbox" id="useUpper" checked><label>Uppercase (A-Z)</label></div>
+      <div class="toggle-item active" onclick="toggle('Lower',this)"><input type="checkbox" id="useLower" checked><label>Lowercase (a-z)</label></div>
+      <div class="toggle-item active" onclick="toggle('Numbers',this)"><input type="checkbox" id="useNumbers" checked><label>Numbers (0-9)</label></div>
+      <div class="toggle-item active" onclick="toggle('Symbols',this)"><input type="checkbox" id="useSymbols" checked><label>Symbols (!@#$)</label></div>
+    </div>
+    <button class="btn" onclick="generate()">Generate Password</button>
+    <div class="pwd-output" id="pwdOut">
+      <div class="pwd-display" id="pwdDisplay">-</div>
+      <div class="pwd-actions">
+        <button class="btn btn-outline" style="padding:10px 18px;font-size:.85rem" onclick="copyPwd()">Copy</button>
+        <button class="btn btn-outline" style="padding:10px 18px;font-size:.85rem" onclick="generate()">New Password</button>
+      </div>
+      <div class="strength-track"><div class="strength-fill" id="sFill" style="width:0%"></div></div>
+      <span class="strength-label" id="sLabel"></span>
+    </div>
+  </div>
+</div>
+<footer><p>2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+  function toggle(t,el){const cb=document.getElementById("use"+t);cb.checked=!cb.checked;el.classList.toggle("active",cb.checked);}
+  function generate(){
+    let chars="";
+    if(document.getElementById("useUpper").checked)chars+="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if(document.getElementById("useLower").checked)chars+="abcdefghijklmnopqrstuvwxyz";
+    if(document.getElementById("useNumbers").checked)chars+="0123456789";
+    if(document.getElementById("useSymbols").checked)chars+="!@#$%^&*()_+-=[]{}|;:,.?";
+    if(!chars){alert("Select at least one option.");return;}
+    const len=parseInt(document.getElementById("pwdLength").value);
+    const arr=new Uint32Array(len);crypto.getRandomValues(arr);
+    let pwd="";for(let i=0;i<len;i++)pwd+=chars[arr[i]%chars.length];
+    document.getElementById("pwdDisplay").textContent=pwd;
+    document.getElementById("pwdOut").classList.add("show");
+    let score=0;
+    if(pwd.length>=8)score++;if(pwd.length>=12)score++;if(pwd.length>=16)score++;
+    if(/[A-Z]/.test(pwd))score++;if(/[a-z]/.test(pwd))score++;if(/[0-9]/.test(pwd))score++;if(/[^A-Za-z0-9]/.test(pwd))score++;
+    const levels=[{l:"Weak",p:25,c:"#ef4444"},{l:"Fair",p:50,c:"#f59e0b"},{l:"Strong",p:75,c:"#3b82f6"},{l:"Very Strong",p:100,c:"#22c55e"}];
+    const s=score<=2?levels[0]:score<=4?levels[1]:score<=5?levels[2]:levels[3];
+    document.getElementById("sFill").style.width=s.p+"%";document.getElementById("sFill").style.background=s.c;
+    document.getElementById("sLabel").textContent=s.l;document.getElementById("sLabel").style.color=s.c;
+  }
+  function copyPwd(){navigator.clipboard.writeText(document.getElementById("pwdDisplay").textContent).then(()=>{const b=document.querySelector(".pwd-actions .btn-outline");b.textContent="Copied!";setTimeout(()=>b.textContent="Copy",2000);});}
+</script>
+</body></html>
