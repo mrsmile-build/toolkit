@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Product Idea Generator — AI-Powered Ideas | ToolKit</title>
+  <meta name="description" content="Free AI-powered digital product idea generator. Get ebook, course, template and newsletter ideas for any topic or niche instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .mode-toggle{display:flex;gap:8px;margin-bottom:24px}
+    .mode-btn{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center}
+    .mode-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+    .niche-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:20px}
+    .niche-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;font-family:var(--font-body)}
+    .niche-btn.active{border-color:var(--accent);background:#fff8f5;color:var(--accent);font-weight:700}
+    .loading{display:none;text-align:center;padding:40px;color:var(--ink-soft)}
+    .loading.show{display:block}
+    .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .ideas-output{display:none;margin-top:28px}
+    .ideas-output.show{display:block}
+    .idea-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;transition:border-color .2s}
+    .idea-card:hover{border-color:var(--accent)}
+    .idea-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+    .idea-title{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3}
+    .idea-type{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+    .type-ebook{background:#eff6ff;color:#1d4ed8}
+    .type-course{background:#fef3c7;color:#92400e}
+    .type-template{background:#f0fdf4;color:#166534}
+    .type-newsletter{background:#fdf4ff;color:#7e22ce}
+    .type-guide{background:#fff7ed;color:#9a3412}
+    .type-default{background:var(--bg);color:var(--ink-soft)}
+    .idea-desc{font-size:.875rem;color:var(--ink-soft);line-height:1.6;margin-bottom:12px}
+    .idea-meta{display:flex;gap:16px;flex-wrap:wrap}
+    .meta-item{font-size:.75rem;color:var(--ink-soft)}
+    .meta-item strong{color:var(--ink)}
+    .chat2cash-banner{background:var(--ink);border-radius:14px;padding:24px;margin-top:24px;text-align:center}
+    .chat2cash-banner h3{font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:8px}
+    .chat2cash-banner p{color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px}
+    .how-to{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px}
+    .how-to h3{font-family:var(--font-head);font-size:.85rem;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+    .how-to ol{padding-left:18px}
+    .how-to li{font-size:.875rem;color:var(--ink-soft);margin-bottom:6px;line-height:1.5}
+    .count-select{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+    .count-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s}
+    .count-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .ideas-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .ideas-header h3{font-family:var(--font-head);font-size:1rem;font-weight:700}
+    .error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px;color:#991b1b;font-size:.875rem;margin-top:20px;display:none}
+    .error-box.show{display:block}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../qr-generator/index.html">QR Gen</a></li>
+    <li><a href="../password-generator/index.html">Password Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Digital Product Idea Generator</h1>
+  <p class="page-subtitle">Get AI-powered ebook, course, template and digital product ideas for any topic or niche.</p>
+  <div class="how-to">
+    <h3>How to use this tool</h3>
+    <ol>
+      <li>Choose a mode — describe your topic or pick a trending niche</li>
+      <li>Select how many ideas you want</li>
+      <li>Click Generate and wait a few seconds</li>
+      <li>Each idea includes a title, product type, target audience and suggested price</li>
+      <li>Use the ideas to create and sell your digital products</li>
+    </ol>
+  </div>
+  <div class="tool-card">
+    <div class="mode-toggle">
+      <div class="mode-btn active" onclick="setMode('problem',this)">💬 My topic or problem</div>
+      <div class="mode-btn" onclick="setMode('niche',this)">🔥 Trending niches</div>
+    </div>
+    <div id="problem-mode">
+      <div class="form-group">
+        <label>Describe your topic, problem or audience</label>
+        <textarea id="problemInput" placeholder="Examples:
+- People who want to make money online
+- Anxiety and mental health
+- New moms struggling with sleep
+- How to grow on Instagram
+- Relationships and dating advice" style="min-height:120px"></textarea>
+      </div>
+    </div>
+    <div id="niche-mode" style="display:none">
+      <div class="form-group">
+        <label>Select a trending niche</label>
+        <div class="niche-grid">
+          <div class="niche-btn" onclick="selectNiche(this)">💰 Money &amp; Finance</div>
+          <div class="niche-btn" onclick="selectNiche(this)">❤️ Relationships</div>
+          <div class="niche-btn" onclick="selectNiche(this)">💪 Health &amp; Fitness</div>
+          <div class="niche-btn" onclick="selectNiche(this)">🧠 Mindset</div>
+          <div class="niche-btn" onclick="selectNiche(this)">👶 Parenting</div>
+          <div class="niche-btn" onclick="selectNiche(this)">💼 Side Hustle</div>
+          <div class="niche-btn" onclick="selectNiche(this)">📱 Social Media</div>
+          <div class="niche-btn" onclick="selectNiche(this)">✍️ Writing &amp; Blogging</div>
+          <div class="niche-btn" onclick="selectNiche(this)">🎓 Online Learning</div>
+          <div class="niche-btn" onclick="selectNiche(this)">🍎 Nutrition &amp; Diet</div>
+          <div class="niche-btn" onclick="selectNiche(this)">💤 Sleep &amp; Wellness</div>
+          <div class="niche-btn" onclick="selectNiche(this)">🚀 Productivity</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>How many ideas?</label>
+      <div class="count-select">
+        <div class="count-btn" onclick="setCount(5,this)">5 ideas</div>
+        <div class="count-btn active" onclick="setCount(8,this)">8 ideas</div>
+        <div class="count-btn" onclick="setCount(10,this)">10 ideas</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateIdeas()" id="generateBtn">✨ Generate Ideas</button>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>AI is generating your ideas...</p>
+    </div>
+    <div class="error-box" id="errorBox"></div>
+    <div class="ideas-output" id="ideasOutput">
+      <div class="ideas-header">
+        <h3 id="ideasTitle">Your Digital Product Ideas</h3>
+        <button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generateIdeas()">Regenerate</button>
+      </div>
+      <div id="ideasList"></div>
+      <div class="chat2cash-banner">
+        <h3>Ready to sell these products?</h3>
+        <p>Turn any of these ideas into real income using AI — no experience needed.</p>
+        <a href="#" class="btn" style="display:inline-flex">Try Chat2Cash →</a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let mode='problem', selectedNiche='', ideaCount=8;
+
+function setMode(m,el){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('problem-mode').style.display=m==='problem'?'block':'none';document.getElementById('niche-mode').style.display=m==='niche'?'block':'none';}
+function selectNiche(el){document.querySelectorAll('.niche-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');selectedNiche=el.textContent.trim();}
+function setCount(n,el){ideaCount=n;document.querySelectorAll('.count-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function getTypeClass(t){const s=t.toLowerCase();if(s.includes('ebook'))return'type-ebook';if(s.includes('course'))return'type-course';if(s.includes('template'))return'type-template';if(s.includes('newsletter'))return'type-newsletter';if(s.includes('guide'))return'type-guide';return'type-default';}
+
+async function generateIdeas(){
+  let topic='';
+  if(mode==='problem'){topic=document.getElementById('problemInput').value.trim();if(!topic){alert('Please describe your topic.');return;}}
+  else{if(!selectedNiche){alert('Please select a niche.');return;}topic=selectedNiche;}
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('ideasOutput').classList.remove('show');
+  document.getElementById('errorBox').classList.remove('show');
+  document.getElementById('generateBtn').disabled=true;
+  const prompt=`You are a digital product expert. Generate exactly ${ideaCount} digital product ideas for: "${topic}". Return ONLY a valid JSON array with these fields per item: title, type (Ebook/Course/Template/Newsletter/Guide/Toolkit/Checklist/Workbook), audience, description (2 sentences), price (USD like $17). No markdown, no extra text, just the array.`;
+  try{
+    const res=await fetch(PROXY+'/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'llama3-8b-8192',messages:[{role:'user',content:prompt}],temperature:0.8,max_tokens:2000})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error?.message||'API error');
+    let text=data.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
+    const ideas=JSON.parse(text);
+    document.getElementById('ideasTitle').textContent=ideaCount+' Ideas for: '+topic;
+    document.getElementById('ideasList').innerHTML=ideas.map((idea,i)=>`
+      <div class="idea-card">
+        <div class="idea-top">
+          <div class="idea-title">${i+1}. ${idea.title}</div>
+          <span class="idea-type ${getTypeClass(idea.type)}">${idea.type}</span>
+        </div>
+        <div class="idea-desc">${idea.description}</div>
+        <div class="idea-meta">
+          <div class="meta-item">👥 <strong>Audience:</strong> ${idea.audience}</div>
+          <div class="meta-item">💵 <strong>Price:</strong> ${idea.price}</div>
+        </div>
+      </div>`).join('');
+    document.getElementById('ideasOutput').classList.add('show');
+  }catch(err){
+    const box=document.getElementById('errorBox');
+    box.textContent='Something went wrong: '+err.message+'. Please try again.';
+    box.classList.add('show');
+  }finally{
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('generateBtn').disabled=false;
+  }
+}
+</script>
+</body></html>
