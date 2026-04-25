@@ -3,53 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital Product Idea Generator — AI-Powered Ideas | ToolKit</title>
-  <meta name="description" content="Free AI-powered digital product idea generator. Get ebook, course, template and newsletter ideas for any topic or niche instantly.">
+  <title>AI Content & Product Idea Generator | ToolKit</title>
+  <meta name="description" content="Free AI-powered generator. Get digital product ideas, trending content, platform strategy, monetization roadmap and 7-day content calendar for any niche.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
   <style>
-    .mode-toggle{display:flex;gap:8px;margin-bottom:24px}
-    .mode-btn{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center}
-    .mode-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
-    .niche-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:20px}
-    .niche-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;font-family:var(--font-body)}
+    .main-tabs{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap}
+    .main-tab{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s;text-align:center;white-space:nowrap}
+    .main-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+    .tab-panel{display:none}.tab-panel.active{display:block}
+    .niche-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:20px}
+    .niche-btn{padding:10px 8px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;text-align:center}
     .niche-btn.active{border-color:var(--accent);background:#fff8f5;color:var(--accent);font-weight:700}
+    .mode-toggle{display:flex;gap:8px;margin-bottom:20px}
+    .mode-btn{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center}
+    .mode-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
     .loading{display:none;text-align:center;padding:40px;color:var(--ink-soft)}
     .loading.show{display:block}
     .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .ideas-output{display:none;margin-top:28px}
-    .ideas-output.show{display:block}
+    .output{display:none;margin-top:24px}.output.show{display:block}
     .idea-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;transition:border-color .2s}
     .idea-card:hover{border-color:var(--accent)}
     .idea-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
     .idea-title{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3}
-    .idea-type{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-    .type-ebook{background:#eff6ff;color:#1d4ed8}
-    .type-course{background:#fef3c7;color:#92400e}
-    .type-template{background:#f0fdf4;color:#166534}
-    .type-newsletter{background:#fdf4ff;color:#7e22ce}
-    .type-guide{background:#fff7ed;color:#9a3412}
-    .type-default{background:var(--bg);color:var(--ink-soft)}
-    .idea-desc{font-size:.875rem;color:var(--ink-soft);line-height:1.6;margin-bottom:12px}
-    .idea-meta{display:flex;gap:16px;flex-wrap:wrap}
-    .meta-item{font-size:.75rem;color:var(--ink-soft)}
-    .meta-item strong{color:var(--ink)}
+    .badge{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+    .badge-blue{background:#eff6ff;color:#1d4ed8}
+    .badge-yellow{background:#fef3c7;color:#92400e}
+    .badge-green{background:#f0fdf4;color:#166534}
+    .badge-purple{background:#fdf4ff;color:#7e22ce}
+    .badge-orange{background:#fff7ed;color:#9a3412}
+    .badge-gray{background:var(--bg);color:var(--ink-soft)}
+    .idea-desc{font-size:.875rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px}
+    .idea-meta{display:flex;gap:12px;flex-wrap:wrap}
+    .meta-pill{font-size:.75rem;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px;color:var(--ink-soft)}
+    .platform-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px}
+    .platform-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .platform-icon{font-size:1.8rem}
+    .platform-name{font-family:var(--font-head);font-size:1rem;font-weight:700}
+    .diff-easy{background:#f0fdf4;color:#166534;font-size:.72rem;padding:3px 10px;border-radius:20px;font-weight:700}
+    .diff-medium{background:#fffbeb;color:#92400e;font-size:.72rem;padding:3px 10px;border-radius:20px;font-weight:700}
+    .diff-hard{background:#fef2f2;color:#991b1b;font-size:.72rem;padding:3px 10px;border-radius:20px;font-weight:700}
+    .platform-body p{font-size:.875rem;color:var(--ink-soft);line-height:1.6;margin-bottom:8px}
+    .money-card{background:var(--ink);border-radius:12px;padding:20px;margin-bottom:12px;color:#fff}
+    .money-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+    .money-title{font-family:var(--font-head);font-size:1rem;font-weight:700;color:#fff}
+    .speed-fast{background:rgba(34,197,94,.2);color:#4ade80;font-size:.7rem;padding:4px 10px;border-radius:20px;font-weight:700}
+    .speed-medium{background:rgba(251,191,36,.2);color:#fbbf24;font-size:.7rem;padding:4px 10px;border-radius:20px;font-weight:700}
+    .speed-slow{background:rgba(239,68,68,.2);color:#f87171;font-size:.7rem;padding:4px 10px;border-radius:20px;font-weight:700}
+    .money-desc{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:10px}
+    .money-steps{list-style:none;padding:0}
+    .money-steps li{font-size:.8rem;color:rgba(255,255,255,.6);padding:4px 0 4px 16px;position:relative}
+    .money-steps li::before{content:"→";position:absolute;left:0;color:var(--accent)}
+    .cal-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+    .cal-day{font-family:var(--font-head);font-weight:800;font-size:.85rem;color:var(--accent);min-width:36px;padding-top:2px}
+    .cal-title{font-family:var(--font-head);font-size:.9rem;font-weight:700;margin-bottom:4px}
+    .cal-hook{font-size:.82rem;color:var(--ink-soft);margin-bottom:6px;font-style:italic}
+    .cal-meta{display:flex;gap:8px;flex-wrap:wrap}
+    .cal-tag{font-size:.7rem;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2px 8px;color:var(--ink-soft)}
+    .output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .output-header h3{font-family:var(--font-head);font-size:1rem;font-weight:700}
+    .error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px;color:#991b1b;font-size:.875rem;margin-top:20px;display:none}
+    .error-box.show{display:block}
     .chat2cash-banner{background:var(--ink);border-radius:14px;padding:24px;margin-top:24px;text-align:center}
     .chat2cash-banner h3{font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:8px}
     .chat2cash-banner p{color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px}
-    .how-to{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px}
-    .how-to h3{font-family:var(--font-head);font-size:.85rem;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
-    .how-to ol{padding-left:18px}
-    .how-to li{font-size:.875rem;color:var(--ink-soft);margin-bottom:6px;line-height:1.5}
     .count-select{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
     .count-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s}
     .count-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-    .ideas-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-    .ideas-header h3{font-family:var(--font-head);font-size:1rem;font-weight:700}
-    .error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px;color:#991b1b;font-size:.875rem;margin-top:20px;display:none}
-    .error-box.show{display:block}
   </style>
 </head>
 <body>
@@ -63,128 +85,242 @@
 </nav>
 <div class="page-wrapper">
   <a class="back-link" href="../index.html">← All Tools</a>
-  <h1 class="page-title">Digital Product Idea Generator</h1>
-  <p class="page-subtitle">Get AI-powered ebook, course, template and digital product ideas for any topic or niche.</p>
-  <div class="how-to">
-    <h3>How to use this tool</h3>
-    <ol>
-      <li>Choose a mode — describe your topic or pick a trending niche</li>
-      <li>Select how many ideas you want</li>
-      <li>Click Generate and wait a few seconds</li>
-      <li>Each idea includes a title, product type, target audience and suggested price</li>
-      <li>Use the ideas to create and sell your digital products</li>
-    </ol>
-  </div>
+  <h1 class="page-title">AI Content & Product Generator</h1>
+  <p class="page-subtitle">Your complete AI-powered niche strategy — product ideas, content, platforms, monetization and 7-day calendar.</p>
   <div class="tool-card">
-    <div class="mode-toggle">
-      <div class="mode-btn active" onclick="setMode('problem',this)">💬 My topic or problem</div>
-      <div class="mode-btn" onclick="setMode('niche',this)">🔥 Trending niches</div>
+    <div class="main-tabs">
+      <div class="main-tab active" onclick="switchTab('products',this)">📦 Product Ideas</div>
+      <div class="main-tab" onclick="switchTab('content',this)">🔥 Content Ideas</div>
+      <div class="main-tab" onclick="switchTab('platforms',this)">📱 Platforms</div>
+      <div class="main-tab" onclick="switchTab('monetize',this)">💰 Monetization</div>
+      <div class="main-tab" onclick="switchTab('calendar',this)">📅 7-Day Plan</div>
     </div>
-    <div id="problem-mode">
-      <div class="form-group">
-        <label>Describe your topic, problem or audience</label>
-        <textarea id="problemInput" placeholder="Examples:
-- People who want to make money online
-- Anxiety and mental health
-- New moms struggling with sleep
-- How to grow on Instagram
-- Relationships and dating advice" style="min-height:120px"></textarea>
+
+    <!-- NICHE INPUT - shared across all tabs -->
+    <div class="form-group">
+      <label>Your niche or topic</label>
+      <div class="mode-toggle">
+        <div class="mode-btn active" onclick="setMode('type',this)">✏️ Type it</div>
+        <div class="mode-btn" onclick="setMode('pick',this)">🔥 Pick a niche</div>
       </div>
-    </div>
-    <div id="niche-mode" style="display:none">
-      <div class="form-group">
-        <label>Select a trending niche</label>
+      <div id="type-input">
+        <input type="text" id="topicInput" placeholder="e.g. personal finance, anxiety, fitness for busy moms...">
+      </div>
+      <div id="pick-input" style="display:none">
         <div class="niche-grid">
-          <div class="niche-btn" onclick="selectNiche(this)">💰 Money &amp; Finance</div>
-          <div class="niche-btn" onclick="selectNiche(this)">❤️ Relationships</div>
-          <div class="niche-btn" onclick="selectNiche(this)">💪 Health &amp; Fitness</div>
-          <div class="niche-btn" onclick="selectNiche(this)">🧠 Mindset</div>
-          <div class="niche-btn" onclick="selectNiche(this)">👶 Parenting</div>
-          <div class="niche-btn" onclick="selectNiche(this)">💼 Side Hustle</div>
-          <div class="niche-btn" onclick="selectNiche(this)">📱 Social Media</div>
-          <div class="niche-btn" onclick="selectNiche(this)">✍️ Writing &amp; Blogging</div>
-          <div class="niche-btn" onclick="selectNiche(this)">🎓 Online Learning</div>
-          <div class="niche-btn" onclick="selectNiche(this)">🍎 Nutrition &amp; Diet</div>
-          <div class="niche-btn" onclick="selectNiche(this)">💤 Sleep &amp; Wellness</div>
-          <div class="niche-btn" onclick="selectNiche(this)">🚀 Productivity</div>
+          <div class="niche-btn" onclick="pickNiche(this)">💰 Money</div>
+          <div class="niche-btn" onclick="pickNiche(this)">❤️ Relationships</div>
+          <div class="niche-btn" onclick="pickNiche(this)">💪 Fitness</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🧠 Mindset</div>
+          <div class="niche-btn" onclick="pickNiche(this)">👶 Parenting</div>
+          <div class="niche-btn" onclick="pickNiche(this)">💼 Side Hustle</div>
+          <div class="niche-btn" onclick="pickNiche(this)">📱 Social Media</div>
+          <div class="niche-btn" onclick="pickNiche(this)">✍️ Blogging</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🎓 Online Learning</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🍎 Nutrition</div>
+          <div class="niche-btn" onclick="pickNiche(this)">💤 Wellness</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🚀 Productivity</div>
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <label>How many ideas?</label>
-      <div class="count-select">
-        <div class="count-btn" onclick="setCount(5,this)">5 ideas</div>
-        <div class="count-btn active" onclick="setCount(8,this)">8 ideas</div>
-        <div class="count-btn" onclick="setCount(10,this)">10 ideas</div>
+
+    <!-- TAB 1: PRODUCT IDEAS -->
+    <div class="tab-panel active" id="panel-products">
+      <div class="form-group">
+        <label>How many ideas?</label>
+        <div class="count-select">
+          <div class="count-btn" onclick="setCount(5,this)">5</div>
+          <div class="count-btn active" onclick="setCount(8,this)">8</div>
+          <div class="count-btn" onclick="setCount(10,this)">10</div>
+        </div>
+      </div>
+      <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
+      <div class="loading" id="load-products"><div class="spinner"></div><p>Generating product ideas...</p></div>
+      <div class="error-box" id="err-products"></div>
+      <div class="output" id="out-products">
+        <div class="output-header"><h3 id="title-products">Product Ideas</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('products')">Regenerate</button></div>
+        <div id="list-products"></div>
+        <div class="chat2cash-banner">
+          <h3>Ready to sell these products?</h3>
+          <p>Turn any idea into real income using AI — no experience needed.</p>
+          <a href="https://mrsmile-build.github.io/chat2cash/" class="btn" style="display:inline-flex">Try Chat2Cash →</a>
+        </div>
       </div>
     </div>
-    <button class="btn" onclick="generateIdeas()" id="generateBtn">✨ Generate Ideas</button>
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <p>AI is generating your ideas...</p>
-    </div>
-    <div class="error-box" id="errorBox"></div>
-    <div class="ideas-output" id="ideasOutput">
-      <div class="ideas-header">
-        <h3 id="ideasTitle">Your Digital Product Ideas</h3>
-        <button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generateIdeas()">Regenerate</button>
-      </div>
-      <div id="ideasList"></div>
-      <div class="chat2cash-banner">
-        <h3>Ready to sell these products?</h3>
-        <p>Turn any of these ideas into real income using AI — no experience needed.</p>
-        <a href="https://mrsmile-build.github.io/chat2cash/" class="btn" style="display:inline-flex">Try Chat2Cash →</a>
+
+    <!-- TAB 2: CONTENT IDEAS -->
+    <div class="tab-panel" id="panel-content">
+      <button class="btn" onclick="generate('content')" id="btn-content">🔥 Generate Content Ideas</button>
+      <div class="loading" id="load-content"><div class="spinner"></div><p>Finding trending content ideas...</p></div>
+      <div class="error-box" id="err-content"></div>
+      <div class="output" id="out-content">
+        <div class="output-header"><h3 id="title-content">Content Ideas</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('content')">Regenerate</button></div>
+        <div id="list-content"></div>
       </div>
     </div>
+
+    <!-- TAB 3: PLATFORM STRATEGY -->
+    <div class="tab-panel" id="panel-platforms">
+      <button class="btn" onclick="generate('platforms')" id="btn-platforms">📱 Generate Platform Strategy</button>
+      <div class="loading" id="load-platforms"><div class="spinner"></div><p>Building your platform strategy...</p></div>
+      <div class="error-box" id="err-platforms"></div>
+      <div class="output" id="out-platforms">
+        <div class="output-header"><h3 id="title-platforms">Platform Strategy</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('platforms')">Regenerate</button></div>
+        <div id="list-platforms"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: MONETIZATION -->
+    <div class="tab-panel" id="panel-monetize">
+      <button class="btn" onclick="generate('monetize')" id="btn-monetize">💰 Generate Monetization Roadmap</button>
+      <div class="loading" id="load-monetize"><div class="spinner"></div><p>Building your monetization roadmap...</p></div>
+      <div class="error-box" id="err-monetize"></div>
+      <div class="output" id="out-monetize">
+        <div class="output-header"><h3 id="title-monetize">Monetization Roadmap</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('monetize')">Regenerate</button></div>
+        <div id="list-monetize"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: CALENDAR -->
+    <div class="tab-panel" id="panel-calendar">
+      <button class="btn" onclick="generate('calendar')" id="btn-calendar">📅 Generate 7-Day Content Plan</button>
+      <div class="loading" id="load-calendar"><div class="spinner"></div><p>Building your 7-day content plan...</p></div>
+      <div class="error-box" id="err-calendar"></div>
+      <div class="output" id="out-calendar">
+        <div class="output-header"><h3 id="title-calendar">7-Day Content Plan</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('calendar')">Regenerate</button></div>
+        <div id="list-calendar"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 <footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
-let mode='problem', selectedNiche='', ideaCount=8;
+let currentTab = 'products', inputMode = 'type', selectedNiche = '', ideaCount = 8;
 
-function setMode(m,el){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('problem-mode').style.display=m==='problem'?'block':'none';document.getElementById('niche-mode').style.display=m==='niche'?'block':'none';}
-function selectNiche(el){document.querySelectorAll('.niche-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');selectedNiche=el.textContent.trim();}
-function setCount(n,el){ideaCount=n;document.querySelectorAll('.count-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
-function getTypeClass(t){const s=t.toLowerCase();if(s.includes('ebook'))return'type-ebook';if(s.includes('course'))return'type-course';if(s.includes('template'))return'type-template';if(s.includes('newsletter'))return'type-newsletter';if(s.includes('guide'))return'type-guide';return'type-default';}
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
 
-async function generateIdeas(){
-  let topic='';
-  if(mode==='problem'){topic=document.getElementById('problemInput').value.trim();if(!topic){alert('Please describe your topic.');return;}}
-  else{if(!selectedNiche){alert('Please select a niche.');return;}topic=selectedNiche;}
-  document.getElementById('loading').classList.add('show');
-  document.getElementById('ideasOutput').classList.remove('show');
-  document.getElementById('errorBox').classList.remove('show');
-  document.getElementById('generateBtn').disabled=true;
-  const prompt=`You are a digital product expert. Generate exactly ${ideaCount} digital product ideas for: "${topic}". Return ONLY a valid JSON array with these fields per item: title, type (Ebook/Course/Template/Newsletter/Guide/Toolkit/Checklist/Workbook), audience, description (2 sentences), price (USD like $17). No markdown, no extra text, just the array.`;
-  try{
-    const res=await fetch(PROXY+'/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:0.8,max_tokens:2000})});
-    const data=await res.json();
-    if(!res.ok)throw new Error(data.error?.message||'API error');
-    let text=data.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
-    const ideas=JSON.parse(text);
-    document.getElementById('ideasTitle').textContent=ideaCount+' Ideas for: '+topic;
-    document.getElementById('ideasList').innerHTML=ideas.map((idea,i)=>`
-      <div class="idea-card">
-        <div class="idea-top">
-          <div class="idea-title">${i+1}. ${idea.title}</div>
-          <span class="idea-type ${getTypeClass(idea.type)}">${idea.type}</span>
-        </div>
-        <div class="idea-desc">${idea.description}</div>
-        <div class="idea-meta">
-          <div class="meta-item">👥 <strong>Audience:</strong> ${idea.audience}</div>
-          <div class="meta-item">💵 <strong>Price:</strong> ${idea.price}</div>
-        </div>
-      </div>`).join('');
-    document.getElementById('ideasOutput').classList.add('show');
-  }catch(err){
-    const box=document.getElementById('errorBox');
-    box.textContent='Something went wrong: '+err.message+'. Please try again.';
+function setMode(m, el) {
+  inputMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('type-input').style.display = m === 'type' ? 'block' : 'none';
+  document.getElementById('pick-input').style.display = m === 'pick' ? 'block' : 'none';
+}
+
+function pickNiche(el) {
+  document.querySelectorAll('.niche-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedNiche = el.textContent.trim();
+}
+
+function setCount(n, el) {
+  ideaCount = n;
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function getTopic() {
+  if (inputMode === 'type') return document.getElementById('topicInput').value.trim();
+  return selectedNiche;
+}
+
+function getPrompt(tab, topic) {
+  if (tab === 'products') return `You are a digital product expert. Generate exactly ${ideaCount} digital product ideas for the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: title, type (Ebook/Course/Template/Newsletter/Guide/Toolkit/Checklist/Workbook), audience, description (2 sentences), price (USD like $17). No markdown, no extra text.`;
+
+  if (tab === 'content') return `You are a viral content strategist. Generate 8 trending content ideas for the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: title (the content title), hook (first line that stops the scroll, max 15 words), format (Instagram Carousel/TikTok/YouTube Short/Twitter Thread/Blog Post/Reel), platform (best platform), angle (unique angle in 1 sentence), engagement (Low/Medium/High/Viral). No markdown, no extra text.`;
+
+  if (tab === 'platforms') return `You are a social media strategist. Recommend the top 5 platforms for the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: platform (name), icon (emoji), audience (who is there), content_type (what works best), monetization (how to make money there), difficulty (Easy/Medium/Hard), tip (one insider tip). No markdown, no extra text.`;
+
+  if (tab === 'monetize') return `You are a business monetization expert. Give 5 ways to make money in the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: method (monetization method name), speed (Fast/Medium/Slow), income_potential (like $500-$2000/month), description (2 sentences), steps (array of 3 action steps to start). No markdown, no extra text.`;
+
+  if (tab === 'calendar') return `You are a content calendar expert. Create a 7-day content posting plan for the niche: "${topic}". Return ONLY a valid JSON array of exactly 7 items. Each item must have: day (Day 1, Day 2 etc), title (content title), hook (attention-grabbing opening line), platform (best platform for this), format (content format), goal (Awareness/Engagement/Sales/Trust). No markdown, no extra text.`;
+}
+
+function renderProducts(data, topic) {
+  const types = {ebook:'badge-blue',course:'badge-yellow',template:'badge-green',newsletter:'badge-purple',guide:'badge-orange',toolkit:'badge-blue',checklist:'badge-green',workbook:'badge-purple'};
+  document.getElementById('title-products').textContent = ideaCount + ' Product Ideas: ' + topic;
+  document.getElementById('list-products').innerHTML = data.map((d,i) => {
+    const tc = types[(d.type||'').toLowerCase()] || 'badge-gray';
+    return `<div class="idea-card"><div class="idea-top"><div class="idea-title">${i+1}. ${d.title}</div><span class="badge ${tc}">${d.type}</span></div><div class="idea-desc">${d.description}</div><div class="idea-meta"><span class="meta-pill">👥 ${d.audience}</span><span class="meta-pill">💵 ${d.price}</span></div></div>`;
+  }).join('');
+}
+
+function renderContent(data, topic) {
+  const eng = {Low:'badge-gray',Medium:'badge-blue',High:'badge-green',Viral:'badge-purple'};
+  document.getElementById('title-content').textContent = 'Trending Content Ideas: ' + topic;
+  document.getElementById('list-content').innerHTML = data.map((d,i) => {
+    const ec = eng[d.engagement] || 'badge-gray';
+    return `<div class="idea-card"><div class="idea-top"><div class="idea-title">${i+1}. ${d.title}</div><span class="badge ${ec}">${d.engagement}</span></div><div class="idea-desc" style="font-style:italic;color:var(--accent)">"${d.hook}"</div><div class="idea-desc">${d.angle}</div><div class="idea-meta"><span class="meta-pill">📱 ${d.platform}</span><span class="meta-pill">🎬 ${d.format}</span></div></div>`;
+  }).join('');
+}
+
+function renderPlatforms(data, topic) {
+  document.getElementById('title-platforms').textContent = 'Platform Strategy: ' + topic;
+  document.getElementById('list-platforms').innerHTML = data.map(d => {
+    const dc = d.difficulty === 'Easy' ? 'diff-easy' : d.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard';
+    return `<div class="platform-card"><div class="platform-header"><span class="platform-icon">${d.icon}</span><div><div class="platform-name">${d.platform}</div><span class="${dc}">${d.difficulty}</span></div></div><div class="platform-body"><p><strong>Audience:</strong> ${d.audience}</p><p><strong>Best content:</strong> ${d.content_type}</p><p><strong>Monetization:</strong> ${d.monetization}</p><p style="background:var(--bg);padding:10px;border-radius:8px;margin-top:8px">💡 ${d.tip}</p></div></div>`;
+  }).join('');
+}
+
+function renderMonetize(data, topic) {
+  document.getElementById('title-monetize').textContent = 'Monetization Roadmap: ' + topic;
+  document.getElementById('list-monetize').innerHTML = data.map((d,i) => {
+    const sc = d.speed === 'Fast' ? 'speed-fast' : d.speed === 'Medium' ? 'speed-medium' : 'speed-slow';
+    const steps = Array.isArray(d.steps) ? d.steps.map(s => `<li>${s}</li>`).join('') : '';
+    return `<div class="money-card"><div class="money-top"><div class="money-title">${i+1}. ${d.method}</div><span class="${sc}">${d.speed}</span></div><div class="money-desc">${d.description}</div><div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Potential: ${d.income_potential}</div><ul class="money-steps">${steps}</ul></div>`;
+  }).join('');
+}
+
+function renderCalendar(data, topic) {
+  document.getElementById('title-calendar').textContent = '7-Day Content Plan: ' + topic;
+  document.getElementById('list-calendar').innerHTML = data.map(d => {
+    const gc = {Awareness:'badge-blue',Engagement:'badge-green',Sales:'badge-orange',Trust:'badge-purple'}[d.goal] || 'badge-gray';
+    return `<div class="cal-card"><div class="cal-day">${d.day}</div><div class="cal-content"><div class="cal-title">${d.title}</div><div class="cal-hook">"${d.hook}"</div><div class="cal-meta"><span class="cal-tag">📱 ${d.platform}</span><span class="cal-tag">🎬 ${d.format}</span><span class="badge ${gc}" style="font-size:.68rem;padding:2px 8px">${d.goal}</span></div></div></div>`;
+  }).join('');
+}
+
+async function generate(tab) {
+  const topic = getTopic();
+  if (!topic) { alert('Please enter your niche or topic first.'); return; }
+
+  document.getElementById('load-' + tab).classList.add('show');
+  document.getElementById('out-' + tab).classList.remove('show');
+  document.getElementById('err-' + tab).classList.remove('show');
+  document.getElementById('btn-' + tab).disabled = true;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({model:'llama-3.3-70b-versatile', messages:[{role:'user', content: getPrompt(tab, topic)}], temperature:0.8, max_tokens:2500})
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(text);
+    if (tab === 'products') renderProducts(parsed, topic);
+    else if (tab === 'content') renderContent(parsed, topic);
+    else if (tab === 'platforms') renderPlatforms(parsed, topic);
+    else if (tab === 'monetize') renderMonetize(parsed, topic);
+    else if (tab === 'calendar') renderCalendar(parsed, topic);
+    document.getElementById('out-' + tab).classList.add('show');
+  } catch(err) {
+    const box = document.getElementById('err-' + tab);
+    box.textContent = 'Something went wrong: ' + err.message + '. Please try again.';
     box.classList.add('show');
-  }finally{
-    document.getElementById('loading').classList.remove('show');
-    document.getElementById('generateBtn').disabled=false;
+  } finally {
+    document.getElementById('load-' + tab).classList.remove('show');
+    document.getElementById('btn-' + tab).disabled = false;
   }
 }
 </script>
-</body></html>
+</body>
+</html>
