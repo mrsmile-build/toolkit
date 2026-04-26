@@ -86,7 +86,7 @@
 <div class="page-wrapper">
   <a class="back-link" href="../index.html">← All Tools</a>
   <h1 class="page-title">AI Content & Product Generator</h1>
-  <p class="page-subtitle">Your complete AI-powered niche strategy — product ideas, content, platforms, monetization and 7-day calendar.</p>
+  <p class="page-subtitle">Your complete AI-powered strategy tool for ANY niche — business, programming, fitness, education, creative arts, lifestyle and more. Type anything.</p>
   <div class="tool-card">
     <div class="main-tabs">
       <div class="main-tab active" onclick="switchTab('products',this)">📦 Product Ideas</div>
@@ -104,7 +104,10 @@
         <div class="mode-btn" onclick="setMode('pick',this)">🔥 Pick a niche</div>
       </div>
       <div id="type-input">
-        <input type="text" id="topicInput" placeholder="e.g. personal finance, anxiety, fitness for busy moms...">
+        <input type="text" id="topicInput" placeholder="e.g. personal finance, Python programming, wedding photography, fitness, cooking, parenting...">
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:8px;font-size:.82rem;color:var(--ink-soft);line-height:1.6">
+        💡 <strong style="color:var(--ink)">Works for any niche:</strong> business, programming, fitness, cooking, photography, education, parenting, travel, gaming, music, fashion, real estate and more. Just type it.
       </div>
       <div id="pick-input" style="display:none">
         <div class="niche-grid">
@@ -120,6 +123,18 @@
           <div class="niche-btn" onclick="pickNiche(this)">🍎 Nutrition</div>
           <div class="niche-btn" onclick="pickNiche(this)">💤 Wellness</div>
           <div class="niche-btn" onclick="pickNiche(this)">🚀 Productivity</div>
+          <div class="niche-btn" onclick="pickNiche(this)">💻 Programming</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🎨 Design</div>
+          <div class="niche-btn" onclick="pickNiche(this)">📸 Photography</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🍳 Cooking</div>
+          <div class="niche-btn" onclick="pickNiche(this)">✈️ Travel</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🎵 Music</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🏠 Real Estate</div>
+          <div class="niche-btn" onclick="pickNiche(this)">👗 Fashion</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🎮 Gaming</div>
+          <div class="niche-btn" onclick="pickNiche(this)">📊 Business</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🌱 Sustainability</div>
+          <div class="niche-btn" onclick="pickNiche(this)">🐾 Pets</div>
         </div>
       </div>
     </div>
@@ -233,15 +248,15 @@ function getTopic() {
 }
 
 function getPrompt(tab, topic) {
-  if (tab === 'products') return `You are a digital product expert. Generate exactly ${ideaCount} digital product ideas for the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: title, type (Ebook/Course/Template/Newsletter/Guide/Toolkit/Checklist/Workbook), audience, description (2 sentences), price (USD like $17). No markdown, no extra text.`;
+  if (tab === 'products') return `You are an expert in digital products across ALL industries. Generate exactly ${ideaCount} digital product ideas for the niche: "${topic}". Make ideas highly specific and relevant to this exact niche — not generic. Return ONLY a valid JSON array. Each item must have: title, type (Ebook/Course/Template/Newsletter/Guide/Toolkit/Checklist/Workbook/Preset/Plugin/Script/Asset Pack), audience, description (2 sentences), price (USD like $17). No markdown, no extra text.`;
 
-  if (tab === 'content') return `You are a viral content strategist. Generate 8 trending content ideas for the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: title (the content title), hook (first line that stops the scroll, max 15 words), format (Instagram Carousel/TikTok/YouTube Short/Twitter Thread/Blog Post/Reel), platform (best platform), angle (unique angle in 1 sentence), engagement (Low/Medium/High/Viral). No markdown, no extra text.`;
+  if (tab === 'content') return `You are a viral content strategist for ALL niches including tech, education, lifestyle, business and creative fields. Generate 8 trending content ideas for the niche: "${topic}". Make ideas highly specific to this niche. Return ONLY a valid JSON array. Each item must have: title (the content title), hook (first line that stops the scroll, max 15 words), format (best format for this niche like Tutorial/Carousel/Thread/Short Video/Blog Post/Podcast/Live Stream), platform (best platform for this specific niche), angle (unique angle in 1 sentence), engagement (Low/Medium/High/Viral). No markdown, no extra text.`;
 
-  if (tab === 'platforms') return `You are a social media strategist. Recommend the top 5 platforms for the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: platform (name), icon (emoji), audience (who is there), content_type (what works best), monetization (how to make money there), difficulty (Easy/Medium/Hard), tip (one insider tip). No markdown, no extra text.`;
+  if (tab === 'platforms') return `You are a platform strategy expert for ALL niches. Recommend the top 5 most relevant platforms for someone in the "${topic}" niche — consider platforms like GitHub, Stack Overflow, Dribbble, Behance, LinkedIn, YouTube, TikTok, Instagram, Twitter, Reddit, Pinterest, Twitch, Discord and others depending on the niche. Return ONLY a valid JSON array. Each item must have: platform (name), icon (emoji), audience (who is there), content_type (what works best for this niche on this platform), monetization (how to make money there in this niche), difficulty (Easy/Medium/Hard), tip (one insider tip specific to this niche). No markdown, no extra text.`;
 
-  if (tab === 'monetize') return `You are a business monetization expert. Give 5 ways to make money in the niche: "${topic}". Return ONLY a valid JSON array. Each item must have: method (monetization method name), speed (Fast/Medium/Slow), income_potential (like $500-$2000/month), description (2 sentences), steps (array of 3 action steps to start). No markdown, no extra text.`;
+  if (tab === 'monetize') return `You are a monetization expert across ALL industries and niches. Give 5 realistic ways to make money in the "${topic}" niche — be specific to this niche, not generic. Return ONLY a valid JSON array. Each item must have: method (specific monetization method for this niche), speed (Fast/Medium/Slow), income_potential (realistic range like $500-$2000/month), description (2 sentences specific to this niche), steps (array of 3 concrete action steps to start today). No markdown, no extra text.`;
 
-  if (tab === 'calendar') return `You are a content calendar expert. Create a 7-day content posting plan for the niche: "${topic}". Return ONLY a valid JSON array of exactly 7 items. Each item must have: day (Day 1, Day 2 etc), title (content title), hook (attention-grabbing opening line), platform (best platform for this), format (content format), goal (Awareness/Engagement/Sales/Trust). No markdown, no extra text.`;
+  if (tab === 'calendar') return `You are a content calendar expert for ALL niches. Create a 7-day content posting plan for someone in the "${topic}" niche. Use platforms and formats most relevant to this specific niche. Return ONLY a valid JSON array of exactly 7 items. Each item must have: day (Day 1, Day 2 etc), title (specific content title for this niche), hook (attention-grabbing opening line specific to this niche audience), platform (most relevant platform for this niche), format (most effective format for this niche), goal (Awareness/Engagement/Sales/Trust). No markdown, no extra text.`;
 }
 
 function renderProducts(data, topic) {
