@@ -239,9 +239,19 @@
         <div class="count-select" style="flex-wrap:wrap">
           <div class="count-btn active" onclick="setHashPlatform('Instagram',this)">Instagram</div>
           <div class="count-btn" onclick="setHashPlatform('TikTok',this)">TikTok</div>
-          <div class="count-btn" onclick="setHashPlatform('Twitter',this)">Twitter</div>
+          <div class="count-btn" onclick="setHashPlatform('Twitter/X',this)">Twitter/X</div>
           <div class="count-btn" onclick="setHashPlatform('YouTube',this)">YouTube</div>
           <div class="count-btn" onclick="setHashPlatform('LinkedIn',this)">LinkedIn</div>
+          <div class="count-btn" onclick="setHashPlatform('Facebook',this)">Facebook</div>
+          <div class="count-btn" onclick="setHashPlatform('Pinterest',this)">Pinterest</div>
+          <div class="count-btn" onclick="setHashPlatform('Reddit',this)">Reddit</div>
+          <div class="count-btn" onclick="setHashPlatform('Threads',this)">Threads</div>
+          <div class="count-btn" onclick="setHashPlatform('Quora',this)">Quora</div>
+          <div class="count-btn" onclick="setHashPlatform('Telegram',this)">Telegram</div>
+          <div class="count-btn" onclick="setHashPlatform('WhatsApp',this)">WhatsApp</div>
+        </div>
+        <div style="margin-top:10px">
+          <input type="text" id="customPlatform" placeholder="Or type any platform e.g. Snapchat, Discord, Twitch..." oninput="if(this.value){hashPlatform=this.value;document.querySelectorAll('#panel-hashtags .count-btn').forEach(b=>b.classList.remove('active'))}">
         </div>
       </div>
       <button class="btn" onclick="generate('hashtags')" id="btn-hashtags">🏷️ Generate Hashtags</button>
@@ -256,8 +266,9 @@
 
     <!-- TAB 7: NICHE FINDER -->
     <div class="tab-panel" id="panel-niche">
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;font-size:.85rem;color:var(--ink-soft)">
-        💡 Finds <strong style="color:var(--ink)">high-demand low-competition niches</strong> you can profit from right now.
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;font-size:.85rem;color:var(--ink-soft);line-height:1.6">
+        💡 Finds <strong style="color:var(--ink)">high-demand low-competition niches</strong> you can profit from right now.<br>
+        <span style="margin-top:6px;display:block">👆 The niche buttons above are just shortcuts. You can <strong style="color:var(--ink)">type any niche</strong> in the topic box — cooking, real estate, crypto, sports, fashion, gaming, anything.</span>
       </div>
       <div class="form-group">
         <label>What type of creator are you?</label>
