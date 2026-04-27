@@ -72,7 +72,13 @@
     .count-select{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
     .count-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s}
     .count-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .export-bar{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+    .export-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s}
+    .export-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .export-btn.copied{background:var(--accent);color:#fff;border-color:var(--accent)}
   </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Content and Product Idea Generator","url":"https://mrsmile-build.github.io/toolkit/product-idea-generator/","description":"Free AI-powered generator for digital product ideas, trending content, platform strategy, monetization roadmap and 7-day content calendar for any niche.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 <nav>
@@ -94,6 +100,9 @@
       <div class="main-tab" onclick="switchTab('platforms',this)">📱 Platforms</div>
       <div class="main-tab" onclick="switchTab('monetize',this)">💰 Monetization</div>
       <div class="main-tab" onclick="switchTab('calendar',this)">📅 7-Day Plan</div>
+      <div class="main-tab" onclick="switchTab('hashtags',this)">🏷️ Hashtags</div>
+      <div class="main-tab" onclick="switchTab('niche',this)">🔍 Niche Finder</div>
+      <div class="main-tab" onclick="switchTab('competitor',this)">🎯 Gap Analysis</div>
     </div>
 
     <!-- NICHE INPUT - shared across all tabs -->
@@ -154,6 +163,10 @@
       <div class="error-box" id="err-products"></div>
       <div class="output" id="out-products">
         <div class="output-header"><h3 id="title-products">Product Ideas</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('products')">Regenerate</button></div>
+        <div class="export-bar">
+          <button class="export-btn" onclick="copyResults('list-products')">📋 Copy All</button>
+          <button class="export-btn" onclick="downloadPDF('list-products', 'title-products')">⬇️ Download PDF</button>
+        </div>
         <div id="list-products"></div>
         <div class="chat2cash-banner">
           <h3>Ready to sell these products?</h3>
@@ -170,6 +183,10 @@
       <div class="error-box" id="err-content"></div>
       <div class="output" id="out-content">
         <div class="output-header"><h3 id="title-content">Content Ideas</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('content')">Regenerate</button></div>
+        <div class="export-bar">
+          <button class="export-btn" onclick="copyResults('list-content')">📋 Copy All</button>
+          <button class="export-btn" onclick="downloadPDF('list-content', 'title-content')">⬇️ Download PDF</button>
+        </div>
         <div id="list-content"></div>
       </div>
     </div>
@@ -192,6 +209,10 @@
       <div class="error-box" id="err-monetize"></div>
       <div class="output" id="out-monetize">
         <div class="output-header"><h3 id="title-monetize">Monetization Roadmap</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('monetize')">Regenerate</button></div>
+        <div class="export-bar">
+          <button class="export-btn" onclick="copyResults('list-monetize')">📋 Copy All</button>
+          <button class="export-btn" onclick="downloadPDF('list-monetize', 'title-monetize')">⬇️ Download PDF</button>
+        </div>
         <div id="list-monetize"></div>
       </div>
     </div>
@@ -203,7 +224,79 @@
       <div class="error-box" id="err-calendar"></div>
       <div class="output" id="out-calendar">
         <div class="output-header"><h3 id="title-calendar">7-Day Content Plan</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('calendar')">Regenerate</button></div>
+        <div class="export-bar">
+          <button class="export-btn" onclick="copyResults('list-calendar')">📋 Copy All</button>
+          <button class="export-btn" onclick="downloadPDF('list-calendar', 'title-calendar')">⬇️ Download PDF</button>
+        </div>
         <div id="list-calendar"></div>
+      </div>
+    </div>
+
+      <!-- TAB 6: HASHTAGS -->
+    <div class="tab-panel" id="panel-hashtags">
+      <div class="form-group">
+        <label>Select platform</label>
+        <div class="count-select" style="flex-wrap:wrap">
+          <div class="count-btn active" onclick="setHashPlatform('Instagram',this)">Instagram</div>
+          <div class="count-btn" onclick="setHashPlatform('TikTok',this)">TikTok</div>
+          <div class="count-btn" onclick="setHashPlatform('Twitter',this)">Twitter</div>
+          <div class="count-btn" onclick="setHashPlatform('YouTube',this)">YouTube</div>
+          <div class="count-btn" onclick="setHashPlatform('LinkedIn',this)">LinkedIn</div>
+        </div>
+      </div>
+      <button class="btn" onclick="generate('hashtags')" id="btn-hashtags">🏷️ Generate Hashtags</button>
+      <div class="loading" id="load-hashtags"><div class="spinner"></div><p>Finding best hashtags...</p></div>
+      <div class="error-box" id="err-hashtags"></div>
+      <div class="output" id="out-hashtags">
+        <div class="output-header"><h3 id="title-hashtags">Hashtags</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('hashtags')">Regenerate</button></div>
+        <div class="export-bar"><button class="export-btn" onclick="copyResults('list-hashtags')">📋 Copy All</button></div>
+        <div id="list-hashtags"></div>
+      </div>
+    </div>
+
+    <!-- TAB 7: NICHE FINDER -->
+    <div class="tab-panel" id="panel-niche">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;font-size:.85rem;color:var(--ink-soft)">
+        💡 Finds <strong style="color:var(--ink)">high-demand low-competition niches</strong> you can profit from right now.
+      </div>
+      <div class="form-group">
+        <label>What type of creator are you?</label>
+        <div class="count-select" style="flex-wrap:wrap">
+          <div class="count-btn active" onclick="setCreatorType('beginner with no skills',this)">Beginner</div>
+          <div class="count-btn" onclick="setCreatorType('digital product seller',this)">Seller</div>
+          <div class="count-btn" onclick="setCreatorType('content creator',this)">Creator</div>
+          <div class="count-btn" onclick="setCreatorType('programmer or developer',this)">Developer</div>
+          <div class="count-btn" onclick="setCreatorType('coach or educator',this)">Coach</div>
+        </div>
+      </div>
+      <button class="btn" onclick="generate('niche')" id="btn-niche">🔍 Find Profitable Niches</button>
+      <div class="loading" id="load-niche"><div class="spinner"></div><p>Analyzing profitable niches...</p></div>
+      <div class="error-box" id="err-niche"></div>
+      <div class="output" id="out-niche">
+        <div class="output-header"><h3 id="title-niche">Profitable Niches</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('niche')">Regenerate</button></div>
+        <div class="export-bar">
+          <button class="export-btn" onclick="copyResults('list-niche')">📋 Copy All</button>
+          <button class="export-btn" onclick="downloadPDF('list-niche','title-niche')">⬇️ Download PDF</button>
+        </div>
+        <div id="list-niche"></div>
+      </div>
+    </div>
+
+    <!-- TAB 8: COMPETITOR GAP -->
+    <div class="tab-panel" id="panel-competitor">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;font-size:.85rem;color:var(--ink-soft)">
+        🎯 Find what competitors are missing in your niche so you can stand out.
+      </div>
+      <button class="btn" onclick="generate('competitor')" id="btn-competitor">🎯 Analyze Competitor Gaps</button>
+      <div class="loading" id="load-competitor"><div class="spinner"></div><p>Analyzing competitor gaps...</p></div>
+      <div class="error-box" id="err-competitor"></div>
+      <div class="output" id="out-competitor">
+        <div class="output-header"><h3 id="title-competitor">Competitor Gaps</h3><button class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" onclick="generate('competitor')">Regenerate</button></div>
+        <div class="export-bar">
+          <button class="export-btn" onclick="copyResults('list-competitor')">📋 Copy All</button>
+          <button class="export-btn" onclick="downloadPDF('list-competitor','title-competitor')">⬇️ Download PDF</button>
+        </div>
+        <div id="list-competitor"></div>
       </div>
     </div>
 
@@ -255,6 +348,12 @@ function getPrompt(tab, topic) {
   if (tab === 'platforms') return `You are a platform strategy expert for ALL niches. Recommend the top 5 most relevant platforms for someone in the "${topic}" niche — consider platforms like GitHub, Stack Overflow, Dribbble, Behance, LinkedIn, YouTube, TikTok, Instagram, Twitter, Reddit, Pinterest, Twitch, Discord and others depending on the niche. Return ONLY a valid JSON array. Each item must have: platform (name), icon (emoji), audience (who is there), content_type (what works best for this niche on this platform), monetization (how to make money there in this niche), difficulty (Easy/Medium/Hard), tip (one insider tip specific to this niche). No markdown, no extra text.`;
 
   if (tab === 'monetize') return `You are a monetization expert across ALL industries and niches. Give 5 realistic ways to make money in the "${topic}" niche — be specific to this niche, not generic. Return ONLY a valid JSON array. Each item must have: method (specific monetization method for this niche), speed (Fast/Medium/Slow), income_potential (realistic range like $500-$2000/month), description (2 sentences specific to this niche), steps (array of 3 concrete action steps to start today). No markdown, no extra text.`;
+
+  if (tab === 'hashtags') return `You are a hashtag expert. Generate the best hashtags for the "${topic}" niche on ${hashPlatform}. Return ONLY a valid JSON array of 4 groups. Each group must have: category (like High Traffic/Medium Traffic/Niche Specific/Branded), hashtags (array of 8 hashtags with # symbol), reach (High/Medium/Niche), tip (one strategy tip). No markdown no extra text.`;
+
+  if (tab === 'niche') return `You are a profitable niche analyst. Find 6 high-demand low-competition niches for a ${creatorType} to make money online in 2025. Return ONLY a valid JSON array. Each item must have: niche, competition (Low/Medium/High), demand (Low/Medium/High/Very High), why (2 sentences why profitable now), income_potential (like $500-$3000/month), entry_point (easiest way to start). No markdown no extra text.`;
+
+  if (tab === 'competitor') return `You are a competitive analyst. Find 6 gaps competitors are missing in the "${topic}" niche. Return ONLY a valid JSON array. Each item must have: gap (opportunity name), what_missing (what competitors fail to provide), your_angle (how to fill this gap), opportunity_size (Small/Medium/Large/Huge), action (one specific action to take today). No markdown no extra text.`;
 
   if (tab === 'calendar') return `You are a content calendar expert for ALL niches. Create a 7-day content posting plan for someone in the "${topic}" niche. Use platforms and formats most relevant to this specific niche. Return ONLY a valid JSON array of exactly 7 items. Each item must have: day (Day 1, Day 2 etc), title (specific content title for this niche), hook (attention-grabbing opening line specific to this niche audience), platform (most relevant platform for this niche), format (most effective format for this niche), goal (Awareness/Engagement/Sales/Trust). No markdown, no extra text.`;
 }
@@ -326,6 +425,9 @@ async function generate(tab) {
     else if (tab === 'platforms') renderPlatforms(parsed, topic);
     else if (tab === 'monetize') renderMonetize(parsed, topic);
     else if (tab === 'calendar') renderCalendar(parsed, topic);
+    else if (tab === 'hashtags') renderHashtags(parsed, topic);
+    else if (tab === 'niche') renderNiche(parsed);
+    else if (tab === 'competitor') renderCompetitor(parsed, topic);
     document.getElementById('out-' + tab).classList.add('show');
   } catch(err) {
     const box = document.getElementById('err-' + tab);
@@ -335,6 +437,85 @@ async function generate(tab) {
     document.getElementById('load-' + tab).classList.remove('show');
     document.getElementById('btn-' + tab).disabled = false;
   }
+}
+
+function copyResults(listId) {
+  const el = document.getElementById(listId);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy All';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function downloadPDF(listId, titleId) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const title = document.getElementById(titleId).textContent;
+  const content = document.getElementById(listId).innerText;
+  
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text(title, 20, 20);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  
+  const lines = doc.splitTextToSize(content, 170);
+  let y = 35;
+  lines.forEach(line => {
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, 20, y);
+    y += 6;
+  });
+  
+  doc.save(title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf');
+}
+
+let hashPlatform = 'Instagram';
+let creatorType = 'beginner with no skills';
+
+function setHashPlatform(p, el) {
+  hashPlatform = p;
+  document.querySelectorAll('#panel-hashtags .count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setCreatorType(t, el) {
+  creatorType = t;
+  document.querySelectorAll('#panel-niche .count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function renderHashtags(data, topic) {
+  document.getElementById('title-hashtags').textContent = hashPlatform + ' Hashtags: ' + topic;
+  document.getElementById('list-hashtags').innerHTML = data.map(g =>
+    '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (g.category||'Hashtags') + '</div><span class="badge badge-blue">' + (g.reach||'Mixed') + '</span></div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">' +
+    (g.hashtags||[]).map(h => '<span style="background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:500">' + h + '</span>').join('') +
+    '</div><div class="idea-desc">' + (g.tip||'') + '</div></div>'
+  ).join('');
+}
+
+function renderNiche(data) {
+  document.getElementById('title-niche').textContent = 'Profitable Niches for: ' + creatorType;
+  document.getElementById('list-niche').innerHTML = data.map((n,i) =>
+    '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + n.niche + '</div><span class="badge ' + (n.competition==='Low'?'badge-green':n.competition==='Medium'?'badge-yellow':'badge-orange') + '">' + n.competition + ' Competition</span></div><div class="idea-desc">' + n.why + '</div><div class="idea-meta"><span class="meta-pill">💵 ' + n.income_potential + '</span><span class="meta-pill">⚡ ' + n.entry_point + '</span><span class="meta-pill">🔥 Demand: ' + n.demand + '</span></div></div>'
+  ).join('');
+}
+
+function renderCompetitor(data, topic) {
+  document.getElementById('title-competitor').textContent = 'Competitor Gaps: ' + topic;
+  document.getElementById('list-competitor').innerHTML = data.map((g,i) =>
+    '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + g.gap + '</div><span class="badge badge-purple">' + g.opportunity_size + '</span></div><div class="idea-desc"><strong>What competitors miss:</strong> ' + g.what_missing + '</div><div class="idea-desc"><strong>Your advantage:</strong> ' + g.your_angle + '</div><div class="idea-meta"><span class="meta-pill">🎯 ' + g.action + '</span></div></div>'
+  ).join('');
 }
 </script>
 </body>
