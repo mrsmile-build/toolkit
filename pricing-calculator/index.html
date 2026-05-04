@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Calculator — Find the Right Price for Your Product | ToolKit</title>
+  <meta name="description" content="Free pricing calculator. Find the perfect selling price for your product based on cost, desired profit margin or competitor pricing.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .mode-toggle{display:flex;gap:8px;margin-bottom:24px}
+    .mode-btn{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center}
+    .mode-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+    .price-result{background:var(--ink);border-radius:14px;padding:28px;margin-top:24px;display:none;text-align:center}
+    .price-result.show{display:block}
+    .price-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px}
+    .price-val{font-family:var(--font-head);font-size:3rem;font-weight:800;color:#fff;letter-spacing:-2px}
+    .price-val span{color:var(--accent)}
+    .price-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+    .pb-item{background:rgba(255,255,255,.07);border-radius:8px;padding:12px;text-align:center}
+    .pb-label{font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .pb-val{font-family:var(--font-head);font-weight:700;color:#fff;font-size:.95rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../profit-calculator/index.html">Profit Calc</a></li>
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Pricing Calculator</h1>
+  <p class="page-subtitle">Find the perfect price for your product or service.</p>
+  <div class="tool-card">
+    <div class="mode-toggle">
+      <div class="mode-btn active" onclick="setMode('margin',this)">By Profit Margin</div>
+      <div class="mode-btn" onclick="setMode('markup',this)">By Markup %</div>
+      <div class="mode-btn" onclick="setMode('competitive',this)">Competitive</div>
+    </div>
+    <div id="mode-margin">
+      <div class="form-row">
+        <div class="form-group"><label>Total Cost ($)</label><input type="number" id="m-cost" placeholder="100" min="0"></div>
+        <div class="form-group"><label>Desired Profit Margin (%)</label><input type="number" id="m-margin" placeholder="30" min="0" max="99"></div>
+      </div>
+      <button class="btn" onclick="calcMargin()">Calculate Price →</button>
+    </div>
+    <div id="mode-markup" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>Total Cost ($)</label><input type="number" id="mk-cost" placeholder="100" min="0"></div>
+        <div class="form-group"><label>Markup % (above cost)</label><input type="number" id="mk-markup" placeholder="50" min="0"></div>
+      </div>
+      <button class="btn" onclick="calcMarkup()">Calculate Price →</button>
+    </div>
+    <div id="mode-competitive" style="display:none">
+      <div class="form-group"><label>Your Cost ($)</label><input type="number" id="c-cost" placeholder="100" min="0"></div>
+      <div class="form-group"><label>Competitor Price ($)</label><input type="number" id="c-comp" placeholder="150" min="0"></div>
+      <div class="form-group"><label>Your Strategy</label>
+        <select id="c-strategy">
+          <option value="beat">Beat competitor (5% lower)</option>
+          <option value="match">Match competitor price</option>
+          <option value="premium">Premium (10% higher)</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calcCompetitive()">Calculate Price →</button>
+    </div>
+    <div class="price-result" id="priceResult">
+      <div class="price-label">Recommended Selling Price</div>
+      <div class="price-val" id="priceVal">$<span id="priceNum">0</span></div>
+      <div class="price-breakdown">
+        <div class="pb-item"><div class="pb-label">Your Cost</div><div class="pb-val" id="pbCost">$0</div></div>
+        <div class="pb-item"><div class="pb-label">Your Profit</div><div class="pb-val" id="pbProfit">$0</div></div>
+        <div class="pb-item"><div class="pb-label">Margin</div><div class="pb-val" id="pbMargin">0%</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="background:var(--ink);border-radius:14px;padding:28px;margin-top:32px;text-align:center">
+    <h3 style="font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:8px">Need a complete pricing strategy?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Get our digital product pricing guide and learn how to price for maximum profit.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Get Pricing Guide on Selar →</a>
+  </div>
+</div>
+<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+let currentMode='margin';
+function setMode(m,el){currentMode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('mode-margin').style.display=m==='margin'?'block':'none';document.getElementById('mode-markup').style.display=m==='markup'?'block':'none';document.getElementById('mode-competitive').style.display=m==='competitive'?'block':'none';}
+function showResult(price,cost){const profit=price-cost;const margin=price>0?(profit/price)*100:0;document.getElementById('priceNum').textContent=price.toFixed(2);document.getElementById('pbCost').textContent='$'+cost.toFixed(2);document.getElementById('pbProfit').textContent='$'+profit.toFixed(2);document.getElementById('pbMargin').textContent=margin.toFixed(1)+'%';document.getElementById('priceResult').classList.add('show');}
+function calcMargin(){const cost=parseFloat(document.getElementById('m-cost').value)||0;const margin=parseFloat(document.getElementById('m-margin').value)||0;if(!cost){alert('Enter your cost.');return;}const price=cost/(1-margin/100);showResult(price,cost);}
+function calcMarkup(){const cost=parseFloat(document.getElementById('mk-cost').value)||0;const markup=parseFloat(document.getElementById('mk-markup').value)||0;if(!cost){alert('Enter your cost.');return;}const price=cost*(1+markup/100);showResult(price,cost);}
+function calcCompetitive(){const cost=parseFloat(document.getElementById('c-cost').value)||0;const comp=parseFloat(document.getElementById('c-comp').value)||0;const strategy=document.getElementById('c-strategy').value;if(!cost||!comp){alert('Fill in both fields.');return;}let price=strategy==='beat'?comp*0.95:strategy==='match'?comp:comp*1.10;if(price<cost){price=cost*1.1;}showResult(price,cost);}
+</script>
+</body></html>

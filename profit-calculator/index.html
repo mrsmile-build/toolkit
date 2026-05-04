@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit Calculator — Calculate Your Business Profit | ToolKit</title>
+  <meta name="description" content="Free profit calculator. Calculate your net profit, profit margin, markup and ROI instantly. Perfect for business owners and sellers.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:24px}
+    .result-card{background:var(--ink);border-radius:12px;padding:20px;text-align:center}
+    .result-card.accent{background:var(--accent)}
+    .rc-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px}
+    .rc-val{font-family:var(--font-head);font-size:1.6rem;font-weight:800;color:#fff;letter-spacing:-1px}
+    .profit-bar{margin-top:20px}
+    .bar-track{height:12px;background:var(--border);border-radius:10px;overflow:hidden;margin:10px 0}
+    .bar-fill{height:100%;border-radius:10px;transition:width .6s}
+    .warning{padding:14px;border-radius:10px;margin-top:14px;font-size:.875rem}
+    .warning.good{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+    .warning.bad{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../pricing-calculator/index.html">Pricing Calc</a></li>
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Profit Calculator</h1>
+  <p class="page-subtitle">Calculate your net profit, profit margin and markup instantly.</p>
+  <div class="tool-card">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Revenue / Selling Price ($)</label>
+        <input type="number" id="revenue" placeholder="500" min="0" oninput="calculate()">
+      </div>
+      <div class="form-group">
+        <label>Total Cost ($)</label>
+        <input type="number" id="cost" placeholder="300" min="0" oninput="calculate()">
+      </div>
+    </div>
+    <div class="result-grid" id="results" style="display:none">
+      <div class="result-card accent">
+        <div class="rc-label">Net Profit</div>
+        <div class="rc-val" id="netProfit">$0</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Profit Margin</div>
+        <div class="rc-val" id="margin">0%</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Markup</div>
+        <div class="rc-val" id="markup">0%</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">ROI</div>
+        <div class="rc-val" id="roi">0%</div>
+      </div>
+    </div>
+    <div class="profit-bar" id="profitBar" style="display:none">
+      <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:600">Revenue Breakdown</div>
+      <div class="bar-track">
+        <div class="bar-fill" id="barFill" style="width:0%;background:var(--accent)"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-soft)">
+        <span id="costPct">Cost 0%</span>
+        <span id="profitPct">Profit 0%</span>
+      </div>
+      <div class="warning" id="warning"></div>
+    </div>
+  </div>
+
+  <div style="background:var(--ink);border-radius:14px;padding:28px;margin-top:32px;text-align:center">
+    <h3 style="font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:8px">Want to increase your profits?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Learn proven strategies to price your products and grow your business income.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Business Guides on Selar →</a>
+  </div>
+</div>
+<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+function calculate(){
+  const rev = parseFloat(document.getElementById('revenue').value)||0;
+  const cost = parseFloat(document.getElementById('cost').value)||0;
+  if(!rev && !cost) return;
+  const profit = rev - cost;
+  const margin = rev > 0 ? (profit/rev)*100 : 0;
+  const markup = cost > 0 ? (profit/cost)*100 : 0;
+  const roi = cost > 0 ? (profit/cost)*100 : 0;
+  document.getElementById('netProfit').textContent = '$' + profit.toFixed(2);
+  document.getElementById('margin').textContent = margin.toFixed(1) + '%';
+  document.getElementById('markup').textContent = markup.toFixed(1) + '%';
+  document.getElementById('roi').textContent = roi.toFixed(1) + '%';
+  document.getElementById('results').style.display = 'grid';
+  document.getElementById('profitBar').style.display = 'block';
+  const costPct = rev > 0 ? (cost/rev)*100 : 100;
+  const profitPct = 100 - costPct;
+  document.getElementById('barFill').style.width = profitPct + '%';
+  document.getElementById('costPct').textContent = 'Cost ' + costPct.toFixed(1) + '%';
+  document.getElementById('profitPct').textContent = 'Profit ' + profitPct.toFixed(1) + '%';
+  const w = document.getElementById('warning');
+  if(profit < 0){w.className='warning bad';w.textContent='⚠️ You are making a loss. Increase your price or reduce costs.';}
+  else if(margin < 20){w.className='warning bad';w.textContent='⚠️ Low margin (' + margin.toFixed(1) + '%). Aim for at least 20-30% profit margin.';}
+  else{w.className='warning good';w.textContent='✅ Good profit margin! Keep optimizing your costs to increase profit further.';}
+}
+</script>
+</body></html>

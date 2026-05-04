@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Name Generator — Free AI Business Name Ideas | ToolKit</title>
+  <meta name="description" content="Free AI-powered business name generator. Get creative, catchy and available business name ideas for any niche instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .style-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:20px}
+    .style-btn{padding:10px 8px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;font-family:var(--font-body)}
+    .style-btn.active{border-color:var(--accent);background:#fff8f5;color:var(--accent);font-weight:700}
+    .loading{display:none;text-align:center;padding:32px}
+    .loading.show{display:block}
+    .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .names-output{display:none;margin-top:24px}
+    .names-output.show{display:block}
+    .name-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:border-color .2s}
+    .name-card:hover{border-color:var(--accent)}
+    .name-text{font-family:var(--font-head);font-size:1.1rem;font-weight:700}
+    .name-desc{font-size:.8rem;color:var(--ink-soft);margin-top:3px}
+    .copy-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:var(--font-head);color:var(--ink-soft);transition:all .2s;white-space:nowrap}
+    .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;font-size:.875rem;margin-top:16px;display:none}
+    .error-box.show{display:block}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../profit-calculator/index.html">Profit Calc</a></li>
+    <li><a href="../product-idea-generator/index.html">Idea Gen</a></li>
+    <li><a href="../qr-generator/index.html">QR Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Business Name Generator</h1>
+  <p class="page-subtitle">Get creative AI-powered business name ideas for any niche in seconds.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Describe your business or niche</label>
+      <input type="text" id="bizInput" placeholder="e.g. online fashion store, digital marketing agency, food delivery...">
+    </div>
+    <div class="form-group">
+      <label>Name style</label>
+      <div class="style-grid">
+        <div class="style-btn active" onclick="setStyle('modern',this)">⚡ Modern</div>
+        <div class="style-btn" onclick="setStyle('professional',this)">💼 Professional</div>
+        <div class="style-btn" onclick="setStyle('creative',this)">🎨 Creative</div>
+        <div class="style-btn" onclick="setStyle('simple',this)">✨ Simple</div>
+        <div class="style-btn" onclick="setStyle('powerful',this)">💪 Powerful</div>
+        <div class="style-btn" onclick="setStyle('friendly',this)">😊 Friendly</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateNames()" id="btnGenerate">✨ Generate Names</button>
+    <div class="loading" id="loading"><div class="spinner"></div><p style="color:var(--ink-soft)">AI is generating name ideas...</p></div>
+    <div class="error-box" id="errorBox"></div>
+    <div class="names-output" id="namesOutput">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="font-family:var(--font-head);font-weight:700">Your Business Name Ideas</div>
+        <button class="btn btn-outline" style="padding:8px 14px;font-size:.8rem" onclick="generateNames()">Regenerate</button>
+      </div>
+      <div id="namesList"></div>
+      <div style="background:var(--ink);border-radius:12px;padding:20px;margin-top:16px;text-align:center">
+        <p style="color:rgba(255,255,255,.7);font-size:.875rem;margin-bottom:12px">Ready to start your business? Get the complete guide to launching your digital product business.</p>
+        <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn" style="display:inline-flex">Get Business Starter Guide →</a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let nameStyle = 'modern';
+function setStyle(s,el){nameStyle=s;document.querySelectorAll('.style-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+async function generateNames(){
+  const biz = document.getElementById('bizInput').value.trim();
+  if(!biz){alert('Please describe your business.');return;}
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('namesOutput').classList.remove('show');
+  document.getElementById('errorBox').classList.remove('show');
+  document.getElementById('btnGenerate').disabled=true;
+  const prompt = `Generate 10 ${nameStyle} business name ideas for: "${biz}". Return ONLY a valid JSON array. Each item must have: name (the business name), tagline (short catchy tagline max 8 words), reason (why this name works in 1 sentence). No markdown, no extra text.`;
+  try{
+    const res = await fetch(PROXY+'/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:0.9,max_tokens:1500})});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error?.message||'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
+    const names = JSON.parse(text);
+    document.getElementById('namesList').innerHTML = names.map(n=>`
+      <div class="name-card">
+        <div>
+          <div class="name-text">${n.name}</div>
+          <div class="name-desc">"${n.tagline}" — ${n.reason}</div>
+        </div>
+        <button class="copy-btn" onclick="copyName('${n.name}',this)">Copy</button>
+      </div>`).join('');
+    document.getElementById('namesOutput').classList.add('show');
+  }catch(err){
+    const box=document.getElementById('errorBox');
+    box.textContent='Error: '+err.message+'. Please try again.';
+    box.classList.add('show');
+  }finally{
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('btnGenerate').disabled=false;
+  }
+}
+function copyName(name,btn){navigator.clipboard.writeText(name).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});}
+</script>
+</body></html>
