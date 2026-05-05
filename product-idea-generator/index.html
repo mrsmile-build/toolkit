@@ -162,9 +162,14 @@
         <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
         <button class="btn btn-outline" onclick="fetchTrending()" id="btn-trending" style="font-size:.85rem;padding:11px 16px">🔥 Trending Topics</button>
       </div>
-      <div id="trending-box" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px">
-        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:600;margin-bottom:10px">🔥 Trending Now — Click any to use</div>
-        <div id="trending-list" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      <div id="trending-box" style="background:var(--surface2);border:1px solid rgba(255,92,0,.2);border-radius:10px;padding:14px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);font-weight:700">🔥 Trending Right Now — Click to use</div>
+          <button onclick="fetchTrending()" style="background:none;border:none;font-size:.75rem;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:6px;border:1px solid var(--border)">↻ Refresh</button>
+        </div>
+        <div id="trending-list" style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="font-size:.82rem;color:var(--ink-soft)">Loading trending topics...</span>
+        </div>
       </div>
       <div class="loading" id="load-products"><div class="spinner"></div><p>Generating product ideas...</p></div>
       <div class="error-box" id="err-products"></div>
@@ -702,9 +707,14 @@ TYPE html>
         <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
         <button class="btn btn-outline" onclick="fetchTrending()" id="btn-trending" style="font-size:.85rem;padding:11px 16px">🔥 Trending Topics</button>
       </div>
-      <div id="trending-box" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px">
-        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:600;margin-bottom:10px">🔥 Trending Now — Click any to use</div>
-        <div id="trending-list" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      <div id="trending-box" style="background:var(--surface2);border:1px solid rgba(255,92,0,.2);border-radius:10px;padding:14px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);font-weight:700">🔥 Trending Right Now — Click to use</div>
+          <button onclick="fetchTrending()" style="background:none;border:none;font-size:.75rem;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:6px;border:1px solid var(--border)">↻ Refresh</button>
+        </div>
+        <div id="trending-list" style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="font-size:.82rem;color:var(--ink-soft)">Loading trending topics...</span>
+        </div>
       </div>
       <div class="loading" id="load-products"><div class="spinner"></div><p>Generating product ideas...</p></div>
       <div class="error-box" id="err-products"></div>
@@ -1076,14 +1086,14 @@ function renderCompetitor(data, topic) {
   ).join('');
 }
 
-async function fetchTrending() {
+async function fetchTrending(autoLoad) {
   const topicEl = document.getElementById('topicInput');
-  const topic = topicEl ? topicEl.value.trim() : 'make money online';
+  const topic = topicEl ? topicEl.value.trim() : '';
+  const searchQuery = topic || 'make money online digital products side hustle';
   const btn = document.getElementById('btn-trending');
-  btn.textContent = '⏳ Loading...';
-  btn.disabled = true;
+  if (!autoLoad) { btn.textContent = '⏳ Loading...'; btn.disabled = true; }
   try {
-    const res = await fetch(PROXY + '/trending?q=' + encodeURIComponent((topic||'digital products') + ' ideas 2025'));
+    const res = await fetch(PROXY + '/trending?q=' + encodeURIComponent(searchQuery + ' 2025 trending'));
     const data = await res.json();
     if (data.trending && data.trending.length > 0) {
       const box = document.getElementById('trending-box');
