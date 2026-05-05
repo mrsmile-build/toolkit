@@ -158,7 +158,14 @@
           <div class="count-btn" onclick="setCount(10,this)">10</div>
         </div>
       </div>
-      <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+        <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
+        <button class="btn btn-outline" onclick="fetchTrending()" id="btn-trending" style="font-size:.85rem;padding:11px 16px">🔥 Trending Topics</button>
+      </div>
+      <div id="trending-box" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px">
+        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:600;margin-bottom:10px">🔥 Trending Now — Click any to use</div>
+        <div id="trending-list" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
       <div class="loading" id="load-products"><div class="spinner"></div><p>Generating product ideas...</p></div>
       <div class="error-box" id="err-products"></div>
       <div class="output" id="out-products">
