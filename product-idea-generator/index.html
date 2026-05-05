@@ -1075,6 +1075,42 @@ function renderCompetitor(data, topic) {
     '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + g.gap + '</div><span class="badge badge-purple">' + g.opportunity_size + '</span></div><div class="idea-desc"><strong>What competitors miss:</strong> ' + g.what_missing + '</div><div class="idea-desc"><strong>Your advantage:</strong> ' + g.your_angle + '</div><div class="idea-meta"><span class="meta-pill">🎯 ' + g.action + '</span></div></div>'
   ).join('');
 }
+
+async function fetchTrending() {
+  const topicEl = document.getElementById('topicInput');
+  const topic = topicEl ? topicEl.value.trim() : 'make money online';
+  const btn = document.getElementById('btn-trending');
+  btn.textContent = '⏳ Loading...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(PROXY + '/trending?q=' + encodeURIComponent((topic||'digital products') + ' ideas 2025'));
+    const data = await res.json();
+    if (data.trending && data.trending.length > 0) {
+      const box = document.getElementById('trending-box');
+      const list = document.getElementById('trending-list');
+      if (box && list) {
+        list.innerHTML = data.trending.map(t =>
+          '<span onclick="useTrending(this.textContent)" style="background:#f5f5f5;border:1px solid #ddd;border-radius:20px;padding:6px 14px;font-size:.8rem;cursor:pointer;display:inline-block;margin:2px">' + t + '</span>'
+        ).join('');
+        box.style.display = 'block';
+      } else {
+        alert('Trending: ' + data.trending.join(', '));
+      }
+    }
+  } catch(err) {
+    alert('Could not load trending topics: ' + err.message);
+  } finally {
+    btn.textContent = '🔥 Trending Topics';
+    btn.disabled = false;
+  }
+}
+
+function useTrending(topic) {
+  const topicEl = document.getElementById('topicInput');
+  if (topicEl) topicEl.value = topic;
+  const box = document.getElementById('trending-box');
+  if (box) box.style.display = 'none';
+}
 </script>
 
 <!-- SEO ARTICLE SECTION -->
