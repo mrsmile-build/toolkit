@@ -541,6 +541,11 @@ function renderCompetitor(data, topic) {
     '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + g.gap + '</div><span class="badge badge-purple">' + g.opportunity_size + '</span></div><div class="idea-desc"><strong>What competitors miss:</strong> ' + g.what_missing + '</div><div class="idea-desc"><strong>Your advantage:</strong> ' + g.your_angle + '</div><div class="idea-meta"><span class="meta-pill">🎯 ' + g.action + '</span></div></div>'
   ).join('');
 }
+
+// Auto-load trending on page load
+window.addEventListener('load', function() {
+  setTimeout(function() { fetchTrending(true); }, 2000);
+});
 </script>
 
 TYPE html>
