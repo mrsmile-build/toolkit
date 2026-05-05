@@ -8,304 +8,6 @@
   <link rel="stylesheet" href="../assets/css/style.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
-
-<script>
-const PROXY = 'https://groq-proxy-7f82.onrender.com';
-let currentTab = 'products';
-let ideaCount = 8;
-let hashPlatform = 'Instagram';
-let creatorType = 'beginner with no skills';
-let topicMode = 'type';
-
-function switchTab(tab, el) {
-  currentTab = tab;
-  document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  const panel = document.getElementById('panel-' + tab);
-  if (panel) panel.classList.add('active');
-}
-
-function setMode(mode, el) {
-  topicMode = mode;
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  const typeInput = document.getElementById('type-input');
-  const nicheGrid = document.getElementById('niche-grid');
-  if (typeInput) typeInput.style.display = mode === 'type' ? 'block' : 'none';
-  if (nicheGrid) nicheGrid.style.display = mode === 'niche' ? 'block' : 'none';
-}
-
-function setNiche(niche, el) {
-  const input = document.getElementById('topicInput');
-  if (input) input.value = niche;
-  document.querySelectorAll('.niche-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function setCount(n, el) {
-  ideaCount = n;
-  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function setHashPlatform(p, el) {
-  hashPlatform = p;
-  document.querySelectorAll('#panel-hashtags .count-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function setCreatorType(t, el) {
-  creatorType = t;
-  document.querySelectorAll('#panel-niche .count-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function getTopic() {
-  return (document.getElementById('topicInput') || {}).value || '';
-}
-
-function getPrompt(tab, topic) {
-  if (tab === 'products') return `You are a digital product expert. Generate ${ideaCount} profitable digital product ideas for the "${topic}" niche. Return ONLY a valid JSON array. Each item must have: title, type (Ebook/Course/Template/Guide/Checklist/Workbook/Toolkit/Script), description (2 sentences), audience, price (like $17). No markdown no extra text.`;
-  if (tab === 'content') return `You are a viral content strategist. Generate ${ideaCount} trending content ideas for the "${topic}" niche. Return ONLY a valid JSON array. Each item must have: title, hook (catchy subtitle), description (1 sentence), platforms (array of 2 platform names), format (like Video/Thread/Carousel), viral_score (High/Medium/Low). No markdown no extra text.`;
-  if (tab === 'platforms') return `You are a platform strategy expert. Analyze the best platforms for the "${topic}" niche. Return ONLY a valid JSON array of 6 platforms. Each must have: platform, emoji, difficulty (Easy/Medium/Hard), audience, best_content, monetization, tip. No markdown no extra text.`;
-  if (tab === 'monetize') return `You are a monetization expert. Create a monetization roadmap for the "${topic}" niche. Return ONLY a valid JSON array of 5 methods. Each must have: method, description (2 sentences), potential (like $500-$2000/month), speed (Fast/Medium/Slow), steps (array of 3 action steps). No markdown no extra text.`;
-  if (tab === 'calendar') return `You are a content calendar expert for ALL niches. Create a 7-day content plan for the "${topic}" niche. Return ONLY a valid JSON array of 7 days. Each must have: day (like Day 1), topic, hook (quote style), platforms (array of 2), format, goal (Awareness/Engagement/Trust/Sales). No markdown no extra text.`;
-  if (tab === 'hashtags') return `You are a hashtag expert. Generate the best hashtags for the "${topic}" niche on ${hashPlatform}. Return ONLY a valid JSON array of 4 groups. Each group must have: category (like High Traffic/Medium Traffic/Niche Specific/Branded), hashtags (array of 8 hashtags with # symbol), reach (High/Medium/Niche), tip (one strategy tip). No markdown no extra text.`;
-  if (tab === 'niche') return `You are a profitable niche analyst. Find 6 high-demand low-competition niches for a ${creatorType} to make money online in 2025. Return ONLY a valid JSON array. Each item must have: niche, competition (Low/Medium/High), demand (Low/Medium/High/Very High), why (2 sentences why profitable now), income_potential (like $500-$3000/month), entry_point (easiest way to start). No markdown no extra text.`;
-  if (tab === 'competitor') return `You are a competitive analyst. Find 6 gaps competitors are missing in the "${topic}" niche. Return ONLY a valid JSON array. Each item must have: gap (opportunity name), what_missing (what competitors fail to provide), your_angle (how to fill this gap), opportunity_size (Small/Medium/Large/Huge), action (one specific action to take today). No markdown no extra text.`;
-}
-
-async function generate(tab) {
-  const topic = getTopic();
-  if (!topic && tab !== 'niche') { alert('Please enter your niche or topic first.'); return; }
-  
-  const loadEl = document.getElementById('load-' + tab);
-  const outEl = document.getElementById('out-' + tab);
-  const errEl = document.getElementById('err-' + tab);
-  const btnEl = document.getElementById('btn-' + tab);
-  
-  if (loadEl) loadEl.style.display = 'block';
-  if (outEl) outEl.style.display = 'none';
-  if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
-  if (btnEl) btnEl.disabled = true;
-
-  try {
-    const res = await fetch(PROXY + '/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'user', content: getPrompt(tab, topic) }],
-        temperature: 0.8,
-        max_tokens: 2000
-      })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error?.message || 'API error');
-    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(text);
-    
-    if (tab === 'products') renderProducts(parsed, topic);
-    else if (tab === 'content') renderContent(parsed, topic);
-    else if (tab === 'platforms') renderPlatforms(parsed, topic);
-    else if (tab === 'monetize') renderMonetize(parsed, topic);
-    else if (tab === 'calendar') renderCalendar(parsed, topic);
-    else if (tab === 'hashtags') renderHashtags(parsed, topic);
-    else if (tab === 'niche') renderNiche(parsed);
-    else if (tab === 'competitor') renderCompetitor(parsed, topic);
-    
-    if (outEl) outEl.style.display = 'block';
-  } catch(err) {
-    if (errEl) { errEl.textContent = 'Error: ' + err.message + '. Please try again.'; errEl.style.display = 'block'; }
-  } finally {
-    if (loadEl) loadEl.style.display = 'none';
-    if (btnEl) btnEl.disabled = false;
-  }
-}
-
-function badge(text, color) {
-  const colors = { green: '#16a34a', blue: '#2563eb', orange: '#ea580c', purple: '#7c3aed', yellow: '#ca8a04', red: '#dc2626' };
-  return `<span style="background:${colors[color]||'#6b7280'};color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">${text}</span>`;
-}
-
-function pill(text) {
-  return `<span style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:3px 10px;font-size:.78rem;color:#374151">${text}</span>`;
-}
-
-function renderProducts(data, topic) {
-  document.getElementById('title-products').textContent = ideaCount + ' Product Ideas: ' + topic;
-  document.getElementById('list-products').innerHTML = data.map((p,i) => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div style="font-weight:700;font-size:1rem">${i+1}. ${p.title}</div>
-        ${badge(p.type||'Ebook','blue')}
-      </div>
-      <div style="font-size:.875rem;color:#6b7280;line-height:1.6;margin-bottom:10px">${p.description}</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${pill('👥 '+p.audience)}${pill('💵 '+p.price)}</div>
-    </div>`).join('');
-}
-
-function renderContent(data, topic) {
-  document.getElementById('title-content').textContent = 'Trending Content Ideas: ' + topic;
-  document.getElementById('list-content').innerHTML = data.map((c,i) => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
-        <div style="font-weight:700">${i+1}. ${c.title}</div>
-        ${badge(c.viral_score||'Medium', c.viral_score==='High'?'green':c.viral_score==='Low'?'yellow':'blue')}
-      </div>
-      <div style="color:#ea580c;font-size:.85rem;font-style:italic;margin-bottom:8px">"${c.hook}"</div>
-      <div style="font-size:.875rem;color:#6b7280;margin-bottom:10px">${c.description}</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${(c.platforms||[]).map(p=>'<span style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:3px 10px;font-size:.78rem">📱 '+p+'</span>').join('')}${pill('📄 '+c.format)}</div>
-    </div>`).join('');
-}
-
-function renderPlatforms(data, topic) {
-  document.getElementById('title-platforms').textContent = 'Platform Strategy: ' + topic;
-  document.getElementById('list-platforms').innerHTML = data.map(p => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-weight:700;font-size:1rem">${p.emoji||'📱'} ${p.platform}</div>
-        ${badge(p.difficulty||'Medium', p.difficulty==='Easy'?'green':p.difficulty==='Hard'?'red':'yellow')}
-      </div>
-      <div style="font-size:.82rem;color:#6b7280;margin-bottom:6px"><strong style="color:#111">Audience:</strong> ${p.audience}</div>
-      <div style="font-size:.82rem;color:#6b7280;margin-bottom:6px"><strong style="color:#111">Best content:</strong> ${p.best_content}</div>
-      <div style="font-size:.82rem;color:#6b7280;margin-bottom:8px"><strong style="color:#111">Monetization:</strong> ${p.monetization}</div>
-      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px;font-size:.8rem;color:#92400e">💡 ${p.tip}</div>
-    </div>`).join('');
-}
-
-function renderMonetize(data, topic) {
-  document.getElementById('title-monetize').textContent = 'Monetization Roadmap: ' + topic;
-  document.getElementById('list-monetize').innerHTML = data.map((m,i) => `
-    <div style="background:#111;border-radius:12px;padding:20px;margin-bottom:10px;color:#fff">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div style="font-weight:700">${i+1}. ${m.method}</div>
-        ${badge(m.speed||'Medium', m.speed==='Fast'?'green':m.speed==='Slow'?'yellow':'blue')}
-      </div>
-      <div style="font-size:.875rem;color:rgba(255,255,255,.7);margin-bottom:10px">${m.description}</div>
-      <div style="font-size:.75rem;color:#f97316;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">POTENTIAL: ${m.potential}</div>
-      ${(m.steps||[]).map(s=>`<div style="font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:4px">→ ${s}</div>`).join('')}
-    </div>`).join('');
-}
-
-function renderCalendar(data, topic) {
-  document.getElementById('title-calendar').textContent = '7-Day Content Plan: ' + topic;
-  document.getElementById('list-calendar').innerHTML = data.map(d => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <div style="font-weight:800;color:#ea580c;font-size:.9rem">${d.day}</div>
-        ${badge(d.goal||'Awareness', d.goal==='Sales'?'green':d.goal==='Trust'?'purple':d.goal==='Engagement'?'blue':'yellow')}
-      </div>
-      <div style="font-weight:700;margin-bottom:4px">${d.topic}</div>
-      <div style="font-style:italic;color:#6b7280;font-size:.85rem;margin-bottom:8px">"${d.hook}"</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${(d.platforms||[]).map(p=>pill('📱 '+p)).join('')}${pill('📄 '+d.format)}</div>
-    </div>`).join('');
-}
-
-function renderHashtags(data, topic) {
-  document.getElementById('title-hashtags').textContent = hashPlatform + ' Hashtags: ' + topic;
-  document.getElementById('list-hashtags').innerHTML = data.map(g => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-weight:700">${g.category}</div>
-        ${badge(g.reach||'Medium','blue')}
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-        ${(g.hashtags||[]).map(h=>`<span style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:500">${h}</span>`).join('')}
-      </div>
-      <div style="font-size:.82rem;color:#6b7280">${g.tip}</div>
-    </div>`).join('');
-}
-
-function renderNiche(data) {
-  document.getElementById('title-niche').textContent = 'Profitable Niches for: ' + creatorType;
-  document.getElementById('list-niche').innerHTML = data.map((n,i) => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div style="font-weight:700">${i+1}. ${n.niche}</div>
-        ${badge(n.competition+' Competition', n.competition==='Low'?'green':n.competition==='Medium'?'yellow':'red')}
-      </div>
-      <div style="font-size:.875rem;color:#6b7280;margin-bottom:10px">${n.why}</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${pill('💵 '+n.income_potential)}${pill('⚡ '+n.entry_point)}${pill('🔥 Demand: '+n.demand)}</div>
-    </div>`).join('');
-}
-
-function renderCompetitor(data, topic) {
-  document.getElementById('title-competitor').textContent = 'Competitor Gaps: ' + topic;
-  document.getElementById('list-competitor').innerHTML = data.map((g,i) => `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div style="font-weight:700">${i+1}. ${g.gap}</div>
-        ${badge(g.opportunity_size,'purple')}
-      </div>
-      <div style="font-size:.875rem;color:#6b7280;margin-bottom:6px"><strong style="color:#111">What competitors miss:</strong> ${g.what_missing}</div>
-      <div style="font-size:.875rem;color:#6b7280;margin-bottom:10px"><strong style="color:#111">Your advantage:</strong> ${g.your_angle}</div>
-      ${pill('🎯 '+g.action)}
-    </div>`).join('');
-}
-
-function copyResults(listId) {
-  const el = document.getElementById(listId);
-  if (!el) return;
-  navigator.clipboard.writeText(el.innerText).then(() => {
-    const btn = event.target;
-    const old = btn.textContent;
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = old, 2000);
-  });
-}
-
-function downloadPDF(listId, titleId) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const title = (document.getElementById(titleId)||{}).textContent || 'Report';
-  const content = (document.getElementById(listId)||{}).innerText || '';
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(16);
-  doc.text(title, 20, 20);
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(10);
-  const lines = doc.splitTextToSize(content, 170);
-  let y = 35;
-  lines.forEach(line => { if(y>280){doc.addPage();y=20;} doc.text(line,20,y); y+=6; });
-  doc.save(title.replace(/[^a-z0-9]/gi,'_').toLowerCase()+'.pdf');
-}
-
-async function fetchTrending(autoLoad) {
-  const topicEl = document.getElementById('topicInput');
-  const topic = topicEl ? topicEl.value.trim() : '';
-  const searchQuery = topic || 'make money online digital products side hustle';
-  const btn = document.getElementById('btn-trending');
-  if (btn && !autoLoad) { btn.textContent = '⏳ Loading...'; btn.disabled = true; }
-  try {
-    const res = await fetch(PROXY + '/trending?q=' + encodeURIComponent(searchQuery + ' 2025 trending'));
-    const data = await res.json();
-    if (data.trending && data.trending.length > 0) {
-      const list = document.getElementById('trending-list');
-      if (list) {
-        list.innerHTML = data.trending.map(t =>
-          '<span onclick="useTrending(this.textContent)" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:6px 14px;font-size:.8rem;cursor:pointer;display:inline-block;margin:2px;transition:all .2s" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'">' + t + '</span>'
-        ).join('');
-      }
-    }
-  } catch(err) {
-    const list = document.getElementById('trending-list');
-    if (list) list.innerHTML = '<span style="font-size:.82rem;color:#9ca3af">Could not load trending topics</span>';
-  } finally {
-    if (btn) { btn.textContent = '🔥 Trending Topics'; btn.disabled = false; }
-  }
-}
-
-function useTrending(topic) {
-  const topicEl = document.getElementById('topicInput');
-  if (topicEl) topicEl.value = topic;
-}
-
-window.addEventListener('load', function() {
-  setTimeout(function() { fetchTrending(true); }, 2000);
-});
-</script>
   <style>
     .main-tabs{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap}
     .main-tab{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s;text-align:center;white-space:nowrap}
@@ -376,11 +78,7 @@ window.addEventListener('load', function() {
     .export-btn.copied{background:var(--accent);color:#fff;border-color:var(--accent)}
   </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Content and Product Idea Generator","url":"https://mrsmile-build.github.io/toolkit/product-idea-generator/","description":"Free AI-powered generator for digital product ideas, trending content, platform strategy, monetization roadmap and 7-day content calendar for any niche.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
-window.addEventListener('load', function() {
-  setTimeout(function() { fetchTrending(true); }, 2000);
-});
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Content and Product Idea Generator","url":"https://mrsmile-build.github.io/toolkit/product-idea-generator/","description":"Free AI-powered generator for digital product ideas, trending content, platform strategy, monetization roadmap and 7-day content calendar for any niche.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 <nav>
@@ -460,19 +158,7 @@ window.addEventListener('load', function() {
           <div class="count-btn" onclick="setCount(10,this)">10</div>
         </div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
-        <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
-        <button class="btn btn-outline" onclick="fetchTrending()" id="btn-trending" style="font-size:.85rem;padding:11px 16px">🔥 Trending Topics</button>
-      </div>
-      <div id="trending-box" style="background:var(--surface2);border:1px solid rgba(255,92,0,.2);border-radius:10px;padding:14px;margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);font-weight:700">🔥 Trending Right Now — Click to use</div>
-          <button onclick="fetchTrending()" style="background:none;border:none;font-size:.75rem;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:6px;border:1px solid var(--border)">↻ Refresh</button>
-        </div>
-        <div id="trending-list" style="display:flex;flex-wrap:wrap;gap:8px">
-          <span style="font-size:.82rem;color:var(--ink-soft)">Loading trending topics...</span>
-        </div>
-      </div>
+      <button class="btn" onclick="generate('products')" id="btn-products">📦 Generate Product Ideas</button>
       <div class="loading" id="load-products"><div class="spinner"></div><p>Generating product ideas...</p></div>
       <div class="error-box" id="err-products"></div>
       <div class="output" id="out-products">
@@ -627,87 +313,374 @@ window.addEventListener('load', function() {
 
   </div>
 </div>
+<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let currentTab = 'products', inputMode = 'type', selectedNiche = '', ideaCount = 8;
 
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
 
-<div style="max-width:860px;margin:0 auto;padding:0 20px 60px;font-family:var(--font-body)">
+function setMode(m, el) {
+  inputMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('type-input').style.display = m === 'type' ? 'block' : 'none';
+  document.getElementById('pick-input').style.display = m === 'pick' ? 'block' : 'none';
+}
 
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:40px">
-    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:12px">What is a Digital Product Idea Generator?</h2>
-    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A digital product idea generator is an AI-powered tool that helps creators, entrepreneurs and side hustlers discover profitable ideas for ebooks, online courses, templates, newsletters and other digital products — based on any niche or topic they choose.</p>
-    <p style="color:#6b7280;line-height:1.8">Instead of spending weeks researching what to create, you type your topic and get ready-to-execute product ideas in seconds. Each idea comes with a suggested title, target audience, description and recommended selling price.</p>
+function pickNiche(el) {
+  document.querySelectorAll('.niche-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedNiche = el.textContent.trim();
+}
+
+function setCount(n, el) {
+  ideaCount = n;
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function getTopic() {
+  if (inputMode === 'type') return document.getElementById('topicInput').value.trim();
+  return selectedNiche;
+}
+
+function getPrompt(tab, topic) {
+  if (tab === 'products') return `You are an expert in digital products across ALL industries. Generate exactly ${ideaCount} digital product ideas for the niche: "${topic}". Make ideas highly specific and relevant to this exact niche — not generic. Return ONLY a valid JSON array. Each item must have: title, type (Ebook/Course/Template/Newsletter/Guide/Toolkit/Checklist/Workbook/Preset/Plugin/Script/Asset Pack), audience, description (2 sentences), price (USD like $17). No markdown, no extra text.`;
+
+  if (tab === 'content') return `You are a viral content strategist for ALL niches including tech, education, lifestyle, business and creative fields. Generate 8 trending content ideas for the niche: "${topic}". Make ideas highly specific to this niche. Return ONLY a valid JSON array. Each item must have: title (the content title), hook (first line that stops the scroll, max 15 words), format (best format for this niche like Tutorial/Carousel/Thread/Short Video/Blog Post/Podcast/Live Stream), platform (best platform for this specific niche), angle (unique angle in 1 sentence), engagement (Low/Medium/High/Viral). No markdown, no extra text.`;
+
+  if (tab === 'platforms') return `You are a platform strategy expert for ALL niches. Recommend the top 5 most relevant platforms for someone in the "${topic}" niche — consider platforms like GitHub, Stack Overflow, Dribbble, Behance, LinkedIn, YouTube, TikTok, Instagram, Twitter, Reddit, Pinterest, Twitch, Discord and others depending on the niche. Return ONLY a valid JSON array. Each item must have: platform (name), icon (emoji), audience (who is there), content_type (what works best for this niche on this platform), monetization (how to make money there in this niche), difficulty (Easy/Medium/Hard), tip (one insider tip specific to this niche). No markdown, no extra text.`;
+
+  if (tab === 'monetize') return `You are a monetization expert across ALL industries and niches. Give 5 realistic ways to make money in the "${topic}" niche — be specific to this niche, not generic. Return ONLY a valid JSON array. Each item must have: method (specific monetization method for this niche), speed (Fast/Medium/Slow), income_potential (realistic range like $500-$2000/month), description (2 sentences specific to this niche), steps (array of 3 concrete action steps to start today). No markdown, no extra text.`;
+
+  if (tab === 'hashtags') return `You are a hashtag expert. Generate the best hashtags for the "${topic}" niche on ${hashPlatform}. Return ONLY a valid JSON array of 4 groups. Each group must have: category (like High Traffic/Medium Traffic/Niche Specific/Branded), hashtags (array of 8 hashtags with # symbol), reach (High/Medium/Niche), tip (one strategy tip). No markdown no extra text.`;
+
+  if (tab === 'niche') return `You are a profitable niche analyst. Find 6 high-demand low-competition niches for a ${creatorType} to make money online in 2025. Return ONLY a valid JSON array. Each item must have: niche, competition (Low/Medium/High), demand (Low/Medium/High/Very High), why (2 sentences why profitable now), income_potential (like $500-$3000/month), entry_point (easiest way to start). No markdown no extra text.`;
+
+  if (tab === 'competitor') return `You are a competitive analyst. Find 6 gaps competitors are missing in the "${topic}" niche. Return ONLY a valid JSON array. Each item must have: gap (opportunity name), what_missing (what competitors fail to provide), your_angle (how to fill this gap), opportunity_size (Small/Medium/Large/Huge), action (one specific action to take today). No markdown no extra text.`;
+
+  if (tab === 'calendar') return `You are a content calendar expert for ALL niches. Create a 7-day content posting plan for someone in the "${topic}" niche. Use platforms and formats most relevant to this specific niche. Return ONLY a valid JSON array of exactly 7 items. Each item must have: day (Day 1, Day 2 etc), title (specific content title for this niche), hook (attention-grabbing opening line specific to this niche audience), platform (most relevant platform for this niche), format (most effective format for this niche), goal (Awareness/Engagement/Sales/Trust). No markdown, no extra text.`;
+}
+
+function renderProducts(data, topic) {
+  const types = {ebook:'badge-blue',course:'badge-yellow',template:'badge-green',newsletter:'badge-purple',guide:'badge-orange',toolkit:'badge-blue',checklist:'badge-green',workbook:'badge-purple'};
+  document.getElementById('title-products').textContent = ideaCount + ' Product Ideas: ' + topic;
+  document.getElementById('list-products').innerHTML = data.map((d,i) => {
+    const tc = types[(d.type||'').toLowerCase()] || 'badge-gray';
+    return `<div class="idea-card"><div class="idea-top"><div class="idea-title">${i+1}. ${d.title}</div><span class="badge ${tc}">${d.type}</span></div><div class="idea-desc">${d.description}</div><div class="idea-meta"><span class="meta-pill">👥 ${d.audience}</span><span class="meta-pill">💵 ${d.price}</span></div></div>`;
+  }).join('');
+}
+
+function renderContent(data, topic) {
+  const eng = {Low:'badge-gray',Medium:'badge-blue',High:'badge-green',Viral:'badge-purple'};
+  document.getElementById('title-content').textContent = 'Trending Content Ideas: ' + topic;
+  document.getElementById('list-content').innerHTML = data.map((d,i) => {
+    const ec = eng[d.engagement] || 'badge-gray';
+    return `<div class="idea-card"><div class="idea-top"><div class="idea-title">${i+1}. ${d.title}</div><span class="badge ${ec}">${d.engagement}</span></div><div class="idea-desc" style="font-style:italic;color:var(--accent)">"${d.hook}"</div><div class="idea-desc">${d.angle}</div><div class="idea-meta"><span class="meta-pill">📱 ${d.platform}</span><span class="meta-pill">🎬 ${d.format}</span></div></div>`;
+  }).join('');
+}
+
+function renderPlatforms(data, topic) {
+  document.getElementById('title-platforms').textContent = 'Platform Strategy: ' + topic;
+  document.getElementById('list-platforms').innerHTML = data.map(d => {
+    const dc = d.difficulty === 'Easy' ? 'diff-easy' : d.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard';
+    return `<div class="platform-card"><div class="platform-header"><span class="platform-icon">${d.icon}</span><div><div class="platform-name">${d.platform}</div><span class="${dc}">${d.difficulty}</span></div></div><div class="platform-body"><p><strong>Audience:</strong> ${d.audience}</p><p><strong>Best content:</strong> ${d.content_type}</p><p><strong>Monetization:</strong> ${d.monetization}</p><p style="background:var(--bg);padding:10px;border-radius:8px;margin-top:8px">💡 ${d.tip}</p></div></div>`;
+  }).join('');
+}
+
+function renderMonetize(data, topic) {
+  document.getElementById('title-monetize').textContent = 'Monetization Roadmap: ' + topic;
+  document.getElementById('list-monetize').innerHTML = data.map((d,i) => {
+    const sc = d.speed === 'Fast' ? 'speed-fast' : d.speed === 'Medium' ? 'speed-medium' : 'speed-slow';
+    const steps = Array.isArray(d.steps) ? d.steps.map(s => `<li>${s}</li>`).join('') : '';
+    return `<div class="money-card"><div class="money-top"><div class="money-title">${i+1}. ${d.method}</div><span class="${sc}">${d.speed}</span></div><div class="money-desc">${d.description}</div><div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Potential: ${d.income_potential}</div><ul class="money-steps">${steps}</ul></div>`;
+  }).join('');
+}
+
+function renderCalendar(data, topic) {
+  document.getElementById('title-calendar').textContent = '7-Day Content Plan: ' + topic;
+  document.getElementById('list-calendar').innerHTML = data.map(d => {
+    const gc = {Awareness:'badge-blue',Engagement:'badge-green',Sales:'badge-orange',Trust:'badge-purple'}[d.goal] || 'badge-gray';
+    return `<div class="cal-card"><div class="cal-day">${d.day}</div><div class="cal-content"><div class="cal-title">${d.title}</div><div class="cal-hook">"${d.hook}"</div><div class="cal-meta"><span class="cal-tag">📱 ${d.platform}</span><span class="cal-tag">🎬 ${d.format}</span><span class="badge ${gc}" style="font-size:.68rem;padding:2px 8px">${d.goal}</span></div></div></div>`;
+  }).join('');
+}
+
+async function generate(tab) {
+  const topic = getTopic();
+  if (!topic) { alert('Please enter your niche or topic first.'); return; }
+
+  document.getElementById('load-' + tab).classList.add('show');
+  document.getElementById('out-' + tab).classList.remove('show');
+  document.getElementById('err-' + tab).classList.remove('show');
+  document.getElementById('btn-' + tab).disabled = true;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({model:'llama-3.3-70b-versatile', messages:[{role:'user', content: getPrompt(tab, topic)}], temperature:0.8, max_tokens:2500})
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(text);
+    if (tab === 'products') renderProducts(parsed, topic);
+    else if (tab === 'content') renderContent(parsed, topic);
+    else if (tab === 'platforms') renderPlatforms(parsed, topic);
+    else if (tab === 'monetize') renderMonetize(parsed, topic);
+    else if (tab === 'calendar') renderCalendar(parsed, topic);
+    else if (tab === 'hashtags') renderHashtags(parsed, topic);
+    else if (tab === 'niche') renderNiche(parsed);
+    else if (tab === 'competitor') renderCompetitor(parsed, topic);
+    document.getElementById('out-' + tab).classList.add('show');
+  } catch(err) {
+    const box = document.getElementById('err-' + tab);
+    box.textContent = 'Something went wrong: ' + err.message + '. Please try again.';
+    box.classList.add('show');
+  } finally {
+    document.getElementById('load-' + tab).classList.remove('show');
+    document.getElementById('btn-' + tab).disabled = false;
+  }
+}
+
+function copyResults(listId) {
+  const el = document.getElementById(listId);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy All';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function downloadPDF(listId, titleId) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const title = document.getElementById(titleId).textContent;
+  const content = document.getElementById(listId).innerText;
+  
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text(title, 20, 20);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  
+  const lines = doc.splitTextToSize(content, 170);
+  let y = 35;
+  lines.forEach(line => {
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, 20, y);
+    y += 6;
+  });
+  
+  doc.save(title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf');
+}
+
+let hashPlatform = 'Instagram';
+let creatorType = 'beginner with no skills';
+
+function setHashPlatform(p, el) {
+  hashPlatform = p;
+  document.querySelectorAll('#panel-hashtags .count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setCreatorType(t, el) {
+  creatorType = t;
+  document.querySelectorAll('#panel-niche .count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function renderHashtags(data, topic) {
+  document.getElementById('title-hashtags').textContent = hashPlatform + ' Hashtags: ' + topic;
+  document.getElementById('list-hashtags').innerHTML = data.map(g =>
+    '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (g.category||'Hashtags') + '</div><span class="badge badge-blue">' + (g.reach||'Mixed') + '</span></div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">' +
+    (g.hashtags||[]).map(h => '<span style="background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:500">' + h + '</span>').join('') +
+    '</div><div class="idea-desc">' + (g.tip||'') + '</div></div>'
+  ).join('');
+}
+
+function renderNiche(data) {
+  document.getElementById('title-niche').textContent = 'Profitable Niches for: ' + creatorType;
+  document.getElementById('list-niche').innerHTML = data.map((n,i) =>
+    '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + n.niche + '</div><span class="badge ' + (n.competition==='Low'?'badge-green':n.competition==='Medium'?'badge-yellow':'badge-orange') + '">' + n.competition + ' Competition</span></div><div class="idea-desc">' + n.why + '</div><div class="idea-meta"><span class="meta-pill">💵 ' + n.income_potential + '</span><span class="meta-pill">⚡ ' + n.entry_point + '</span><span class="meta-pill">🔥 Demand: ' + n.demand + '</span></div></div>'
+  ).join('');
+}
+
+function renderCompetitor(data, topic) {
+  document.getElementById('title-competitor').textContent = 'Competitor Gaps: ' + topic;
+  document.getElementById('list-competitor').innerHTML = data.map((g,i) =>
+    '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + g.gap + '</div><span class="badge badge-purple">' + g.opportunity_size + '</span></div><div class="idea-desc"><strong>What competitors miss:</strong> ' + g.what_missing + '</div><div class="idea-desc"><strong>Your advantage:</strong> ' + g.your_angle + '</div><div class="idea-meta"><span class="meta-pill">🎯 ' + g.action + '</span></div></div>'
+  ).join('');
+}
+</script>
+
+<!-- SEO ARTICLE SECTION -->
+<div style="max-width:860px;margin:0 auto;padding:0 20px 60px">
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:40px">
+    <h2 style="font-family:var(--font-head);font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:16px">What is a Digital Product Idea Generator?</h2>
+    <p style="font-size:.95rem;color:var(--ink-soft);line-height:1.8;margin-bottom:16px">A digital product idea generator is an AI-powered tool that helps creators, entrepreneurs and side hustlers discover profitable ideas for ebooks, online courses, templates, newsletters and other digital products — based on any niche or topic they choose.</p>
+    <p style="font-size:.95rem;color:var(--ink-soft);line-height:1.8">Instead of spending weeks researching what to create, you type your topic and get 8-10 ready-to-execute product ideas in seconds. Each idea comes with a suggested title, target audience, description and recommended selling price.</p>
   </div>
 
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
-    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:12px">Why Digital Products Are the Best Way to Make Money Online</h2>
-    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">Digital products are files or content that people pay for and download — like ebooks, guides, templates, courses and checklists. They are the best side income for one simple reason: <strong style="color:#111">you create it once and sell it forever.</strong></p>
-    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">Unlike physical products, there is no shipping, no inventory and no manufacturing cost. Once your ebook or template is ready, every sale is almost pure profit.</p>
-    <p style="color:#6b7280;line-height:1.8">People in Nigeria, Kenya, Ghana and across Africa are already making ₦100,000 to ₦500,000 monthly selling simple digital products on platforms like Selar and Gumroad — with nothing more than a phone and knowledge they already have.</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:20px">
+    <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:16px">Why Digital Products Are the Best Way to Make Money Online</h2>
+    <p style="font-size:.95rem;color:var(--ink-soft);line-height:1.8;margin-bottom:12px">Digital products are files or content that people pay for and download — like ebooks, guides, templates, courses and checklists. They are the best side income for one simple reason: <strong style="color:var(--ink)">you create it once and sell it forever.</strong></p>
+    <p style="font-size:.95rem;color:var(--ink-soft);line-height:1.8;margin-bottom:12px">Unlike physical products, there is no shipping, no inventory and no manufacturing cost. Once your ebook or template is ready, every sale is almost pure profit.</p>
+    <p style="font-size:.95rem;color:var(--ink-soft);line-height:1.8">People in Nigeria, Kenya, Ghana and across Africa are already making ₦100,000 to ₦500,000 monthly selling simple digital products on platforms like Selar and Gumroad — with nothing more than a phone and knowledge they already have.</p>
   </div>
 
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
-    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:20px">Most Profitable Digital Product Niches in 2025</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
-      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px"><div style="font-size:1.2rem;margin-bottom:4px">💰</div><div style="font-weight:700;margin-bottom:4px">Money & Finance</div><div style="font-size:.8rem;color:#6b7280">Budgeting guides, investment ebooks, side hustle blueprints</div></div>
-      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px"><div style="font-size:1.2rem;margin-bottom:4px">💪</div><div style="font-weight:700;margin-bottom:4px">Health & Fitness</div><div style="font-size:.8rem;color:#6b7280">Workout plans, meal prep guides, weight loss ebooks</div></div>
-      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px"><div style="font-size:1.2rem;margin-bottom:4px">📱</div><div style="font-weight:700;margin-bottom:4px">Social Media</div><div style="font-size:.8rem;color:#6b7280">Content templates, growth guides, caption packs</div></div>
-      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px"><div style="font-size:1.2rem;margin-bottom:4px">💼</div><div style="font-weight:700;margin-bottom:4px">Business & Side Hustle</div><div style="font-size:.8rem;color:#6b7280">Freelance guides, client proposal templates, pricing kits</div></div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:20px">
+    <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:20px">Most Profitable Digital Product Niches in 2025</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:1.3rem;margin-bottom:6px">💰</div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Money & Finance</div>
+        <div style="font-size:.82rem;color:var(--ink-soft)">Budgeting guides, investment ebooks, side hustle blueprints</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:1.3rem;margin-bottom:6px">💪</div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Health & Fitness</div>
+        <div style="font-size:.82rem;color:var(--ink-soft)">Workout plans, meal prep guides, weight loss ebooks</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:1.3rem;margin-bottom:6px">📱</div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Social Media</div>
+        <div style="font-size:.82rem;color:var(--ink-soft)">Content templates, growth guides, caption packs</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:1.3rem;margin-bottom:6px">🧠</div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Mindset & Productivity</div>
+        <div style="font-size:.82rem;color:var(--ink-soft)">Habit trackers, goal planners, morning routine guides</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:1.3rem;margin-bottom:6px">💼</div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Business & Side Hustle</div>
+        <div style="font-size:.82rem;color:var(--ink-soft)">Freelance guides, client proposal templates, pricing kits</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:1.3rem;margin-bottom:6px">❤️</div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Relationships</div>
+        <div style="font-size:.82rem;color:var(--ink-soft)">Dating guides, communication ebooks, marriage workbooks</div>
+      </div>
     </div>
   </div>
 
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
-    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:20px">How to Use This Tool to Make Money</h2>
-    <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
-      <div style="background:#f97316;color:#fff;font-weight:800;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-      <div><div style="font-weight:700;margin-bottom:4px">Pick your niche</div><div style="font-size:.875rem;color:#6b7280">Choose a topic you know or are interested in. It does not have to be your expertise — just something people search for online.</div></div>
-    </div>
-    <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
-      <div style="background:#f97316;color:#fff;font-weight:800;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-      <div><div style="font-weight:700;margin-bottom:4px">Generate your ideas</div><div style="font-size:.875rem;color:#6b7280">Use the AI generator above to get specific product ideas with titles, descriptions and suggested prices.</div></div>
-    </div>
-    <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
-      <div style="background:#f97316;color:#fff;font-weight:800;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
-      <div><div style="font-weight:700;margin-bottom:4px">Create your product with AI</div><div style="font-size:.875rem;color:#6b7280">Use ChatGPT or Claude to write your ebook or guide. A 20-page ebook takes 2-3 hours with AI assistance.</div></div>
-    </div>
-    <div style="display:flex;gap:16px;align-items:flex-start">
-      <div style="background:#f97316;color:#fff;font-weight:800;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
-      <div><div style="font-weight:700;margin-bottom:4px">Sell on Selar or Gumroad</div><div style="font-size:.875rem;color:#6b7280">Upload your product, set your price and share your link. Every sale goes directly to your account.</div></div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:20px">
+    <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:16px">How to Use This Tool to Make Money</h2>
+    <div style="counter-reset:steps">
+      <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-start">
+        <div style="background:var(--accent);color:#fff;font-family:var(--font-head);font-weight:800;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+        <div>
+          <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Pick your niche</div>
+          <div style="font-size:.875rem;color:var(--ink-soft);line-height:1.6">Choose a topic you know something about or are interested in. It doesn't have to be your expertise — just something people search for online.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-start">
+        <div style="background:var(--accent);color:#fff;font-family:var(--font-head);font-weight:800;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+        <div>
+          <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Generate your ideas</div>
+          <div style="font-size:.875rem;color:var(--ink-soft);line-height:1.6">Use the AI generator above to get 8-10 specific product ideas with titles, descriptions and suggested prices. Use the Product Ideas, Content Ideas and Monetization tabs.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-start">
+        <div style="background:var(--accent);color:#fff;font-family:var(--font-head);font-weight:800;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+        <div>
+          <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Create your product with AI</div>
+          <div style="font-size:.875rem;color:var(--ink-soft);line-height:1.6">Use ChatGPT, Claude or any AI tool to write your ebook or guide. A 20-page ebook takes 2-3 hours to create with AI assistance. You don't need to be a writer.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="background:var(--accent);color:#fff;font-family:var(--font-head);font-weight:800;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+        <div>
+          <div style="font-family:var(--font-head);font-weight:700;margin-bottom:4px">Sell on Selar or Gumroad</div>
+          <div style="font-size:.875rem;color:var(--ink-soft);line-height:1.6">Upload your product to Selar (best for Nigerian audience) or Gumroad (best for global audience). Set your price and share your link. Every sale goes directly to your account.</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div style="background:#111;border-radius:14px;padding:28px;margin-top:16px;text-align:center">
-    <h3 style="color:#fff;font-size:1.2rem;font-weight:800;margin-bottom:8px">📦 Ready-Made Digital Products You Can Sell Today</h3>
-    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse our collection of ready-made ebooks, guides and templates. Buy once and resell as your own.</p>
-    <a href="https://selar.com/m/MrSmilewrite" target="_blank" style="display:inline-block;background:#f97316;color:#fff;padding:12px 28px;border-radius:10px;font-weight:700;text-decoration:none">Browse Products on Selar →</a>
+  <!-- SELAR CTA -->
+  <div style="background:var(--ink);border-radius:14px;padding:32px;margin-top:20px;text-align:center">
+    <div style="font-size:1.5rem;margin-bottom:12px">📦</div>
+    <h2 style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:10px">Ready-Made Digital Products You Can Sell Today</h2>
+    <p style="color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.7;margin-bottom:20px;max-width:500px;margin-left:auto;margin-right:auto">Skip the creation process. Browse our collection of ready-made ebooks, guides and templates you can buy once and resell as your own — or use as inspiration for your own products.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:14px 32px;border-radius:10px;font-family:var(--font-head);font-weight:700;font-size:1rem;text-decoration:none;transition:all .2s">Browse Digital Products on Selar →</a>
+    <p style="color:rgba(255,255,255,.3);font-size:.75rem;margin-top:12px">Instant download · Secure payment · Nigerian & global buyers welcome</p>
   </div>
 
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
-    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:20px">Frequently Asked Questions</h2>
-    <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #e5e7eb">
-      <h3 style="font-weight:700;margin-bottom:6px">Do I need experience to create digital products?</h3>
-      <p style="font-size:.875rem;color:#6b7280;line-height:1.7">No. With AI tools like ChatGPT and Claude, anyone can create a professional ebook or guide in a few hours. You just need a topic and a platform like Selar or Gumroad to sell.</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:20px">
+    <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:20px">Frequently Asked Questions</h2>
+
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+      <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px">What types of digital products can I create?</h3>
+      <p style="font-size:.875rem;color:var(--ink-soft);line-height:1.7">You can create ebooks, online courses, templates, checklists, workbooks, newsletters, preset packs, swipe files, spreadsheets, Canva templates and more. The AI generator gives you specific ideas based on your niche with the best product type for each idea.</p>
     </div>
-    <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #e5e7eb">
-      <h3 style="font-weight:700;margin-bottom:6px">Which platform is best for selling in Nigeria?</h3>
-      <p style="font-size:.875rem;color:#6b7280;line-height:1.7">Selar is the best platform for Nigerian sellers. It accepts Nigerian bank accounts and supports Paystack and Flutterwave. For global sales, Gumroad is better.</p>
+
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+      <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px">How much can I make selling digital products?</h3>
+      <p style="font-size:.875rem;color:var(--ink-soft);line-height:1.7">Income varies widely. Beginners typically earn ₦20,000 to ₦100,000 in their first month with consistent promotion. Experienced sellers earn ₦300,000 to over ₦1,000,000 monthly. The key is picking a high-demand niche, creating a quality product and promoting consistently on social media.</p>
     </div>
+
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+      <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px">Do I need experience or skills to create digital products?</h3>
+      <p style="font-size:.875rem;color:var(--ink-soft);line-height:1.7">No. With AI tools like ChatGPT and Claude, anyone can create a professional ebook or guide in a few hours. You just need a topic, an AI writing tool and a platform like Selar or Gumroad to sell. This tool helps you find the right topic automatically.</p>
+    </div>
+
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+      <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px">Which platform is best for selling digital products in Nigeria?</h3>
+      <p style="font-size:.875rem;color:var(--ink-soft);line-height:1.7">Selar is the best platform for Nigerian sellers. It accepts Nigerian bank accounts, supports Paystack and Flutterwave, and has a growing community of African buyers. For global sales, Gumroad is the better choice as it accepts international cards and PayPal.</p>
+    </div>
+
     <div>
-      <h3 style="font-weight:700;margin-bottom:6px">Is this tool really free?</h3>
-      <p style="font-size:.875rem;color:#6b7280;line-height:1.7">Yes. ToolKit is 100% free with no sign-up required. All 8 tabs including hashtags, platform strategy and monetization roadmap are completely free to use.</p>
+      <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px">Is this digital product idea generator really free?</h3>
+      <p style="font-size:.875rem;color:var(--ink-soft);line-height:1.7">Yes. ToolKit is 100% free with no sign-up required. The AI generator, hashtag tool, platform strategy, monetization roadmap and 7-day content calendar are all free to use as many times as you want. No credit card, no account needed.</p>
     </div>
   </div>
 
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
-    <h3 style="font-weight:800;margin-bottom:14px">Other Free Tools</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px">
-      <a href="../word-counter/" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111">📝 Word Counter</a>
-      <a href="../qr-generator/" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111">🔳 QR Generator</a>
-      <a href="../profit-calculator/" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111">💰 Profit Calculator</a>
-      <a href="../business-name-generator/" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111">✨ Business Names</a>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin-top:20px">
+    <h2 style="font-family:var(--font-head);font-size:1.1rem;font-weight:800;margin-bottom:16px">Other Free Tools You Might Find Useful</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+      <a href="../word-counter/" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-decoration:none;color:var(--ink);transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:1.2rem;margin-bottom:6px">📝</div>
+        <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700">Word Counter</div>
+        <div style="font-size:.78rem;color:var(--ink-soft)">Count words in your ebook</div>
+      </a>
+      <a href="../qr-generator/" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-decoration:none;color:var(--ink);transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:1.2rem;margin-bottom:6px">🔳</div>
+        <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700">QR Generator</div>
+        <div style="font-size:.78rem;color:var(--ink-soft)">QR code for your Selar link</div>
+      </a>
+      <a href="../password-generator/" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-decoration:none;color:var(--ink);transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:1.2rem;margin-bottom:6px">🔐</div>
+        <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700">Password Generator</div>
+        <div style="font-size:.78rem;color:var(--ink-soft)">Secure your accounts</div>
+      </a>
+      <a href="../bmi-calculator/" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-decoration:none;color:var(--ink);transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:1.2rem;margin-bottom:6px">⚖️</div>
+        <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700">BMI Calculator</div>
+        <div style="font-size:.78rem;color:var(--ink-soft)">Health & fitness niche</div>
+      </a>
     </div>
   </div>
 
 </div>
 
-<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
 </body>
 </html>
