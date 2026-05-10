@@ -535,6 +535,31 @@ function renderCompetitor(data, topic) {
     '<div class="idea-card"><div class="idea-top"><div class="idea-title">' + (i+1) + '. ' + g.gap + '</div><span class="badge badge-purple">' + g.opportunity_size + '</span></div><div class="idea-desc"><strong>What competitors miss:</strong> ' + g.what_missing + '</div><div class="idea-desc"><strong>Your advantage:</strong> ' + g.your_angle + '</div><div class="idea-meta"><span class="meta-pill">🎯 ' + g.action + '</span></div></div>'
   ).join('');
 }
+
+async function fetchTrending() {
+  const topicEl = document.getElementById('topicInput');
+  const topic = topicEl ? topicEl.value.trim() : '';
+  const query = (topic || 'make money online') + ' ' + new Date().getFullYear() + ' trending';
+  const btn = document.getElementById('btn-trending');
+  const box = document.getElementById('trending-box');
+  const list = document.getElementById('trending-list');
+  if(btn){btn.textContent='⏳ Loading...';btn.disabled=true;}
+  try {
+    const res = await fetch('https://groq-proxy-7f82.onrender.com/trending?q='+encodeURIComponent(query));
+    const data = await res.json();
+    if(data.trending && data.trending.length > 0 && list){
+      list.innerHTML = data.trending.map(t=>
+        '<span onclick="document.getElementById(\'topicInput\').value=this.textContent;document.getElementById(\'trending-box\').style.display=\'none\'" style="background:#fff;border:1px solid #fde68a;border-radius:20px;padding:5px 12px;font-size:.8rem;cursor:pointer;display:inline-block;margin:2px">'+t+'</span>'
+      ).join('');
+      if(box){box.style.display='block';}
+    }
+  } catch(e) {
+    if(list) list.innerHTML='<span style="font-size:.8rem;color:#92400e">Could not load. Try again.</span>';
+    if(box) box.style.display='block';
+  } finally {
+    if(btn){btn.textContent='🔥 Trending Topics';btn.disabled=false;}
+  }
+}
 </script>
 
 <!-- SEO ARTICLE SECTION -->
