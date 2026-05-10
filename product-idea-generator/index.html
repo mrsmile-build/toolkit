@@ -186,7 +186,7 @@
     <!-- TAB 2: CONTENT IDEAS -->
     <div class="tab-panel" id="panel-content">
       <button class="btn" onclick="generate('content')" id="btn-content">🔥 Generate Content Ideas</button>
-        <button class="btn btn-outline" onclick="fetchTrending()" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
+        <button class="btn btn-outline" onclick="fetchTrending('content')" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
       <div class="loading" id="load-content"><div class="spinner"></div><p>Finding trending content ideas...</p></div>
       <div class="error-box" id="err-content"></div>
       <div class="output" id="out-content">
@@ -202,7 +202,7 @@
     <!-- TAB 3: PLATFORM STRATEGY -->
     <div class="tab-panel" id="panel-platforms">
       <button class="btn" onclick="generate('platforms')" id="btn-platforms">📱 Generate Platform Strategy</button>
-        <button class="btn btn-outline" onclick="fetchTrending()" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
+        <button class="btn btn-outline" onclick="fetchTrending('monetize')" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
       <div class="loading" id="load-platforms"><div class="spinner"></div><p>Building your platform strategy...</p></div>
       <div class="error-box" id="err-platforms"></div>
       <div class="output" id="out-platforms">
@@ -214,7 +214,7 @@
     <!-- TAB 4: MONETIZATION -->
     <div class="tab-panel" id="panel-monetize">
       <button class="btn" onclick="generate('monetize')" id="btn-monetize">💰 Generate Monetization Roadmap</button>
-        <button class="btn btn-outline" onclick="fetchTrending()" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
+        <button class="btn btn-outline" onclick="fetchTrending('calendar')" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
       <div class="loading" id="load-monetize"><div class="spinner"></div><p>Building your monetization roadmap...</p></div>
       <div class="error-box" id="err-monetize"></div>
       <div class="output" id="out-monetize">
@@ -230,7 +230,7 @@
     <!-- TAB 5: CALENDAR -->
     <div class="tab-panel" id="panel-calendar">
       <button class="btn" onclick="generate('calendar')" id="btn-calendar">📅 Generate 7-Day Content Plan</button>
-        <button class="btn btn-outline" onclick="fetchTrending()" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
+        <button class="btn btn-outline" onclick="fetchTrending('platforms')" style="padding:11px 14px;font-size:.85rem;margin-top:8px">🔥 Trending</button>
       <div class="loading" id="load-calendar"><div class="spinner"></div><p>Building your 7-day content plan...</p></div>
       <div class="error-box" id="err-calendar"></div>
       <div class="output" id="out-calendar">
@@ -540,10 +540,18 @@ function renderCompetitor(data, topic) {
   ).join('');
 }
 
-async function fetchTrending() {
+async function fetchTrending(tab) {
   const topicEl = document.getElementById('topicInput');
   const topic = topicEl ? topicEl.value.trim() : '';
-  const query = (topic || 'make money online') + ' ' + new Date().getFullYear() + ' trending';
+  const base = topic || 'make money online';
+  const year = new Date().getFullYear();
+  const queryMap = {
+    'content': base + ' viral content ideas ' + year,
+    'monetize': base + ' monetization strategies ' + year,
+    'calendar': base + ' content plan ' + year,
+    'platforms': base + ' best platforms ' + year,
+  };
+  const query = queryMap[tab] || (base + ' ' + year + ' trending');
   const btn = document.getElementById('btn-trending');
   const box = document.getElementById('trending-box');
   const list = document.getElementById('trending-list');
