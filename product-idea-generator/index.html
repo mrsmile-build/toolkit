@@ -95,13 +95,13 @@
   <p class="page-subtitle">Your complete AI-powered strategy tool for ANY niche — business, programming, fitness, education, creative arts, lifestyle and more. Type anything.</p>
   <div class="tool-card">
     <div class="main-tabs">
-      <div class="main-tab active" onclick="switchTab('products',this)">💡 Product Ideas</div>
-      <div class="main-tab" onclick="switchTab('monetize',this)">💰 Monetization</div>
+      <div class="main-tab active" onclick="switchTab('products',this)">📦 Product Ideas</div>
       <div class="main-tab" onclick="switchTab('content',this)">🔥 Content Ideas</div>
+      <div class="main-tab" onclick="switchTab('platforms',this)">📱 Platforms</div>
+      <div class="main-tab" onclick="switchTab('monetize',this)">💰 Monetization</div>
       <div class="main-tab" onclick="switchTab('calendar',this)">📅 7-Day Plan</div>
       <div class="main-tab" onclick="switchTab('hashtags',this)">🏷️ Hashtags</div>
       <div class="main-tab" onclick="switchTab('niche',this)">🔍 Niche Finder</div>
-      <div class="main-tab" onclick="switchTab('platforms',this)">📱 Platforms</div>
       <div class="main-tab" onclick="switchTab('competitor',this)">🎯 Gap Analysis</div>
     </div>
 
@@ -185,10 +185,7 @@
 
     <!-- TAB 2: CONTENT IDEAS -->
     <div class="tab-panel" id="panel-content">
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn" onclick="generate('content')" id="btn-content">🔥 Generate Content Ideas</button>
-        <button class="btn btn-outline" onclick="fetchTrending('products')" style="padding:11px 14px;font-size:.85rem">🔥 Trending</button>
-      </div>
+      <button class="btn" onclick="generate('content')" id="btn-content">🔥 Generate Content Ideas</button>
       <div class="loading" id="load-content"><div class="spinner"></div><p>Finding trending content ideas...</p></div>
       <div class="error-box" id="err-content"></div>
       <div class="output" id="out-content">
@@ -203,10 +200,7 @@
 
     <!-- TAB 3: PLATFORM STRATEGY -->
     <div class="tab-panel" id="panel-platforms">
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn" onclick="generate('platforms')" id="btn-platforms">📱 Generate Platform Strategy</button>
-        <button class="btn btn-outline" onclick="fetchTrending('products')" style="padding:11px 14px;font-size:.85rem">🔥 Trending</button>
-      </div>
+      <button class="btn" onclick="generate('platforms')" id="btn-platforms">📱 Generate Platform Strategy</button>
       <div class="loading" id="load-platforms"><div class="spinner"></div><p>Building your platform strategy...</p></div>
       <div class="error-box" id="err-platforms"></div>
       <div class="output" id="out-platforms">
@@ -217,10 +211,7 @@
 
     <!-- TAB 4: MONETIZATION -->
     <div class="tab-panel" id="panel-monetize">
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn" onclick="generate('monetize')" id="btn-monetize">💰 Generate Monetization Roadmap</button>
-        <button class="btn btn-outline" onclick="fetchTrending('products')" style="padding:11px 14px;font-size:.85rem">🔥 Trending</button>
-      </div>
+      <button class="btn" onclick="generate('monetize')" id="btn-monetize">💰 Generate Monetization Roadmap</button>
       <div class="loading" id="load-monetize"><div class="spinner"></div><p>Building your monetization roadmap...</p></div>
       <div class="error-box" id="err-monetize"></div>
       <div class="output" id="out-monetize">
@@ -235,10 +226,7 @@
 
     <!-- TAB 5: CALENDAR -->
     <div class="tab-panel" id="panel-calendar">
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn" onclick="generate('calendar')" id="btn-calendar">📅 Generate 7-Day Content Plan</button>
-        <button class="btn btn-outline" onclick="fetchTrending('calendar')" style="padding:11px 14px;font-size:.85rem">🔥 Trending</button>
-      </div>
+      <button class="btn" onclick="generate('calendar')" id="btn-calendar">📅 Generate 7-Day Content Plan</button>
       <div class="loading" id="load-calendar"><div class="spinner"></div><p>Building your 7-day content plan...</p></div>
       <div class="error-box" id="err-calendar"></div>
       <div class="output" id="out-calendar">
@@ -548,23 +536,11 @@ function renderCompetitor(data, topic) {
   ).join('');
 }
 
-async function fetchTrending(tab) {
+async function fetchTrending() {
   const topicEl = document.getElementById('topicInput');
   const topic = topicEl ? topicEl.value.trim() : '';
-  const base = topic || 'make money online';
-  const year = new Date().getFullYear();
-  const queries = {
-    'products': base + ' digital product ideas ' + year,
-    'content': base + ' viral content ideas ' + year,
-    'monetize': base + ' monetization strategies ' + year,
-    'calendar': base + ' content plan ideas ' + year,
-    'hashtags': base + ' trending hashtags ' + year,
-    'platforms': base + ' best platforms ' + year,
-    'niche': 'profitable niches ' + year,
-    'competitor': base + ' market gaps opportunities ' + year
-  };
-  const query = queries[tab] || (base + ' trending ' + year);
-  const btn = event ? event.target : null;
+  const query = (topic || 'make money online') + ' ' + new Date().getFullYear() + ' trending';
+  const btn = document.getElementById('btn-trending');
   if(btn){btn.textContent='⏳...';btn.disabled=true;}
   const box = document.getElementById('trending-box');
   const list = document.getElementById('trending-list');
@@ -578,7 +554,7 @@ async function fetchTrending(tab) {
       if(box) box.style.display='block';
     }
   } catch(e) {
-    if(list) list.innerHTML='<span style="font-size:.8rem;color:#92400e">Could not load. Try again.</span>';
+    if(list) list.innerHTML='<span style="font-size:.8rem;color:#92400e">Could not load trending topics.</span>';
     if(box) box.style.display='block';
   }
   if(btn){btn.textContent='🔥 Trending';btn.disabled=false;}
