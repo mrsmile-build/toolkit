@@ -349,6 +349,9 @@ function pickNiche(el) {
   document.querySelectorAll('.niche-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   selectedNiche = el.textContent.trim();
+  const topicEl = document.getElementById('topicInput');
+  if(topicEl) topicEl.value = selectedNiche;
+  setTimeout(() => fetchTrending(), 300);
 }
 
 function setCount(n, el) {
