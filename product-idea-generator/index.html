@@ -95,13 +95,13 @@
   <p class="page-subtitle">Your complete AI-powered strategy tool for ANY niche — business, programming, fitness, education, creative arts, lifestyle and more. Type anything.</p>
   <div class="tool-card">
     <div class="main-tabs">
-      <div class="main-tab active" onclick="switchTab('products',this)">📦 Product Ideas</div>
-      <div class="main-tab" onclick="switchTab('content',this)">🔥 Content Ideas</div>
-      <div class="main-tab" onclick="switchTab('platforms',this)">📱 Platforms</div>
+      <div class="main-tab active" onclick="switchTab('products',this)">💡 Product Ideas</div>
       <div class="main-tab" onclick="switchTab('monetize',this)">💰 Monetization</div>
+      <div class="main-tab" onclick="switchTab('content',this)">🔥 Content Ideas</div>
       <div class="main-tab" onclick="switchTab('calendar',this)">📅 7-Day Plan</div>
       <div class="main-tab" onclick="switchTab('hashtags',this)">🏷️ Hashtags</div>
       <div class="main-tab" onclick="switchTab('niche',this)">🔍 Niche Finder</div>
+      <div class="main-tab" onclick="switchTab('platforms',this)">📱 Platforms</div>
       <div class="main-tab" onclick="switchTab('competitor',this)">🎯 Gap Analysis</div>
     </div>
 
@@ -552,15 +552,19 @@ async function fetchTrending(tab) {
   const topicEl = document.getElementById('topicInput');
   const topic = topicEl ? topicEl.value.trim() : '';
   const base = topic || 'make money online';
-  const tabQueries = {
-    'content': base + ' viral content ideas ' + new Date().getFullYear(),
-    'platforms': base + ' best platforms to grow ' + new Date().getFullYear(),
-    'monetize': base + ' monetization strategies ' + new Date().getFullYear(),
-    'calendar': base + ' content calendar ideas ' + new Date().getFullYear(),
-    'products': base + ' digital product ideas ' + new Date().getFullYear()
+  const year = new Date().getFullYear();
+  const queries = {
+    'products': base + ' digital product ideas ' + year,
+    'content': base + ' viral content ideas ' + year,
+    'monetize': base + ' monetization strategies ' + year,
+    'calendar': base + ' content plan ideas ' + year,
+    'hashtags': base + ' trending hashtags ' + year,
+    'platforms': base + ' best platforms ' + year,
+    'niche': 'profitable niches ' + year,
+    'competitor': base + ' market gaps opportunities ' + year
   };
-  const query = tabQueries[tab] || (base + ' trending ' + new Date().getFullYear());
-  const btn = document.getElementById('btn-trending');
+  const query = queries[tab] || (base + ' trending ' + year);
+  const btn = event ? event.target : null;
   if(btn){btn.textContent='⏳...';btn.disabled=true;}
   const box = document.getElementById('trending-box');
   const list = document.getElementById('trending-list');
@@ -574,7 +578,7 @@ async function fetchTrending(tab) {
       if(box) box.style.display='block';
     }
   } catch(e) {
-    if(list) list.innerHTML='<span style="font-size:.8rem;color:#92400e">Could not load trending topics.</span>';
+    if(list) list.innerHTML='<span style="font-size:.8rem;color:#92400e">Could not load. Try again.</span>';
     if(box) box.style.display='block';
   }
   if(btn){btn.textContent='🔥 Trending';btn.disabled=false;}
