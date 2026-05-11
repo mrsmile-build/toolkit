@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Bio Generator — Free Instagram, TikTok & LinkedIn Bio | ToolKit</title>
+  <meta name="description" content="Free AI bio generator for Instagram, TikTok, LinkedIn and WhatsApp. Create a professional and catchy bio in seconds.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../caption-generator/index.html">Caption Gen</a></li>
+    <li><a href="../whatsapp-reply-generator/index.html">WhatsApp Reply</a></li>
+    <li><a href="../product-idea-generator/index.html">Idea Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Bio Generator</h1>
+  <p class="page-subtitle">Create a professional and catchy bio for any platform in seconds.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Your name or brand name</label>
+      <input type="text" id="bioName" placeholder="e.g. Mr Smile, GlowSkin by Amaka, TechBro Lagos...">
+    </div>
+    <div class="form-group">
+      <label>What do you do?</label>
+      <textarea id="bioDesc" placeholder="e.g. I sell hair extensions and wigs in Lagos. I also teach women how to start their own hair business..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="bioPlatformBtns">
+        <div class="mode-btn active" onclick="setBioPlatform('Instagram',this)">📸 Instagram</div>
+        <div class="mode-btn" onclick="setBioPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setBioPlatform('LinkedIn',this)">💼 LinkedIn</div>
+        <div class="mode-btn" onclick="setBioPlatform('WhatsApp',this)">💬 WhatsApp</div>
+        <div class="mode-btn" onclick="setBioPlatform('Twitter',this)">🐦 Twitter</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Bio style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="bioStyleBtns">
+        <div class="mode-btn active" onclick="setBioStyle('Professional',this)">💼 Professional</div>
+        <div class="mode-btn" onclick="setBioStyle('Creative',this)">🎨 Creative</div>
+        <div class="mode-btn" onclick="setBioStyle('Funny',this)">😂 Funny</div>
+        <div class="mode-btn" onclick="setBioStyle('Minimal',this)">✨ Minimal</div>
+        <div class="mode-btn" onclick="setBioStyle('Sales-focused',this)">💰 Sales</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateBios()" id="btnBio">✍️ Generate Bios</button>
+    <div id="loadBio" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Generating bios...</p>
+    </div>
+    <div id="errBio" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="bioResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Bio Options</div>
+        <button class="btn btn-outline" onclick="generateBios()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="bioList"></div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Ready to monetize your profile?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse digital products you can sell from your bio link today.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What Makes a Good Social Media Bio?</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A great bio answers three questions instantly — who you are, what you do, and what the visitor should do next. It should be clear, specific and include a call to action like a link or contact detail.</p>
+    <p style="color:#6b7280;line-height:1.8">Instagram allows 150 characters. TikTok allows 80 characters. LinkedIn allows 220 characters. This generator creates bios optimized for each platform's limit and audience.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:16px">Other Free Tools</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Generator</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WhatsApp Reply</a>
+      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Generator</a>
+      <a href="../business-name-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🚀 Business Names</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let bioPlatform = 'Instagram';
+let bioStyle = 'Professional';
+
+function setBioPlatform(p, el) {
+  bioPlatform = p;
+  document.querySelectorAll('#bioPlatformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setBioStyle(s, el) {
+  bioStyle = s;
+  document.querySelectorAll('#bioStyleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateBios() {
+  const name = document.getElementById('bioName').value.trim();
+  const desc = document.getElementById('bioDesc').value.trim();
+  if (!desc) { alert('Please describe what you do.'); return; }
+  document.getElementById('loadBio').style.display = 'block';
+  document.getElementById('bioResults').style.display = 'none';
+  document.getElementById('errBio').style.display = 'none';
+  document.getElementById('btnBio').disabled = true;
+
+  const prompt = `You are a social media branding expert. Create 5 ${bioStyle} ${bioPlatform} bios ${name ? 'for ' + name : ''} who does: "${desc}". Make bios platform-optimized for ${bioPlatform}. Return ONLY a valid JSON array of 5 strings. Each string is a complete ready-to-use bio with emojis. No markdown, no extra text, no numbering.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.9,
+        max_tokens: 1000
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    const bios = JSON.parse(text);
+    document.getElementById('bioList').innerHTML = bios.map((b, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">Bio Option ${i+1}</div>
+        <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px">${b}</div>
+        <button onclick="copyBio(this, ${JSON.stringify(b)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+      </div>`).join('');
+    document.getElementById('bioResults').style.display = 'block';
+  } catch(err) {
+    const box = document.getElementById('errBio');
+    box.textContent = 'Error: ' + err.message + '. Please try again.';
+    box.style.display = 'block';
+  } finally {
+    document.getElementById('loadBio').style.display = 'none';
+    document.getElementById('btnBio').disabled = false;
+  }
+}
+
+function copyBio(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+</script>
+</body></html>

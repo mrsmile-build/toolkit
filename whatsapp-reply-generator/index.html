@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Reply Generator — Free AI Business Reply Tool | ToolKit</title>
+  <meta name="description" content="Free AI WhatsApp reply generator. Get professional, sales and polite replies to customer messages, objections and inquiries instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../caption-generator/index.html">Caption Gen</a></li>
+    <li><a href="../bio-generator/index.html">Bio Gen</a></li>
+    <li><a href="../product-idea-generator/index.html">Idea Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">WhatsApp Reply Generator</h1>
+  <p class="page-subtitle">Get instant professional replies to any customer message or objection.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What did the customer say?</label>
+      <textarea id="customerMsg" placeholder="e.g. Too expensive&#10;I will come back later&#10;Can you reduce the price?&#10;What is the quality like?&#10;Is this original?" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>What are you selling? (optional)</label>
+      <input type="text" id="productDesc" placeholder="e.g. Hair extensions, shoes, digital products, coaching...">
+    </div>
+    <div class="form-group">
+      <label>Reply style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="styleBtns">
+        <div class="mode-btn active" onclick="setStyle('Polite and Professional',this)">💼 Professional</div>
+        <div class="mode-btn" onclick="setStyle('Sales-focused and persuasive',this)">💰 Sales</div>
+        <div class="mode-btn" onclick="setStyle('Friendly and casual',this)">😊 Friendly</div>
+        <div class="mode-btn" onclick="setStyle('Firm but respectful',this)">🤝 Firm</div>
+        <div class="mode-btn" onclick="setStyle('Nigerian Pidgin',this)">🇳🇬 Pidgin</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateReplies()" id="btnReply">💬 Generate Replies</button>
+    <div id="loadReply" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Generating replies...</p>
+    </div>
+    <div id="errReply" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="replyResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Replies</div>
+        <button class="btn btn-outline" onclick="generateReplies()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="replyList"></div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Want to grow your business faster?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse ready-made guides and templates for Nigerian entrepreneurs on Selar.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Handle Customer Objections on WhatsApp</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">The most common WhatsApp objections are price complaints, requests for discounts, and "I will think about it" responses. The key is to acknowledge the concern, add value, and create urgency without being pushy.</p>
+    <p style="color:#6b7280;line-height:1.8">Always respond quickly, use the customer's language style, and end every reply with a question or clear next step to keep the conversation going.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:16px">Other Free Tools</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Generator</a>
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Generator</a>
+      <a href="../password-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔐 Password Gen</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let replyStyle = 'Polite and Professional';
+
+function setStyle(s, el) {
+  replyStyle = s;
+  document.querySelectorAll('#styleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateReplies() {
+  const msg = document.getElementById('customerMsg').value.trim();
+  if (!msg) { alert('Please enter what the customer said.'); return; }
+  const product = document.getElementById('productDesc').value.trim();
+  document.getElementById('loadReply').style.display = 'block';
+  document.getElementById('replyResults').style.display = 'none';
+  document.getElementById('errReply').style.display = 'none';
+  document.getElementById('btnReply').disabled = true;
+
+  const prompt = `You are a Nigerian business WhatsApp expert. A customer said: "${msg}". ${product ? 'The seller is selling: ' + product + '.' : ''} Generate 3 ${replyStyle} WhatsApp replies in Nigerian business context. Return ONLY a valid JSON array of 3 strings. Each string is a complete WhatsApp message ready to send. Include emojis naturally. No markdown, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.85,
+        max_tokens: 1000
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    const replies = JSON.parse(text);
+    const labels = ['Option 1 — ' + replyStyle, 'Option 2 — Alternative', 'Option 3 — Short & Direct'];
+    document.getElementById('replyList').innerHTML = replies.map((r, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">${labels[i]||'Option '+(i+1)}</div>
+        <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px;white-space:pre-wrap">${r}</div>
+        <button onclick="copyReply(this, ${JSON.stringify(r)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+      </div>`).join('');
+    document.getElementById('replyResults').style.display = 'block';
+  } catch(err) {
+    const box = document.getElementById('errReply');
+    box.textContent = 'Error: ' + err.message + '. Please try again.';
+    box.style.display = 'block';
+  } finally {
+    document.getElementById('loadReply').style.display = 'none';
+    document.getElementById('btnReply').disabled = false;
+  }
+}
+function copyReply(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+</script>
+</body></html>

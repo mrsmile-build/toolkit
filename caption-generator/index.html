@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Caption Generator — Free Instagram, TikTok & WhatsApp Captions | ToolKit</title>
+  <meta name="description" content="Free AI caption generator for Instagram, TikTok, WhatsApp and more. Generate catchy captions for any product, business or post in seconds.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../product-idea-generator/index.html">Idea Gen</a></li>
+    <li><a href="../bio-generator/index.html">Bio Gen</a></li>
+    <li><a href="../whatsapp-reply-generator/index.html">WhatsApp Reply</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Caption Generator</h1>
+  <p class="page-subtitle">Generate catchy captions for Instagram, TikTok, WhatsApp and more in seconds.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What is your post or product about?</label>
+      <textarea id="captionInput" placeholder="e.g. My new hair extension business, selling homemade soap, fitness coaching, new iPhone launch..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="platformBtns">
+        <div class="mode-btn active" onclick="setPlatform('Instagram',this)">📸 Instagram</div>
+        <div class="mode-btn" onclick="setPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setPlatform('WhatsApp',this)">💬 WhatsApp</div>
+        <div class="mode-btn" onclick="setPlatform('Twitter',this)">🐦 Twitter</div>
+        <div class="mode-btn" onclick="setPlatform('Facebook',this)">👥 Facebook</div>
+        <div class="mode-btn" onclick="setPlatform('LinkedIn',this)">💼 LinkedIn</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Tone</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="toneBtns">
+        <div class="mode-btn active" onclick="setTone('Professional',this)">💼 Professional</div>
+        <div class="mode-btn" onclick="setTone('Funny',this)">😂 Funny</div>
+        <div class="mode-btn" onclick="setTone('Sales',this)">💰 Sales</div>
+        <div class="mode-btn" onclick="setTone('Casual',this)">😊 Casual</div>
+        <div class="mode-btn" onclick="setTone('Inspirational',this)">✨ Inspirational</div>
+        <div class="mode-btn" onclick="setTone('Pidgin',this)">🇳🇬 Pidgin</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateCaptions()" id="btnCaption">✨ Generate Captions</button>
+    <div id="loadCaption" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Generating captions...</p>
+    </div>
+    <div id="errCaption" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="captionResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Captions</div>
+        <button class="btn btn-outline" onclick="generateCaptions()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="captionList"></div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">📦 Need digital product ideas to sell?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Use our AI generator to find profitable ideas for your niche.</p>
+    <a href="../product-idea-generator/index.html" class="btn" style="margin-right:8px">Try Idea Generator →</a>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Browse Selar Products</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Write a Good Caption</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A good caption grabs attention in the first line, delivers value or emotion in the middle, and ends with a clear call to action. This AI caption generator does all three automatically based on your product and chosen tone.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:12px">Caption Tips by Platform</h2>
+    <p style="color:#6b7280;line-height:1.8">Instagram works best with 3-5 sentences plus hashtags. TikTok captions should be short and punchy under 150 characters. WhatsApp business captions work best with emojis and a direct offer. LinkedIn needs professional language without slang.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:16px">Other Free Tools</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WhatsApp Reply</a>
+      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Generator</a>
+      <a href="../qr-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔳 QR Generator</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let platform = 'Instagram';
+let tone = 'Professional';
+
+function setPlatform(p, el) {
+  platform = p;
+  document.querySelectorAll('#platformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setTone(t, el) {
+  tone = t;
+  document.querySelectorAll('#toneBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateCaptions() {
+  const input = document.getElementById('captionInput').value.trim();
+  if (!input) { alert('Please describe your post or product.'); return; }
+  document.getElementById('loadCaption').style.display = 'block';
+  document.getElementById('captionResults').style.display = 'none';
+  document.getElementById('errCaption').style.display = 'none';
+  document.getElementById('btnCaption').disabled = true;
+
+  const prompt = `You are a social media expert. Generate 5 ${tone} captions for ${platform} about: "${input}". Return ONLY a valid JSON array of 5 strings. Each string is a complete ready-to-post caption with relevant emojis and hashtags where appropriate. No markdown, no extra text, no numbering.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.9,
+        max_tokens: 1500
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    const captions = JSON.parse(text);
+    document.getElementById('captionList').innerHTML = captions.map((c, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">Caption ${i+1}</div>
+        <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px">${c}</div>
+        <button onclick="copyCaption(this, ${JSON.stringify(c)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+      </div>`).join('');
+    document.getElementById('captionResults').style.display = 'block';
+  } catch(err) {
+    const box = document.getElementById('errCaption');
+    box.textContent = 'Error: ' + err.message + '. Please try again.';
+    box.style.display = 'block';
+  } finally {
+    document.getElementById('loadCaption').style.display = 'none';
+    document.getElementById('btnCaption').disabled = false;
+  }
+}
+
+function copyCaption(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+</script>
+</body></html>
