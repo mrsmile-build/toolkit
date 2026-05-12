@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Link Generator — Create Clickable WhatsApp Links Free | ToolKit</title>
+  <meta name="description" content="Free WhatsApp link generator. Create a clickable WhatsApp chat link with pre-filled message for your business. No app needed.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../whatsapp-reply-generator/index.html">WA Reply</a></li>
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../qr-generator/index.html">QR Code</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">WhatsApp Link Generator</h1>
+  <p class="page-subtitle">Create a clickable WhatsApp link for your business in seconds. Share on Instagram, TikTok, websites and more.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Your WhatsApp Number (with country code)</label>
+      <input type="tel" id="waNumber" placeholder="e.g. 2348012345678 or +2348012345678">
+      <div style="font-size:.78rem;color:#6b7280;margin-top:4px">Nigeria: start with 234. UK: 44. US: 1. Remove the leading 0.</div>
+    </div>
+    <div class="form-group">
+      <label>Pre-filled Message (optional)</label>
+      <textarea id="waMessage" placeholder="e.g. Hi! I'm interested in your products. Please send me more details." rows="3"></textarea>
+    </div>
+    <button class="btn" onclick="generateLink()">🔗 Generate WhatsApp Link</button>
+    <div id="waResult" style="display:none;margin-top:24px">
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin-bottom:16px">
+        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#16a34a;margin-bottom:8px">✅ Your WhatsApp Link</div>
+        <div id="waLink" style="font-size:.85rem;color:#111;word-break:break-all;margin-bottom:12px;background:#fff;padding:10px;border-radius:8px;border:1px solid #e5e7eb"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="copyLink()" class="btn" style="padding:10px 18px;font-size:.85rem">📋 Copy Link</button>
+          <button onclick="testLink()" class="btn btn-outline" style="padding:10px 18px;font-size:.85rem">💬 Test Link</button>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px">
+        <div style="font-weight:700;margin-bottom:12px">Your QR Code</div>
+        <div id="waQR" style="text-align:center"></div>
+        <div style="font-size:.8rem;color:#6b7280;margin-top:8px;text-align:center">Scan to open WhatsApp chat</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Get more customers on WhatsApp</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Learn how to sell digital products directly on WhatsApp with our guides on Selar.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What is a WhatsApp Link?</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A WhatsApp link lets anyone start a chat with you instantly by clicking a link — no need to save your number first. This is perfect for businesses on Instagram, TikTok, websites and digital marketing campaigns.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:12px">How to Use Your WhatsApp Link</h2>
+    <p style="color:#6b7280;line-height:1.8">Add your WhatsApp link to your Instagram bio, TikTok profile, Facebook page, email signature and website. You can also print the QR code on flyers, business cards and product packaging so customers can scan and chat instantly.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../qr-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔳 QR Generator</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply Gen</a>
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+let generatedLink = '';
+
+function generateLink() {
+  let num = document.getElementById('waNumber').value.trim().replace(/[^0-9]/g,'');
+  if (!num) { alert('Please enter your WhatsApp number.'); return; }
+  if (num.startsWith('0')) num = num.substring(1);
+  const msg = document.getElementById('waMessage').value.trim();
+  generatedLink = 'https://wa.me/' + num + (msg ? '?text=' + encodeURIComponent(msg) : '');
+  document.getElementById('waLink').textContent = generatedLink;
+  document.getElementById('waQR').innerHTML = '';
+  new QRCode(document.getElementById('waQR'), {
+    text: generatedLink, width: 180, height: 180,
+    colorDark: '#000000', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+  document.getElementById('waResult').style.display = 'block';
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(generatedLink).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Link', 2000);
+  });
+}
+
+function testLink() {
+  window.open(generatedLink, '_blank');
+}
+</script>
+</body></html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Hashtag Generator — Free Hashtags for Instagram, TikTok & More | ToolKit</title>
+  <meta name="description" content="Free AI hashtag generator for Instagram, TikTok, Twitter, YouTube and LinkedIn. Get the best hashtags for any niche instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../hook-generator/index.html">Hooks</a></li>
+    <li><a href="../product-idea-generator/index.html">Ideas</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Hashtag Generator</h1>
+  <p class="page-subtitle">Get the best hashtags for any niche and platform instantly. Copy and paste ready.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Your niche or topic</label>
+      <input type="text" id="hashTopic" placeholder="e.g. natural hair care, make money online, Nigerian food, fitness motivation...">
+    </div>
+    <div class="form-group">
+      <label>Platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="hashPlatformBtns">
+        <div class="mode-btn active" onclick="setHashPlatform('Instagram',this)">📸 Instagram</div>
+        <div class="mode-btn" onclick="setHashPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setHashPlatform('Twitter',this)">🐦 Twitter</div>
+        <div class="mode-btn" onclick="setHashPlatform('YouTube',this)">▶️ YouTube</div>
+        <div class="mode-btn" onclick="setHashPlatform('LinkedIn',this)">💼 LinkedIn</div>
+        <div class="mode-btn" onclick="setHashPlatform('Pinterest',this)">📌 Pinterest</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateHashtags()" id="btnHash">🏷️ Generate Hashtags</button>
+    <div id="loadHash" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Finding best hashtags...</p>
+    </div>
+    <div id="errHash" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="hashResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700">Your Hashtags</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="copyAllHash()" class="btn btn-outline" style="padding:8px 14px;font-size:.8rem">📋 Copy All</button>
+          <button class="btn btn-outline" onclick="generateHashtags()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+        </div>
+      </div>
+      <div id="hashList"></div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">📦 Make money from your content</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Find profitable digital product ideas for your niche and start earning today.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Use Hashtags Effectively</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">Use a mix of high traffic, medium traffic and niche-specific hashtags for best results. Instagram recommends 3-5 hashtags per post. TikTok works best with 3-4 relevant hashtags. Avoid using only the most popular hashtags as your content will get buried.</p>
+    <p style="color:#6b7280;line-height:1.8">This generator gives you hashtags in three categories — high traffic for reach, medium traffic for engagement and niche specific for targeted audience growth.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Generator</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Generator</a>
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Generator</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let hashPlatform = 'Instagram';
+let allHashtags = '';
+
+function setHashPlatform(p, el) {
+  hashPlatform = p;
+  document.querySelectorAll('#hashPlatformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateHashtags() {
+  const topic = document.getElementById('hashTopic').value.trim();
+  if (!topic) { alert('Please enter your niche or topic.'); return; }
+  document.getElementById('loadHash').style.display = 'block';
+  document.getElementById('hashResults').style.display = 'none';
+  document.getElementById('errHash').style.display = 'none';
+  document.getElementById('btnHash').disabled = true;
+
+  const prompt = `You are a hashtag strategy expert. Generate the best hashtags for ${hashPlatform} in the "${topic}" niche. Return ONLY a valid JSON array of 4 objects. Each object must have: category (High Traffic/Medium Traffic/Niche Specific/Trending), hashtags (array of 8-10 hashtags with # symbol), tip (one strategy tip). No markdown no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.8,
+        max_tokens: 1200
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    const groups = JSON.parse(text);
+    allHashtags = groups.flatMap(g => g.hashtags).join(' ');
+    document.getElementById('hashList').innerHTML = groups.map(g => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
+        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:10px">${g.category}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+          ${g.hashtags.map(h => `<span style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:500;cursor:pointer" onclick="copyTag(this)">${h}</span>`).join('')}
+        </div>
+        <div style="font-size:.8rem;color:#6b7280">💡 ${g.tip}</div>
+      </div>`).join('');
+    document.getElementById('hashResults').style.display = 'block';
+  } catch(err) {
+    const box = document.getElementById('errHash');
+    box.textContent = 'Error: ' + err.message;
+    box.style.display = 'block';
+  } finally {
+    document.getElementById('loadHash').style.display = 'none';
+    document.getElementById('btnHash').disabled = false;
+  }
+}
+
+function copyTag(el) {
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = el.style.background;
+    el.style.background = '#f97316';
+    el.style.color = '#fff';
+    setTimeout(() => { el.style.background = orig; el.style.color = ''; }, 1000);
+  });
+}
+
+function copyAllHash() {
+  navigator.clipboard.writeText(allHashtags).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy All', 2000);
+  });
+}
+</script>
+</body></html>

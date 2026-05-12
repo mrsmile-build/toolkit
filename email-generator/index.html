@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Email & DM Generator — Free Professional Email Writer | ToolKit</title>
+  <meta name="description" content="Free AI email and DM generator. Write professional cold emails, follow-ups, thank you messages and business DMs instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../whatsapp-reply-generator/index.html">WA Reply</a></li>
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../bio-generator/index.html">Bio Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Email & DM Generator</h1>
+  <p class="page-subtitle">Write professional emails and DMs for any situation in seconds.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What do you want to say?</label>
+      <textarea id="emailGoal" placeholder="e.g. I want to pitch my social media services to a hair salon, Follow up with a client who hasn't responded, Thank a customer for buying my product..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Email type</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="emailTypeBtns">
+        <div class="mode-btn active" onclick="setEmailType('Cold outreach',this)">🎯 Cold Outreach</div>
+        <div class="mode-btn" onclick="setEmailType('Follow up',this)">🔄 Follow Up</div>
+        <div class="mode-btn" onclick="setEmailType('Thank you',this)">🙏 Thank You</div>
+        <div class="mode-btn" onclick="setEmailType('Proposal',this)">📋 Proposal</div>
+        <div class="mode-btn" onclick="setEmailType('Apology',this)">😔 Apology</div>
+        <div class="mode-btn" onclick="setEmailType('Sales pitch',this)">💰 Sales Pitch</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Tone</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="emailToneBtns">
+        <div class="mode-btn active" onclick="setEmailTone('Professional',this)">💼 Professional</div>
+        <div class="mode-btn" onclick="setEmailTone('Friendly',this)">😊 Friendly</div>
+        <div class="mode-btn" onclick="setEmailTone('Persuasive',this)">💡 Persuasive</div>
+        <div class="mode-btn" onclick="setEmailTone('Concise',this)">⚡ Concise</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateEmail()" id="btnEmail">✉️ Generate Email</button>
+    <div id="loadEmail" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Writing your email...</p>
+    </div>
+    <div id="errEmail" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="emailResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700">Your Emails</div>
+        <button class="btn btn-outline" onclick="generateEmail()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="emailList"></div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Sell digital products by email</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse our collection of digital products and guides for entrepreneurs.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">Tips for Writing Effective Business Emails</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">Keep your subject line under 50 characters and make it specific. Start with a personal opener, get to the point quickly and always end with a clear call to action. Avoid long paragraphs — use short sentences that are easy to read on mobile.</p>
+    <p style="color:#6b7280;line-height:1.8">Follow-up emails have a 21% higher open rate than first contact emails. Always follow up at least once if you don't get a response within 3 days.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply Gen</a>
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Generator</a>
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let emailType = 'Cold outreach';
+let emailTone = 'Professional';
+
+function setEmailType(t, el) {
+  emailType = t;
+  document.querySelectorAll('#emailTypeBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setEmailTone(t, el) {
+  emailTone = t;
+  document.querySelectorAll('#emailToneBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateEmail() {
+  const goal = document.getElementById('emailGoal').value.trim();
+  if (!goal) { alert('Please describe what you want to say.'); return; }
+  document.getElementById('loadEmail').style.display = 'block';
+  document.getElementById('emailResults').style.display = 'none';
+  document.getElementById('errEmail').style.display = 'none';
+  document.getElementById('btnEmail').disabled = true;
+
+  const prompt = `You are a professional business writer. Write 2 ${emailTone} ${emailType} emails/DMs for this situation: "${goal}". Return ONLY a valid JSON array of 2 objects. Each object must have: subject (email subject line), body (complete email body with greeting, main content and sign-off). Make them ready to send. No markdown, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body:
+doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(100,100,100);
+  doc.text('DESCRIPTION', 20, y); doc.text('QTY', 110, y); doc.text('PRICE', 135, y); doc.text('TOTAL', 165, y);
+  y += 4; doc.line(20, y, 190, y); y += 6;
+
+  const rows = document.querySelectorAll('#itemsContainer .item-row');
+  let total = 0;
+  doc.setFont('helvetica','normal'); doc.setTextColor(0,0,0);
+  rows.forEach(row => {
+    const desc = row.querySelector('.item-desc').value || '-';
+    const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+    const price = parseFloat(row.querySelector('.item-price').value) || 0;
+    const rowTotal = qty * price;
+    total += rowTotal;
+    doc.text(desc, 20, y); doc.text(String(qty), 110, y);
+    doc.text('N' + price.toLocaleString(), 135, y);
+    doc.text('N' + rowTotal.toLocaleString(), 165, y);
+    y += 8;
+    doc.setTextColor(200,200,200); doc.line(20, y-2, 190, y-2); doc.setTextColor(0,0,0);
+  });
+
+  y += 4; doc.setFont('helvetica','bold'); doc.setFontSize(12);
+  doc.text('TOTAL: N' + total.toLocaleString(), 165, y, {align:'right'});
+
+  if(notes) {
+    y += 16; doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(100,100,100);
+    doc.text('Notes:', 20, y); y += 6;
+    const noteLines = doc.splitTextToSize(notes, 170);
+    doc.text(noteLines, 20, y);
+  }
+
+  doc.save('invoice-' + invNum + '.pdf');
+}
+
+updatePreview();
+</script>
+</body></html>

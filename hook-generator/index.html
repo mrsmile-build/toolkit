@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Hook Generator — Free Viral Hooks for TikTok, YouTube & Instagram | ToolKit</title>
+  <meta name="description" content="Free AI hook generator. Create viral opening hooks for TikTok, YouTube, Instagram Reels and emails that stop the scroll instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../bio-generator/index.html">Bio Gen</a></li>
+    <li><a href="../product-idea-generator/index.html">Ideas</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Hook Generator</h1>
+  <p class="page-subtitle">Generate viral opening hooks that stop the scroll for any platform or niche.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What is your video or post about?</label>
+      <textarea id="hookTopic" placeholder="e.g. How to make money online, 5 habits of successful people, Nigerian hair care routine, why you should start a business..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="hookPlatformBtns">
+        <div class="mode-btn active" onclick="setHookPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setHookPlatform('YouTube',this)">▶️ YouTube</div>
+        <div class="mode-btn" onclick="setHookPlatform('Instagram Reels',this)">📸 Instagram</div>
+        <div class="mode-btn" onclick="setHookPlatform('Email',this)">📧 Email</div>
+        <div class="mode-btn" onclick="setHookPlatform('Twitter',this)">🐦 Twitter</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Hook style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="hookStyleBtns">
+        <div class="mode-btn active" onclick="setHookStyle('Curiosity',this)">🤔 Curiosity</div>
+        <div class="mode-btn" onclick="setHookStyle('Shocking',this)">😱 Shocking</div>
+        <div class="mode-btn" onclick="setHookStyle('Story',this)">📖 Story</div>
+        <div class="mode-btn" onclick="setHookStyle('Question',this)">❓ Question</div>
+        <div class="mode-btn" onclick="setHookStyle('Bold claim',this)">🔥 Bold Claim</div>
+        <div class="mode-btn" onclick="setHookStyle('Relatable',this)">😊 Relatable</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateHooks()" id="btnHook">🔥 Generate Hooks</button>
+    <div id="loadHook" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Generating viral hooks...</p>
+    </div>
+    <div id="errHook" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="hookResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700">Your Hooks</div>
+        <button class="btn btn-outline" onclick="generateHooks()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="hookList"></div>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">📦 Turn your content into income</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Use our AI generator to find digital products you can create and sell.</p>
+    <a href="../product-idea-generator/index.html" class="btn" style="margin-right:8px">Try Idea Generator →</a>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Browse Selar</a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What is a Hook and Why Does It Matter?</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A hook is the first 1-3 seconds of your video or the first line of your post. It determines whether people keep watching or scroll away. Studies show that 65% of viewers decide within 3 seconds whether to continue watching a video.</p>
+    <p style="color:#6b7280;line-height:1.8">The best hooks create curiosity, make a bold claim, ask a compelling question or trigger an emotion. This generator creates hooks proven to stop the scroll based on your topic and chosen style.</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Generator</a>
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Generator</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let hookPlatform = 'TikTok';
+let hookStyle = 'Curiosity';
+
+function setHookPlatform(p, el) {
+  hookPlatform = p;
+  document.querySelectorAll('#hookPlatformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setHookStyle(s, el) {
+  hookStyle = s;
+  document.querySelectorAll('#hookStyleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateHooks() {
+  const topic = document.getElementById('hookTopic').value.trim();
+  if (!topic) { alert('Please describe your topic.'); return; }
+  document.getElementById('loadHook').style.display = 'block';
+  document.getElementById('hookResults').style.display = 'none';
+  document.getElementById('errHook').style.display = 'none';
+  document.getElementById('btnHook').disabled = true;
+
+  const prompt = `You are a viral content expert. Generate 8 ${hookStyle} hooks for ${hookPlatform} about: "${topic}". These hooks should stop the scroll in the first 3 seconds. Return ONLY a valid JSON array of 8 strings. Each string is one complete hook sentence or question. Make them punchy, specific and platform-optimized. No markdown, no numbering, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.9,
+        max_tokens: 1000
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    const hooks = JSON.parse(text);
+    document.getElementById('hookList').innerHTML = hooks.map((h, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="font-size:.95rem;line-height:1.6;color:#111;flex:1">${h}</div>
+        <button onclick="copyHook(this, ${JSON.stringify(h)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280;white-space:nowrap;flex-shrink:0">📋 Copy</button>
+      </div>`).join('');
+    document.getElementById('hookResults').style.display = 'block';
+  } catch(err) {
+    const box = document.getElementById('errHook');
+    box.textContent = 'Error: ' + err.message;
+    box.style.display = 'block';
+  } finally {
+    document.getElementById('loadHook').style.display = 'none';
+    document.getElementById('btnHook').disabled = false;
+  }
+}
+
+function copyHook(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+</script>
+</body></html>
