@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter — Free Online Converter for Length, Weight, Temperature | ToolKit</title>
+  <meta name="description" content="Free unit converter. Convert length, weight, temperature, currency, speed and more instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../percentage-calculator/index.html">% Calc</a></li>
+    <li><a href="../bmi-calculator/index.html">BMI Calc</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Unit Converter</h1>
+  <p class="page-subtitle">Convert between any units instantly — length, weight, temperature, speed and more.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Category</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="catBtns">
+        <div class="mode-btn active" onclick="setCategory('length',this)">📏 Length</div>
+        <div class="mode-btn" onclick="setCategory('weight',this)">⚖️ Weight</div>
+        <div class="mode-btn" onclick="setCategory('temperature',this)">🌡️ Temperature</div>
+        <div class="mode-btn" onclick="setCategory('speed',this)">🚀 Speed</div>
+        <div class="mode-btn" onclick="setCategory('area',this)">📐 Area</div>
+        <div class="mode-btn" onclick="setCategory('volume',this)">🧪 Volume</div>
+        <div class="mode-btn" onclick="setCategory('currency',this)">💵 Currency</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>From</label><select id="fromUnit" onchange="convert()"></select></div>
+      <div class="form-group"><label>To</label><select id="toUnit" onchange="convert()"></select></div>
+    </div>
+    <div class="form-group">
+      <label>Value</label>
+      <input type="number" id="fromValue" placeholder="Enter value" oninput="convert()">
+    </div>
+    <div id="convResult" style="display:none;background:#111;border-radius:12px;padding:24px;margin-top:16px;text-align:center">
+      <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px">Result</div>
+      <div id="resultVal" style="font-family:var(--font-head);font-size:2rem;font-weight:800;color:#fff"></div>
+      <div id="resultFormula" style="font-size:.8rem;color:rgba(255,255,255,.4);margin-top:8px"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Build passive income</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Discover digital products you can create and sell from anywhere.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">Common Unit Conversions</h2>
+    <p style="color:#6b7280;line-height:1.8">1 kilometer = 0.621 miles. 1 kilogram = 2.205 pounds. 0°C = 32°F. 1 liter = 0.264 US gallons. 1 meter = 3.281 feet. For Nigeria: 1 USD ≈ ₦1,550. 1 plot of land = 648 square meters.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../savings-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💰 Savings Calc</a>
+      <a href="../bmi-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">⚖️ BMI Calculator</a>
+      <a href="../percentage-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📊 Percentage Calc</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+const units={length:{Kilometer:{v:1000},Meter:{v:1},Centimeter:{v:0.01},Millimeter:{v:0.001},Mile:{v:1609.34},Yard:{v:0.9144},Foot:{v:0.3048},Inch:{v:0.0254}},weight:{Kilogram:{v:1},Gram:{v:0.001},Pound:{v:0.453592},Ounce:{v:0.0283495},Tonne:{v:1000},Stone:{v:6.35029}},speed:{'km/h':{v:1/3.6},'m/s':{v:1},'mph':{v:0.44704},'knot':{v:0.514444}},area:{'Square Meter':{v:1},'Square Kilometer':{v:1e6},'Hectare':{v:1e4},'Acre':{v:4046.86},'Square Foot':{v:0.0929},'Plot Nigeria':{v:648}},volume:{Liter:{v:1},Milliliter:{v:0.001},'US Gallon':{v:3.78541},'UK Gallon':{v:4.54609},Cup:{v:0.236588}},currency:{'Nigerian Naira':{v:1/1550},'US Dollar':{v:1},'British Pound':{v:1.27},'Euro':{v:1.09},'Ghanaian Cedi':{v:1/15.5},'Kenyan Shilling':{v:1/129},'UAE Dirham':{v:1/3.67}}};
+let category='length';
+function setCategory(cat,el){category=cat;document.querySelectorAll('#catBtns .mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');populateUnits();document.getElementById('convResult').style.display='none';document.getElementById('fromValue').value='';}
+function populateUnits(){const keys=category==='temperature'?['Celsius','Fahrenheit','Kelvin']:Object.keys(units[category]);const f=document.getElementById('fromUnit');const t=document.getElementById('toUnit');f.innerHTML=keys.map(k=>`<option>${k}</option>`).join('');t.innerHTML=keys.map(k=>`<option>${k}</option>`).join('');if(keys.length>1)t.selectedIndex=1;}
+function convert(){const val=parseFloat(document.getElementById('fromValue').value);if(isNaN(val)){document.getElementById('convResult').style.display='none';return;}const from=document.getElementById('fromUnit').value;const to=document.getElementById('toUnit').value;let result;if(category==='temperature'){if(from===to)result=val;else if(from==='Celsius'&&to==='Fahrenheit')result=val*9/5+32;else if(from==='Celsius'&&to==='Kelvin')result=val+273.15;else if(from==='Fahrenheit'&&to==='Celsius')result=(val-32)*5/9;else if(from==='Fahrenheit'&&to==='Kelvin')result=(val-32)*5/9+273.15;else if(from==='Kelvin'&&to==='Celsius')result=val-273.15;else if(from==='Kelvin'&&to==='Fahrenheit')result=(val-273.15)*9/5+32;}else{const fromRate=units[category][from].v;const toRate=units[category][to].v;result=val*fromRate/toRate;}const formatted=result>=0.01?+result.toFixed(6):result.toExponential(4);document.getElementById('resultVal').textContent=`${formatted} ${to}`;document.getElementById('resultFormula').textContent=`${val} ${from} = ${formatted} ${to}`;document.getElementById('convResult').style.display='block';}
+populateUnits();
+</script>
+</body></html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free CV Generator — Create Professional CV & Resume Online | ToolKit</title>
+  <meta name="description" content="Free CV and resume generator. Create a professional CV online and download as PDF instantly. No signup required.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .cv-preview{background:#fff;border:2px solid #e5e7eb;border-radius:12px;padding:28px;margin-top:20px}
+    .cv-name{font-size:1.5rem;font-weight:800;color:#111;margin-bottom:4px}
+    .cv-section-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#f97316;border-bottom:2px solid #f97316;padding-bottom:4px;margin-bottom:10px;margin-top:16px}
+    .cv-item-title{font-weight:700;font-size:.9rem}
+    .cv-item-sub{font-size:.82rem;color:#6b7280;margin-bottom:4px}
+    .cv-item-desc{font-size:.82rem;color:#374151;line-height:1.6}
+    .exp-entry{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
+    .remove-exp{position:absolute;top:10px;right:10px;background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../email-generator/index.html">Email Gen</a></li>
+    <li><a href="../bio-generator/index.html">Bio Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">CV / Resume Generator</h1>
+  <p class="page-subtitle">Create a professional CV in minutes and download as PDF. Free, no signup needed.</p>
+  <div class="tool-card">
+    <h3 style="font-family:var(--font-head);font-weight:700;margin-bottom:16px">Personal Information</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label>Full Name</label><input type="text" id="cvName" placeholder="Adebayo Okonkwo" oninput="updateCV()"></div>
+      <div class="form-group"><label>Job Title</label><input type="text" id="cvTitle" placeholder="Social Media Manager" oninput="updateCV()"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="cvEmail" placeholder="your@email.com" oninput="updateCV()"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="cvPhone" placeholder="+234 801 234 5678" oninput="updateCV()"></div>
+      <div class="form-group"><label>Location</label><input type="text" id="cvLocation" placeholder="Lagos, Nigeria" oninput="updateCV()"></div>
+      <div class="form-group"><label>LinkedIn / Website</label><input type="text" id="cvLinkedin" placeholder="linkedin.com/in/yourname" oninput="updateCV()"></div>
+    </div>
+    <div class="form-group" style="margin-top:8px">
+      <label>Professional Summary</label>
+      <textarea id="cvSummary" placeholder="Brief summary of your professional background..." rows="3" oninput="updateCV()"></textarea>
+    </div>
+    <h3 style="font-family:var(--font-head);font-weight:700;margin:20px 0 12px">Work Experience</h3>
+    <div id="expContainer">
+      <div class="exp-entry">
+        <button class="remove-exp" onclick="removeEntry(this)">✕</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="form-group"><label>Job Title</label><input type="text" class="exp-title" placeholder="Social Media Manager" oninput="updateCV()"></div>
+          <div class="form-group"><label>Company</label><input type="text" class="exp-company" placeholder="ABC Company" oninput="updateCV()"></div>
+          <div class="form-group"><label>Start Date</label><input type="text" class="exp-start" placeholder="Jan 2022" oninput="updateCV()"></div>
+          <div class="form-group"><label>End Date</label><input type="text" class="exp-end" placeholder="Present" oninput="updateCV()"></div>
+        </div>
+        <div class="form-group"><label>Key Achievements</label><textarea class="exp-desc" placeholder="• Grew followers by 200%&#10;• Managed ₦500k budget" rows="3" oninput="updateCV()"></textarea></div>
+      </div>
+    </div>
+    <button class="btn btn-outline" onclick="addExperience()" style="padding:8px 16px;font-size:.85rem;margin-bottom:20px">+ Add Experience</button>
+    <h3 style="font-family:var(--font-head);font-weight:700;margin-bottom:12px">Education</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label>Degree</label><input type="text" id="cvDegree" placeholder="B.Sc Computer Science" oninput="updateCV()"></div>
+      <div class="form-group"><label>School</label><input type="text" id="cvSchool" placeholder="University of Lagos" oninput="updateCV()"></div>
+      <div class="form-group"><label>Year</label><input type="text" id="cvEduYear" placeholder="2020" oninput="updateCV()"></div>
+      <div class="form-group"><label>Grade</label><input type="text" id="cvGrade" placeholder="Second Class Upper" oninput="updateCV()"></div>
+    </div>
+    <div class="form-group" style="margin-top:8px">
+      <label>Skills (comma separated)</label>
+      <input type="text" id="cvSkills" placeholder="Social Media, Canva, Excel, Python..." oninput="updateCV()">
+    </div>
+    <div class="cv-preview" id="cvPreview">
+      <div class="cv-name" id="pName">Your Name</div>
+      <div style="font-size:.9rem;font-weight:600;color:#f97316;margin-bottom:6px" id="pTitle"></div>
+      <div style="font-size:.82rem;color:#6b7280;margin-bottom:12px" id="pContact"></div>
+      <div id="pSummarySection" style="display:none">
+        <div class="cv-section-title">Professional Summary</div>
+        <div class="cv-item-desc" id="pSummary"></div>
+      </div>
+      <div class="cv-section-title">Work Experience</div>
+      <div id="pExp"></div>
+      <div class="cv-section-title">Education</div>
+      <div id="pEdu"></div>
+      <div id="pSkillsSection" style="display:none">
+        <div class="cv-section-title">Skills</div>
+        <div id="pSkills" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn" onclick="downloadCV()">⬇️ Download PDF</button>
+      <button class="btn btn-outline" onclick="window.print()">🖨️ Print CV</button>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Earn income beyond your salary</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Start selling digital products as a side income.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">CV Tips for Nigerian Job Seekers</h2>
+    <p style="color:#6b7280;line-height:1.8">Keep your CV to 1-2 pages. Include NYSC status if applicable. List achievements with numbers — percentages, revenue, team sizes. Use a professional email. Tailor your CV for each application by matching keywords from the job description.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../email-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✉️ Email Generator</a>
+      <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
+      <a href="../word-counter/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📝 Word Counter</a>
+      <a href="../invoice-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🧾 Invoice Gen</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+function addExperience(){const e=document.createElement('div');e.className='exp-entry';e.innerHTML=`<button class="remove-exp" onclick="removeEntry(this)">✕</button><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="form-group"><label>Job Title</label><input type="text" class="exp-title" placeholder="Job Title" oninput="updateCV()"></div><div class="form-group"><label>Company</label><input type="text" class="exp-company" placeholder="Company" oninput="updateCV()"></div><div class="form-group"><label>Start</label><input type="text" class="exp-start" placeholder="Jan 2022" oninput="updateCV()"></div><div class="form-group"><label>End</label><input type="text" class="exp-end" placeholder="Present" oninput="updateCV()"></div></div><div class="form-group"><label>Achievements</label><textarea class="exp-desc" rows="3" oninput="updateCV()"></textarea></div>`;document.getElementById('expContainer').appendChild(e);}
+function removeEntry(btn){btn.parentElement.remove();updateCV();}
+function updateCV(){
+  document.getElementById('pName').textContent=document.getElementById('cvName').value||'Your Name';
+  document.getElementById('pTitle').textContent=document.getElementById('cvTitle').value||'';
+  const c=[document.getElementById('cvEmail').value,document.getElementById('cvPhone').value,document.getElementById('cvLocation').value,document.getElementById('cvLinkedin').value].filter(Boolean).join(' | ');
+  document.getElementById('pContact').textContent=c;
+  const s=document.getElementById('cvSummary').value;
+  document.getElementById('pSummarySection').style.display=s?'block':'none';
+  document.getElementById('pSummary').textContent=s;
+  const entries=document.querySelectorAll('.exp-entry');
+  document.getElementById('pExp').innerHTML=[...entries].map(e=>{const t=e.querySelector('.exp-title').value;const co=e.querySelector('.exp-company').value;const st=e.querySelector('.exp-start').value;const en=e.querySelector('.exp-end').value;const d=e.querySelector('.exp-desc').value;if(!t&&!co)return '';return `<div style="margin-bottom:10px"><div class="cv-item-title">${t}</div><div class="cv-item-sub">${co}${st||en?' | '+(st||'')+(en?' – '+en:''):''}</div><div class="cv-item-desc" style="white-space:pre-line">${d}</div></div>`;}).join('');
+  const deg=document.getElementById('cvDegree').value;const sch=document.getElementById('cvSchool').value;const yr=document.getElementById('cvEduYear').value;const gr=document.getElementById('cvGrade').value;
+  document.getElementById('pEdu').innerHTML=deg||sch?`<div style="margin-bottom:10px"><div class="cv-item-title">${deg}</div><div class="cv-item-sub">${sch}${yr?' | '+yr:''}${gr?' | '+gr:''}</div></div>`:'';
+  const sk=document.getElementById('cvSkills').value;
+  if(sk){document.getElementById('pSkillsSection').style.display='block';document.getElementById('pSkills').innerHTML=sk.split(',').filter(s=>s.trim()).map(s=>`<span style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:3px 10px;font-size:.8rem">${s.trim()}</span>`).join('');}
+  else document.getElementById('pSkillsSection').style.display='none';
+}
+function downloadCV(){
+  const{jsPDF}=window.jspdf;const doc=new jsPDF();let y=20;
+  const name=document.getElementById('cvName').value||'CV';
+  const title=document.getElementById('cvTitle').value;
+  const contact=[document.getElementById('cvEmail').value,document.getElementById('cvPhone').value,document.getElementById('cvLocation').value].filter(Boolean).join(' | ');
+  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(name,20,y);y+=8;
+  if(title){doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(249,115,22);doc.text(title,20,y);y+=6;}
+  if(contact){doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text(contact,20,y);y+=8;}
+  function sec(h,t){if(!t)return;y+=4;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(249,115,22);doc.text(h.toUpperCase(),20,y);y+=2;doc.setDrawColor(249,115,22);doc.line(20,y,190,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(0,0,0);const lines=doc.splitTextToSize(t,170);lines.forEach(l=>{if(y>280){doc.addPage();y=20;}doc.text(l,20,y);y+=5;});}
+  const summary=document.getElementById('cvSummary').value;if(summary)sec('Professional Summary',summary);
+  const entries=document.querySelectorAll('.exp-entry');
+  if(entries.length){y+=4;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(249,115,22);doc.text('WORK EXPERIENCE',20,y);y+=2;doc.setDrawColor(249,115,22);doc.line(20,y,190,y);y+=5;
+  entries.forEach(e=>{const t=e.querySelector('.exp-title').value;const co=e.querySelector('.exp-company').value;const st=e.querySelector('.exp-start').value;const en=e.querySelector('.exp-end').value;const d=e.querySelector('.exp-desc').value;if(!t&&!co)return;doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(0,0,0);doc.text(t,20,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text(`${co}${st||en?' | '+(st||'')+(en?' – '+en:''):''}`,20,y);y+=5;if(d){doc.setTextColor(50,50,50);const dl=doc.splitTextToSize(d,170);dl.forEach(l=>{if(y>280){doc.addPage();y=20;}doc.text(l,20,y);y+=4;});}y+=2;});}
+  const deg=document.getElementById('cvDegree').value;const sch=document.getElementById('cvSchool').value;const yr=document.getElementById('cvEduYear').value;const gr=document.getElementById('cvGrade').value;
+  if(deg||sch)sec('Education',`${deg}\n${sch}${yr?' | '+yr:''}${gr?' | '+gr:''}`);
+  const sk=document.getElementById('cvSkills').value;if(sk)sec('Skills',sk);
+  doc.save((name.replace(/\s+/g,'-'))+'-CV.pdf');
+}
+updateCV();
+</script>
+</body></html>

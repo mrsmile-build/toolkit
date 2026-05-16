@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Calculator — Free Online Savings Goal Calculator | ToolKit</title>
+  <meta name="description" content="Free savings calculator. Calculate how long it takes to reach your savings goal, monthly savings needed and total interest earned.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../profit-calculator/index.html">Profit Calc</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Savings Calculator</h1>
+  <p class="page-subtitle">Calculate how long to reach your savings goal or how much to save monthly.</p>
+  <div class="tool-card">
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap" id="modeButtons">
+      <div class="mode-btn active" onclick="setCalcMode('goal',this)">🎯 Reach a Goal</div>
+      <div class="mode-btn" onclick="setCalcMode('monthly',this)">📅 Monthly Savings</div>
+      <div class="mode-btn" onclick="setCalcMode('growth',this)">📈 Savings Growth</div>
+    </div>
+    <div id="mode-goal">
+      <div class="form-row">
+        <div class="form-group"><label>Savings Goal (₦)</label><input type="number" id="g-goal" placeholder="1000000" min="0"></div>
+        <div class="form-group"><label>Current Savings (₦)</label><input type="number" id="g-current" placeholder="0" min="0"></div>
+        <div class="form-group"><label>Monthly Savings (₦)</label><input type="number" id="g-monthly" placeholder="50000" min="0"></div>
+        <div class="form-group"><label>Annual Interest Rate (%)</label><input type="number" id="g-rate" placeholder="5" min="0" step="0.1"></div>
+      </div>
+      <button class="btn" onclick="calcGoal()">Calculate →</button>
+    </div>
+    <div id="mode-monthly" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>Savings Goal (₦)</label><input type="number" id="m-goal" placeholder="1000000" min="0"></div>
+        <div class="form-group"><label>Time Period (months)</label><input type="number" id="m-months" placeholder="24" min="1"></div>
+        <div class="form-group"><label>Annual Interest Rate (%)</label><input type="number" id="m-rate" placeholder="5" min="0" step="0.1"></div>
+      </div>
+      <button class="btn" onclick="calcMonthly()">Calculate →</button>
+    </div>
+    <div id="mode-growth" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>Initial Amount (₦)</label><input type="number" id="gr-initial" placeholder="100000" min="0"></div>
+        <div class="form-group"><label>Monthly Addition (₦)</label><input type="number" id="gr-monthly" placeholder="20000" min="0"></div>
+        <div class="form-group"><label>Annual Interest Rate (%)</label><input type="number" id="gr-rate" placeholder="8" min="0" step="0.1"></div>
+        <div class="form-group"><label>Years</label><input type="number" id="gr-years" placeholder="5" min="1" max="50"></div>
+      </div>
+      <button class="btn" onclick="calcGrowth()">Calculate →</button>
+    </div>
+    <div id="savingsResult" style="display:none;margin-top:24px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px" id="resultCards"></div>
+      <div id="savingsTip" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;margin-top:16px;font-size:.875rem;color:#166534"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Make your savings work harder</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Discover digital products you can sell to earn extra income.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Save Money Faster</h2>
+    <p style="color:#6b7280;line-height:1.8">The 50/30/20 rule is one of the most effective savings strategies. Spend 50% on needs, 30% on wants and save 20%. For someone earning ₦150,000 monthly, this means saving ₦30,000 per month. Automate your savings on payday for best results.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../loan-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💵 Loan Calculator</a>
+      <a href="../profit-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💰 Profit Calculator</a>
+      <a href="../percentage-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📊 Percentage Calc</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+let calcMode='goal';
+function setCalcMode(mode,el){calcMode=mode;document.querySelectorAll('#modeButtons .mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('mode-goal').style.display=mode==='goal'?'block':'none';document.getElementById('mode-monthly').style.display=mode==='monthly'?'block':'none';document.getElementById('mode-growth').style.display=mode==='growth'?'block':'none';document.getElementById('savingsResult').style.display='none';}
+function showCards(cards,tip){document.getElementById('resultCards').innerHTML=cards.map(c=>`<div style="background:#111;border-radius:12px;padding:18px;text-align:center"><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.45);margin-bottom:6px">${c.label}</div><div style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;color:#fff">${c.value}</div></div>`).join('');document.getElementById('savingsTip').textContent=tip;document.getElementById('savingsResult').style.display='block';}
+function fmt(n){return '₦'+Math.round(n).toLocaleString();}
+function calcGoal(){const goal=parseFloat(document.getElementById('g-goal').value)||0;const current=parseFloat(document.getElementById('g-current').value)||0;const monthly=parseFloat(document.getElementById('g-monthly').value)||0;const rate=(parseFloat(document.getElementById('g-rate').value)||0)/100/12;if(!goal||!monthly){alert('Please fill in all fields.');return;}let balance=current,months=0;while(balance<goal&&months<1200){balance=balance*(1+rate)+monthly;months++;}const years=Math.floor(months/12);const rem=months%12;const interest=balance-current-(monthly*months);showCards([{label:'Time to Goal',value:years>0?years+'y '+rem+'m':months+' months'},{label:'Total Saved',value:fmt(balance)},{label:'Interest Earned',value:fmt(interest)},{label:'Monthly',value:fmt(monthly)}],`✅ You will reach your goal in ${months} months!`);}
+function calcMonthly(){const goal=parseFloat(document.getElementById('m-goal').value)||0;const months=parseFloat(document.getElementById('m-months').value)||0;const rate=(parseFloat(document.getElementById('m-rate').value)||0)/100/12;if(!goal||!months){alert('Please fill in all fields.');return;}const monthly=rate===0?goal/months:goal*rate/(Math.pow(1+rate,months)-1);showCards([{label:'Monthly Needed',value:fmt(monthly)},{label:'Total Goal',value:fmt(goal)},{label:'Time Period',value:months+' months'},{label:'Total Contributions',value:fmt(monthly*months)}],`💡 Save ${fmt(monthly)} every month to reach your goal in ${months} months.`);}
+function calcGrowth(){const initial=parseFloat(document.getElementById('gr-initial').value)||0;const monthly=parseFloat(document.getElementById('gr-monthly').value)||0;const rate=(parseFloat(document.getElementById('gr-rate').value)||0)/100/12;const years=parseFloat(document.getElementById('gr-years').value)||0;if(!years){alert('Please fill in years.');return;}let balance=initial;const months=years*12;for(let i=0;i<months;i++)balance=balance*(1+rate)+monthly;const total=initial+monthly*months;showCards([{label:'Final Balance',value:fmt(balance)},{label:'Total Contributed',value:fmt(total)},{label:'Interest Earned',value:fmt(balance-total)},{label:'Growth',value:Math.round((balance/total-1)*100)+'%'}],`📈 Your savings grow to ${fmt(balance)} in ${years} years.`);}
+</script>
+</body></html>
