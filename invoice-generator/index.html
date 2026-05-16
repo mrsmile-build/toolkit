@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Invoice Generator — Create & Download Professional Invoices | ToolKit</title>
+  <meta name="description" content="Free invoice generator. Create professional invoices for your business instantly. Download as PDF. No signup required.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .inv-table{width:100%;border-collapse:collapse;margin:16px 0}
+    .inv-table th{background:#f9fafb;padding:10px;text-align:left;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;border-bottom:2px solid #e5e7eb}
+    .inv-table td{padding:10px;border-bottom:1px solid #f3f4f6;font-size:.9rem}
+    .item-row{display:grid;grid-template-columns:1fr 80px 100px 40px;gap:8px;margin-bottom:8px;align-items:center}
+    .remove-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem}
+    .invoice-preview{background:#fff;border:2px solid #e5e7eb;border-radius:12px;padding:28px;margin-top:20px}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../profit-calculator/index.html">Profit Calc</a></li>
+    <li><a href="../qr-generator/index.html">QR Code</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Invoice Generator</h1>
+  <p class="page-subtitle">Create professional invoices for your business instantly. Download as PDF for free.</p>
+  <div class="tool-card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="form-group"><label>Your Business Name</label><input type="text" id="bizName" placeholder="MrSmile Designs" oninput="updatePreview()"></div>
+      <div class="form-group"><label>Your Email / Phone</label><input type="text" id="bizContact" placeholder="08012345678" oninput="updatePreview()"></div>
+      <div class="form-group"><label>Client Name</label><input type="text" id="clientName" placeholder="Adaeze Fashion" oninput="updatePreview()"></div>
+      <div class="form-group"><label>Invoice Number</label><input type="text" id="invNumber" value="INV-001" oninput="updatePreview()"></div>
+      <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" oninput="updatePreview()"></div>
+      <div class="form-group"><label>Due Date</label><input type="date" id="dueDate" oninput="updatePreview()"></div>
+    </div>
+    <div class="form-group" style="margin-top:8px">
+      <label>Items</label>
+      <div id="itemsContainer">
+        <div class="item-row">
+          <input type="text" placeholder="Description" class="item-desc" oninput="updatePreview()">
+          <input type="number" placeholder="Qty" class="item-qty" value="1" min="1" oninput="updatePreview()">
+          <input type="number" placeholder="Price (₦)" class="item-price" min="0" oninput="updatePreview()">
+          <button class="remove-btn" onclick="removeItem(this)">✕</button>
+        </div>
+      </div>
+      <button class="btn btn-outline" onclick="addItem()" style="margin-top:8px;padding:8px 16px;font-size:.85rem">+ Add Item</button>
+    </div>
+    <div class="form-group">
+      <label>Notes (optional)</label>
+      <textarea id="invNotes" placeholder="Payment due within 7 days. Bank: GTBank 0123456789" rows="2" oninput="updatePreview()"></textarea>
+    </div>
+    <div class="invoice-preview">
+      <div style="display:flex;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:1.8rem;font-weight:800;color:#f97316">INVOICE</div>
+          <div style="font-size:.85rem;color:#6b7280;margin-top:4px" id="prevBizName">Your Business</div>
+          <div style="font-size:.85rem;color:#6b7280" id="prevBizContact"></div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:700" id="prevInvNum">INV-001</div>
+          <div style="font-size:.85rem;color:#6b7280" id="prevDates"></div>
+        </div>
+      </div>
+      <div style="background:#f9fafb;border-radius:8px;padding:12px;margin-bottom:16px">
+        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:4px">Bill To</div>
+        <div style="font-weight:600" id="prevClient">Client Name</div>
+      </div>
+      <table class="inv-table">
+        <thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+        <tbody id="prevItems"></tbody>
+      </table>
+      <div style="text-align:right;margin-top:12px;font-size:1.1rem;font-weight:700" id="prevTotal">Total: ₦0</div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.85rem;color:#6b7280" id="prevNotes"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn" onclick="downloadInvoice()">⬇️ Download PDF</button>
+      <button class="btn btn-outline" onclick="window.print()">🖨️ Print</button>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💰 Want to make more money?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Discover profitable digital products you can create and sell today.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Create a Professional Invoice</h2>
+    <p style="color:#6b7280;line-height:1.8">A good invoice includes your business name, client details, itemized services with prices, payment terms and bank details. Always number your invoices sequentially for easy tracking. Send invoices immediately after completing work to get paid faster.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../profit-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💰 Profit Calculator</a>
+      <a href="../pricing-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🏷️ Pricing Calc</a>
+      <a href="../qr-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔳 QR Generator</a>
+      <a href="../whatsapp-link-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔗 WA Link Gen</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+document.getElementById('invDate').value=new Date().toISOString().split('T')[0];
+const due=new Date();due.setDate(due.getDate()+7);document.getElementById('dueDate').value=due.toISOString().split('T')[0];
+function addItem(){const r=document.createElement('div');r.className='item-row';r.innerHTML='<input type="text" placeholder="Description" class="item-desc" oninput="updatePreview()"><input type="number" placeholder="Qty" class="item-qty" value="1" min="1" oninput="updatePreview()"><input type="number" placeholder="Price (₦)" class="item-price" min="0" oninput="updatePreview()"><button class="remove-btn" onclick="removeItem(this)">✕</button>';document.getElementById('itemsContainer').appendChild(r);}
+function removeItem(btn){btn.parentElement.remove();updatePreview();}
+function updatePreview(){
+  document.getElementById('prevBizName').textContent=document.getElementById('bizName').value||'Your Business';
+  document.getElementById('prevBizContact').textContent=document.getElementById('bizContact').value||'';
+  document.getElementById('prevInvNum').textContent=document.getElementById('invNumber').value||'INV-001';
+  document.getElementById('prevClient').textContent=document.getElementById('clientName').value||'Client Name';
+  const d=document.getElementById('invDate').value;const dd=document.getElementById('dueDate').value;
+  document.getElementById('prevDates').textContent=(d?'Date: '+d:'')+(dd?' | Due: '+dd:'');
+  document.getElementById('prevNotes').textContent=document.getElementById('invNotes').value;
+  const rows=document.querySelectorAll('#itemsContainer .item-row');let total=0;let tbody='';
+  rows.forEach(r=>{const desc=r.querySelector('.item-desc').value||'-';const qty=parseFloat(r.querySelector('.item-qty').value)||0;const price=parseFloat(r.querySelector('.item-price').value)||0;const t=qty*price;total+=t;tbody+=`<tr><td>${desc}</td><td>${qty}</td><td>₦${price.toLocaleString()}</td><td>₦${t.toLocaleString()}</td></tr>`;});
+  document.getElementById('prevItems').innerHTML=tbody;
+  document.getElementById('prevTotal').textContent='Total: ₦'+total.toLocaleString();
+}
+function downloadInvoice(){
+  const{jsPDF}=window.jspdf;const doc=new jsPDF();
+  const biz=document.getElementById('bizName').value||'Business';const contact=document.getElementById('bizContact').value;
+  const client=document.getElementById('clientName').value||'Client';const invNum=document.getElementById('invNumber').value||'INV-001';
+  const invDate=document.getElementById('invDate').value;const dueDate=document.getElementById('dueDate').value;
+  const notes=document.getElementById('invNotes').value;
+  doc.setFontSize(24);doc.setFont('helvetica','bold');doc.setTextColor(249,115,22);doc.text('INVOICE',20,25);
+  doc.setFontSize(11);doc.setFont('helvetica','normal');doc.setTextColor(0,0,0);doc.text(biz,20,35);
+  if(contact)doc.text(contact,20,42);doc.text(invNum,150,25);
+  if(invDate)doc.text('Date: '+invDate,150,32);if(dueDate)doc.text('Due: '+dueDate,150,39);
+  doc.setFontSize(10);doc.setTextColor(100,100,100);doc.text('Bill To:',20,55);
+  doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.text(client,20,62);
+  let y=75;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(100,100,100);
+  doc.text('DESCRIPTION',20,y);doc.text('QTY',110,y);doc.text('PRICE',135,y);doc.text('TOTAL',165,y);
+  y+=4;doc.line(20,y,190,y);y+=6;
+  const rows=document.querySelectorAll('#itemsContainer .item-row');let total=0;
+  doc.setFont('helvetica','normal');doc.setTextColor(0,0,0);
+  rows.forEach(r=>{const desc=r.querySelector('.item-desc').value||'-';const qty=parseFloat(r.querySelector('.item-qty').value)||0;const price=parseFloat(r.querySelector('.item-price').value)||0;const t=qty*price;total+=t;doc.text(desc,20,y);doc.text(String(qty),110,y);doc.text('N'+price.toLocaleString(),135,y);doc.text('N'+t.toLocaleString(),165,y);y+=8;doc.setTextColor(200,200,200);doc.line(20,y-2,190,y-2);doc.setTextColor(0,0,0);});
+  y+=4;doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('TOTAL: N'+total.toLocaleString(),165,y,{align:'right'});
+  if(notes){y+=16;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Notes:',20,y);y+=6;doc.text(doc.splitTextToSize(notes,170),20,y);}
+  doc.save('invoice-'+invNum+'.pdf');
+}
+updatePreview();
+</script>
+</body></html>
