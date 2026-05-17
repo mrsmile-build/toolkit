@@ -82,6 +82,17 @@
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
+async function fetchWithRetry(url, options, retries=2) {
+  for(let i=0; i<=retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      return res;
+    } catch(e) {
+      if(i===retries) throw e;
+      await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+}
 let hashPlatform = 'Instagram';
 let allHashtags = '';
 
@@ -102,7 +113,7 @@ async function generateHashtags() {
   const prompt = `You are a hashtag strategy expert. Generate the best hashtags for ${hashPlatform} in the "${topic}" niche. Return ONLY a valid JSON array of 4 objects. Each object must have: category (High Traffic/Medium Traffic/Niche Specific/Trending), hashtags (array of 8-10 hashtags with # symbol), tip (one strategy tip). No markdown no extra text.`;
 
   try {
-    const res = await fetch(PROXY + '/generate', {
+    const res = await fetchWithRetry(PROXY + '/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

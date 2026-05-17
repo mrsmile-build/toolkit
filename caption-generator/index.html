@@ -92,6 +92,17 @@
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
+async function fetchWithRetry(url, options, retries=2) {
+  for(let i=0; i<=retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      return res;
+    } catch(e) {
+      if(i===retries) throw e;
+      await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+}
 let platform = 'Instagram';
 let tone = 'Professional';
 
@@ -118,7 +129,7 @@ async function generateCaptions() {
   const prompt = `You are a social media expert. Generate 5 ${tone} captions for ${platform} about: "${input}". Return ONLY a valid JSON array of 5 strings. Each string is a complete ready-to-post caption with relevant emojis and hashtags where appropriate. No markdown, no extra text, no numbering.`;
 
   try {
-    const res = await fetch(PROXY + '/generate', {
+    const res = await fetchWithRetry(PROXY + '/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

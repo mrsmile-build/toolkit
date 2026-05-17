@@ -76,6 +76,17 @@
 <footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
+async function fetchWithRetry(url, options, retries=2) {
+  for(let i=0; i<=retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      return res;
+    } catch(e) {
+      if(i===retries) throw e;
+      await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+}
 let nameStyle = 'modern';
 function setStyle(s,el){nameStyle=s;document.querySelectorAll('.style-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
 async function generateNames(){
