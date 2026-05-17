@@ -147,10 +147,32 @@ async function generateHooks() {
 }
 
 function copyHook(btn, text) {
-  navigator.clipboard.writeText(text).then(() => {
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    }).catch(() => fallbackCopy(btn, text));
+  } else {
+    fallbackCopy(btn, text);
+  }
+}
+
+function fallbackCopy(btn, text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
     btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy', 2000);
-  });
+  } catch(e) {
+    btn.textContent = '❌ Failed';
+  }
+  document.body.removeChild(ta);
+  setTimeout(() => btn.textContent = '📋 Copy', 2000);
 }
 </script>
 </body></html>
