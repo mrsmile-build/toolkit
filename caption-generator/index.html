@@ -15,7 +15,7 @@
   <ul class="nav-links">
     <li><a href="../product-idea-generator/index.html">Idea Gen</a></li>
     <li><a href="../bio-generator/index.html">Bio Gen</a></li>
-    <li><a href="../whatsapp-reply-generator/index.html">WhatsApp Reply</a></li>
+    <li><a href="../whatsapp-reply-generator/index.html">WA Reply</a></li>
   </ul>
 </nav>
 <div class="page-wrapper">
@@ -25,7 +25,7 @@
   <div class="tool-card">
     <div class="form-group">
       <label>What is your post or product about?</label>
-      <textarea id="captionInput" placeholder="e.g. My new hair extension business, selling homemade soap, fitness coaching, new iPhone launch..." rows="3"></textarea>
+      <textarea id="captionInput" placeholder="e.g. My new hair extension business, selling homemade soap, fitness coaching..." rows="3"></textarea>
     </div>
     <div class="form-group">
       <label>Platform</label>
@@ -63,23 +63,20 @@
       <div id="captionList"></div>
     </div>
   </div>
-
   <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
     <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">📦 Need digital product ideas to sell?</h3>
     <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Use our AI generator to find profitable ideas for your niche.</p>
     <a href="../product-idea-generator/index.html" class="btn" style="margin-right:8px">Try Idea Generator →</a>
     <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Browse Selar Products</a>
   </div>
-
   <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
     <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Write a Good Caption</h2>
     <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A good caption grabs attention in the first line, delivers value or emotion in the middle, and ends with a clear call to action. This AI caption generator does all three automatically based on your product and chosen tone.</p>
     <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:12px">Caption Tips by Platform</h2>
     <p style="color:#6b7280;line-height:1.8">Instagram works best with 3-5 sentences plus hashtags. TikTok captions should be short and punchy under 150 characters. WhatsApp business captions work best with emojis and a direct offer. LinkedIn needs professional language without slang.</p>
   </div>
-
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
-    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:16px">Other Free Tools</h2>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
       <a href="../bio-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✍️ Bio Generator</a>
       <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WhatsApp Reply</a>
@@ -92,19 +89,9 @@
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
-async function fetchWithRetry(url, options, retries=2) {
-  for(let i=0; i<=retries; i++) {
-    try {
-      const res = await fetch(url, options);
-      return res;
-    } catch(e) {
-      if(i===retries) throw e;
-      await new Promise(r => setTimeout(r, 3000));
-    }
-  }
-}
 let platform = 'Instagram';
 let tone = 'Professional';
+let storedCaptions = [];
 
 function setPlatform(p, el) {
   platform = p;
@@ -125,11 +112,9 @@ async function generateCaptions() {
   document.getElementById('captionResults').style.display = 'none';
   document.getElementById('errCaption').style.display = 'none';
   document.getElementById('btnCaption').disabled = true;
-
   const prompt = `You are a social media expert. Generate 5 ${tone} captions for ${platform} about: "${input}". Return ONLY a valid JSON array of 5 strings. Each string is a complete ready-to-post caption with relevant emojis and hashtags where appropriate. No markdown, no extra text, no numbering.`;
-
   try {
-    const res = await fetchWithRetry(PROXY + '/generate', {
+    const res = await fetch(PROXY + '/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -142,12 +127,12 @@ async function generateCaptions() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error?.message || 'API error');
     let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
-    const captions = JSON.parse(text);
-    document.getElementById('captionList').innerHTML = captions.map((c, i) => `
+    storedCaptions = JSON.parse(text);
+    document.getElementById('captionList').innerHTML = storedCaptions.map((c, i) => `
       <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
         <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">Caption ${i+1}</div>
         <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px">${c}</div>
-        <button onclick="copyCaption(this, ${JSON.stringify(c)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+        <button onclick="copyCaption(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
       </div>`).join('');
     document.getElementById('captionResults').style.display = 'block';
   } catch(err) {
@@ -160,19 +145,24 @@ async function generateCaptions() {
   }
 }
 
-function copyCaption(btn, text) {
+function copyCaption(btn, idx) {
+  const text = storedCaptions[idx];
   if(navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy', 2000);
-  });
-} else {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    }).catch(() => fallbackCopy(btn, text));
+  } else { fallbackCopy(btn, text); }
+}
+
+function fallbackCopy(btn, text) {
   const ta = document.createElement('textarea');
-  ta.value = text; document.body.appendChild(ta);
-  ta.select(); document.execCommand('copy');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); btn.textContent='✅ Copied!'; }
+  catch(e) { btn.textContent='❌ Failed'; }
   document.body.removeChild(ta);
-  btn.textContent = '✅ Copied!';
-  setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  setTimeout(() => btn.textContent='📋 Copy', 2000);
 }
 </script>
 </body></html>
