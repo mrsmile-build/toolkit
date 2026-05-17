@@ -302,3 +302,62 @@ footer a:hover { color: var(--accent); }
   .nav-links { display: none; }
   .result-box .result-value { font-size: 1.7rem; }
 }
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tool-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: all .2s;
+  position: relative;
+}
+
+.tool-link:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+
+.tool-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.tool-name {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .95rem;
+  margin-bottom: 4px;
+}
+
+.tool-desc {
+  font-size: .8rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.tool-arrow {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  color: #d1d5db;
+  font-size: .85rem;
+  transition: all .2s;
+}
+
+.tool-link:hover .tool-arrow {
+  color: var(--accent);
+  right: 12px;
+}
