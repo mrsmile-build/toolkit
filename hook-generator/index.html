@@ -51,7 +51,7 @@
     <button class="btn" onclick="generateHooks()" id="btnHook">🔥 Generate Hooks</button>
     <div id="loadHook" style="display:none;text-align:center;padding:24px">
       <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
-      <p style="color:#6b7280">Generating viral hooks... (may take 10-15 seconds)</p>
+      <p style="color:#6b7280">Generating viral hooks...</p>
     </div>
     <div id="errHook" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
     <div id="hookResults" style="display:none;margin-top:20px">
@@ -93,18 +93,6 @@ const PROXY = 'https://groq-proxy-7f82.onrender.com';
 let hookPlatform = 'TikTok';
 let hookStyle = 'Curiosity';
 
-async function fetchWithRetry(url, options, retries=2) {
-  for(let i=0; i<=retries; i++) {
-    try {
-      const res = await fetch(url, options);
-      return res;
-    } catch(e) {
-      if(i===retries) throw e;
-      await new Promise(r => setTimeout(r, 3000));
-    }
-  }
-}
-
 function setHookPlatform(p, el) {
   hookPlatform = p;
   document.querySelectorAll('#hookPlatformBtns .mode-btn').forEach(b => b.classList.remove('active'));
@@ -128,7 +116,7 @@ async function generateHooks() {
   const prompt = `You are a viral content expert. Generate 8 ${hookStyle} hooks for ${hookPlatform} about: "${topic}". These hooks should stop the scroll in the first 3 seconds. Return ONLY a valid JSON array of 8 strings. Each string is one complete hook sentence or question. Make them punchy, specific and platform-optimized. No markdown, no numbering, no extra text.`;
 
   try {
-    const res = await fetchWithRetry(PROXY + '/generate', {
+    const res = await fetch(PROXY + '/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -159,18 +147,10 @@ async function generateHooks() {
 }
 
 function copyHook(btn, text) {
-  if(navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
+  navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✅ Copied!';
     setTimeout(() => btn.textContent = '📋 Copy', 2000);
   });
-} else {
-  const ta = document.createElement('textarea');
-  ta.value = text; document.body.appendChild(ta);
-  ta.select(); document.execCommand('copy');
-  document.body.removeChild(ta);
-  btn.textContent = '✅ Copied!';
-  setTimeout(() => btn.textContent = '📋 Copy', 2000);
 }
 </script>
 </body></html>
