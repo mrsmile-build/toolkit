@@ -144,12 +144,11 @@ async function generateBios() {
     if (!res.ok) throw new Error(data.error?.message || 'API error');
     let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
     const bios = JSON.parse(text);
-    window.currentBios = bios;
     document.getElementById('bioList').innerHTML = bios.map((b, i) => `
       <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
         <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">Bio Option ${i+1}</div>
         <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px">${b}</div>
-        <button onclick="copyBio(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+        <button onclick="copyBio(this, ${JSON.stringify(b)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
       </div>`).join('');
     document.getElementById('bioResults').style.display = 'block';
   } catch(err) {
@@ -162,8 +161,7 @@ async function generateBios() {
   }
 }
 
-function copyBio(btn, idx) {
-  const text = window.currentBios[idx];
+function copyBio(btn, text) {
   if(navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✅ Copied!';

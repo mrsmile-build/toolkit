@@ -128,12 +128,11 @@ async function generateReplies() {
     let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
     const replies = JSON.parse(text);
     const labels = ['Option 1 — ' + replyStyle, 'Option 2 — Alternative', 'Option 3 — Short & Direct'];
-    window.currentReplies = replies;
     document.getElementById('replyList').innerHTML = replies.map((r, i) => `
       <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
         <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">${labels[i]||'Option '+(i+1)}</div>
         <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px;white-space:pre-wrap">${r}</div>
-        <button onclick="copyReply(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+        <button onclick="copyReply(this, ${JSON.stringify(r)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
       </div>`).join('');
     document.getElementById('replyResults').style.display = 'block';
   } catch(err) {
@@ -145,8 +144,7 @@ async function generateReplies() {
     document.getElementById('btnReply').disabled = false;
   }
 }
-function copyReply(btn, idx) {
-  const text = window.currentReplies[idx];
+function copyReply(btn, text) {
   if(navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✅ Copied!';
