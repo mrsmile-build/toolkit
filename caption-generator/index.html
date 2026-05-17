@@ -143,11 +143,12 @@ async function generateCaptions() {
     if (!res.ok) throw new Error(data.error?.message || 'API error');
     let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
     const captions = JSON.parse(text);
+    window.currentCaptions = captions;
     document.getElementById('captionList').innerHTML = captions.map((c, i) => `
       <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
         <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">Caption ${i+1}</div>
         <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px">${c}</div>
-        <button onclick="copyCaption(this, ${JSON.stringify(c)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+        <button onclick="copyCaption(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
       </div>`).join('');
     document.getElementById('captionResults').style.display = 'block';
   } catch(err) {
@@ -160,7 +161,8 @@ async function generateCaptions() {
   }
 }
 
-function copyCaption(btn, text) {
+function copyCaption(btn, idx) {
+  const text = window.currentCaptions[idx];
   if(navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✅ Copied!';
