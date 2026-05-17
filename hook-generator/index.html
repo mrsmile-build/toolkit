@@ -90,6 +90,18 @@
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
+
+async function fetchWithRetry(url, options, retries=2) {
+  for(let i=0; i<=retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      return res;
+    } catch(e) {
+      if(i===retries) throw e;
+      await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+}
 let hookPlatform = 'TikTok';
 let hookStyle = 'Curiosity';
 
@@ -116,7 +128,7 @@ async function generateHooks() {
   const prompt = `You are a viral content expert. Generate 8 ${hookStyle} hooks for ${hookPlatform} about: "${topic}". These hooks should stop the scroll in the first 3 seconds. Return ONLY a valid JSON array of 8 strings. Each string is one complete hook sentence or question. Make them punchy, specific and platform-optimized. No markdown, no numbering, no extra text.`;
 
   try {
-    const res = await fetch(PROXY + '/generate', {
+    const res = await fetchWithRetry(PROXY + '/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
