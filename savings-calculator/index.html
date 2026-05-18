@@ -14,15 +14,13 @@ function setCurr(c, el) {
   el.classList.add('active');
   calculate();
 }
+
+let currSymbol = '₦';
+
 </script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
 
-function setCurr(c, el) {
-  currSymbol = c;
-  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  calculate();
-}
+
 </script>
 </head>
 <body>
@@ -114,11 +112,6 @@ function calcMonthly(){const goal=parseFloat(document.getElementById('m-goal').v
 function calcGrowth(){const initial=parseFloat(document.getElementById('gr-initial').value)||0;const monthly=parseFloat(document.getElementById('gr-monthly').value)||0;const rate=(parseFloat(document.getElementById('gr-rate').value)||0)/100/12;const years=parseFloat(document.getElementById('gr-years').value)||0;if(!years){alert('Please fill in years.');return;}let balance=initial;const months=years*12;for(let i=0;i<months;i++)balance=balance*(1+rate)+monthly;const total=initial+monthly*months;showCards([{label:'Final Balance',value:fmt(balance)},{label:'Total Contributed',value:fmt(total)},{label:'Interest Earned',value:fmt(balance-total)},{label:'Growth',value:Math.round((balance/total-1)*100)+'%'}],`📈 Your savings grow to ${fmt(balance)} in ${years} years.`);}
 
 
-function setCurr(c, el) {
-  currSymbol = c;
-  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  calculate();
-}
+
 </script>
 </body></html>

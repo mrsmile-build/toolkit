@@ -14,15 +14,13 @@ function setCurr(c, el) {
   el.classList.add('active');
   calculate();
 }
+
+let currSymbol = '₦';
+
 </script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
 
-function setCurr(c, el) {
-  currSymbol = c;
-  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  calculate();
-}
+
 </script>
   <style>
     .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:24px}
@@ -127,11 +125,6 @@ function calculate(){
 }
 
 
-function setCurr(c, el) {
-  currSymbol = c;
-  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  calculate();
-}
+
 </script>
 </body></html>
