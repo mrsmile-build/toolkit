@@ -6,8 +6,24 @@
   <title>Free Profit Calculator — Calculate Net Profit, Margin & ROI | ToolKit</title>
   <meta name="description" content="Free profit calculator. Calculate your net profit, profit margin, markup and ROI instantly. Perfect for business owners and sellers.">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS">
+let currSymbol = currSymbol;
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  calculate();
+}
+</script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
+let currSymbol = currSymbol;
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  calculate();
+}
+</script>
   <style>
     .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:24px}
     .result-card{background:var(--ink);border-radius:12px;padding:20px;text-align:center}
@@ -108,6 +124,14 @@ function calculate(){
   if(profit < 0){w.className='warning bad';w.textContent='⚠️ You are making a loss. Increase your price or reduce costs.';}
   else if(margin < 20){w.className='warning bad';w.textContent='⚠️ Low margin (' + margin.toFixed(1) + '%). Aim for at least 20-30% profit margin.';}
   else{w.className='warning good';w.textContent='✅ Good profit margin! Keep optimizing your costs to increase profit further.';}
+}
+
+let currSymbol = currSymbol;
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  calculate();
 }
 </script>
 </body></html>

@@ -6,8 +6,24 @@
   <title>Pricing Calculator — Find the Right Price for Your Product | ToolKit</title>
   <meta name="description" content="Free pricing calculator. Find the perfect selling price for your product based on cost, desired profit margin or competitor pricing.">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS">
+let currSymbol = currSymbol;
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  calculate();
+}
+</script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
+let currSymbol = currSymbol;
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  calculate();
+}
+</script>
   <style>
     .mode-toggle{display:flex;gap:8px;margin-bottom:24px}
     .mode-btn{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center}
@@ -92,5 +108,13 @@ function showResult(price,cost){const profit=price-cost;const margin=price>0?(pr
 function calcMargin(){const cost=parseFloat(document.getElementById('m-cost').value)||0;const margin=parseFloat(document.getElementById('m-margin').value)||0;if(!cost){alert('Enter your cost.');return;}const price=cost/(1-margin/100);showResult(price,cost);}
 function calcMarkup(){const cost=parseFloat(document.getElementById('mk-cost').value)||0;const markup=parseFloat(document.getElementById('mk-markup').value)||0;if(!cost){alert('Enter your cost.');return;}const price=cost*(1+markup/100);showResult(price,cost);}
 function calcCompetitive(){const cost=parseFloat(document.getElementById('c-cost').value)||0;const comp=parseFloat(document.getElementById('c-comp').value)||0;const strategy=document.getElementById('c-strategy').value;if(!cost||!comp){alert('Fill in both fields.');return;}let price=strategy==='beat'?comp*0.95:strategy==='match'?comp:comp*1.10;if(price<cost){price=cost*1.1;}showResult(price,cost);}
+
+let currSymbol = currSymbol;
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  calculate();
+}
 </script>
 </body></html>
