@@ -4,37 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Profit Calculator — Calculate Net Profit, Margin & ROI | ToolKit</title>
-  <meta name="description" content="Free profit calculator. Calculate your net profit, profit margin, markup and ROI instantly. Perfect for business owners and sellers.">
+  <meta name="description" content="Free profit calculator. Calculate net profit, profit margin, markup and ROI for any product or business instantly.">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS">
-
-function setCurr(c, el) {
-  currSymbol = c;
-  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  calculate();
-}
-
-let currSymbol = '₦';
-
-</script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
-
-
-</script>
-  <style>
-    .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:24px}
-    .result-card{background:var(--ink);border-radius:12px;padding:20px;text-align:center}
-    .result-card.accent{background:var(--accent)}
-    .rc-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px}
-    .rc-val{font-family:var(--font-head);font-size:1.6rem;font-weight:800;color:#fff;letter-spacing:-1px}
-    .profit-bar{margin-top:20px}
-    .bar-track{height:12px;background:var(--border);border-radius:10px;overflow:hidden;margin:10px 0}
-    .bar-fill{height:100%;border-radius:10px;transition:width .6s}
-    .warning{padding:14px;border-radius:10px;margin-top:14px;font-size:.875rem}
-    .warning.good{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
-    .warning.bad{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
-  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
 </head>
 <body>
 <nav>
@@ -48,83 +21,92 @@ let currSymbol = '₦';
 <div class="page-wrapper">
   <a class="back-link" href="../index.html">← All Tools</a>
   <h1 class="page-title">Profit Calculator</h1>
-  <p class="page-subtitle">Calculate your net profit, profit margin and markup instantly.</p>
+  <p class="page-subtitle">Calculate your net profit, profit margin and ROI instantly.</p>
   <div class="tool-card">
+    <div class="form-group">
+      <label>Currency</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="currBtns">
+        <div class="mode-btn active" onclick="setCurr('₦',this)">🇳🇬 Naira</div>
+        <div class="mode-btn" onclick="setCurr('$',this)">🇺🇸 Dollar</div>
+        <div class="mode-btn" onclick="setCurr('£',this)">🇬🇧 Pound</div>
+        <div class="mode-btn" onclick="setCurr('€',this)">🇪🇺 Euro</div>
+        <div class="mode-btn" onclick="setCurr('₵',this)">🇬🇭 Cedi</div>
+        <div class="mode-btn" onclick="setCurr('KSh',this)">🇰🇪 Shilling</div>
+      </div>
+    </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Revenue / Selling Price (currency)</label>
+        <label id="revLabel">Revenue / Selling Price (₦)</label>
         <input type="number" id="revenue" placeholder="500" min="0" oninput="calculate()">
       </div>
       <div class="form-group">
-        <label>Total Cost (currency)</label>
+        <label id="costLabel">Total Cost (₦)</label>
         <input type="number" id="cost" placeholder="300" min="0" oninput="calculate()">
       </div>
     </div>
-    <div class="result-grid" id="results" style="display:none">
-      <div class="result-card accent">
-        <div class="rc-label">Net Profit</div>
-        <div class="rc-val" id="netProfit">$0</div>
-      </div>
-      <div class="result-card">
-        <div class="rc-label">Profit Margin</div>
-        <div class="rc-val" id="margin">0%</div>
-      </div>
-      <div class="result-card">
-        <div class="rc-label">Markup</div>
-        <div class="rc-val" id="markup">0%</div>
-      </div>
-      <div class="result-card">
-        <div class="rc-label">ROI</div>
-        <div class="rc-val" id="roi">0%</div>
-      </div>
-    </div>
-    <div class="profit-bar" id="profitBar" style="display:none">
-      <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:600">Revenue Breakdown</div>
-      <div class="bar-track">
-        <div class="bar-fill" id="barFill" style="width:0%;background:var(--accent)"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-soft)">
-        <span id="costPct">Cost 0%</span>
-        <span id="profitPct">Profit 0%</span>
-      </div>
-      <div class="warning" id="warning"></div>
+    <button class="btn" onclick="calculate()">Calculate →</button>
+    <div id="result" style="display:none;margin-top:20px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:16px" id="resultCards"></div>
+      <div id="resultTip" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;font-size:.875rem;color:#166534"></div>
     </div>
   </div>
-
-  <div style="background:var(--ink);border-radius:14px;padding:28px;margin-top:32px;text-align:center">
-    <h3 style="font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:8px">Want to increase your profits?</h3>
-    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Learn proven strategies to price your products and grow your business income.</p>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">Want to increase your profits?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Learn proven strategies to price your products and grow your business.</p>
     <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Business Guides on Selar →</a>
   </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What is Profit Margin?</h2>
+    <p style="color:#6b7280;line-height:1.8">Profit margin is the percentage of revenue that becomes profit. A 30% profit margin means you keep 30 out of every 100 earned. Most successful small businesses aim for 20-40% profit margins. Below 10% is considered low and risky.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../pricing-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🏷️ Pricing Calc</a>
+      <a href="../savings-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🏦 Savings Calc</a>
+      <a href="../loan-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💵 Loan Calc</a>
+      <a href="../percentage-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📊 % Calc</a>
+    </div>
+  </div>
 </div>
-<footer><p>© 2025 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
 <script>
-function calculate(){
-  const rev = parseFloat(document.getElementById('revenue').value)||0;
-  const cost = parseFloat(document.getElementById('cost').value)||0;
-  if(!rev && !cost) return;
-  const profit = rev - cost;
-  const margin = rev > 0 ? (profit/rev)*100 : 0;
-  const markup = cost > 0 ? (profit/cost)*100 : 0;
-  const roi = cost > 0 ? (profit/cost)*100 : 0;
-  document.getElementById('netProfit').textContent = '$' + profit.toFixed(2);
-  document.getElementById('margin').textContent = margin.toFixed(1) + '%';
-  document.getElementById('markup').textContent = markup.toFixed(1) + '%';
-  document.getElementById('roi').textContent = roi.toFixed(1) + '%';
-  document.getElementById('results').style.display = 'grid';
-  document.getElementById('profitBar').style.display = 'block';
-  const costPct = rev > 0 ? (cost/rev)*100 : 100;
-  const profitPct = 100 - costPct;
-  document.getElementById('barFill').style.width = profitPct + '%';
-  document.getElementById('costPct').textContent = 'Cost ' + costPct.toFixed(1) + '%';
-  document.getElementById('profitPct').textContent = 'Profit ' + profitPct.toFixed(1) + '%';
-  const w = document.getElementById('warning');
-  if(profit < 0){w.className='warning bad';w.textContent='⚠️ You are making a loss. Increase your price or reduce costs.';}
-  else if(margin < 20){w.className='warning bad';w.textContent='⚠️ Low margin (' + margin.toFixed(1) + '%). Aim for at least 20-30% profit margin.';}
-  else{w.className='warning good';w.textContent='✅ Good profit margin! Keep optimizing your costs to increase profit further.';}
+let currSymbol = '₦';
+
+function setCurr(c, el) {
+  currSymbol = c;
+  document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('revLabel').textContent = 'Revenue / Selling Price (' + c + ')';
+  document.getElementById('costLabel').textContent = 'Total Cost (' + c + ')';
+  calculate();
 }
 
+function calculate() {
+  const rev = parseFloat(document.getElementById('revenue').value) || 0;
+  const cost = parseFloat(document.getElementById('cost').value) || 0;
+  if (!rev && !cost) return;
+  const profit = rev - cost;
+  const margin = rev > 0 ? (profit / rev * 100) : 0;
+  const markup = cost > 0 ? (profit / cost * 100) : 0;
+  const roi = cost > 0 ? (profit / cost * 100) : 0;
+  const s = currSymbol;
 
+  document.getElementById('resultCards').innerHTML = [
+    {label:'Net Profit', value: s + profit.toFixed(2)},
+    {label:'Profit Margin', value: margin.toFixed(1) + '%'},
+    {label:'Markup', value: markup.toFixed(1) + '%'},
+    {label:'ROI', value: roi.toFixed(1) + '%'},
+  ].map(c => `<div style="background:#111;border-radius:12px;padding:18px;text-align:center">
+    <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.45);margin-bottom:6px">${c.label}</div>
+    <div style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;color:#fff">${c.value}</div>
+  </div>`).join('');
 
+  const tip = margin < 10 ? '⚠️ Low margin (' + margin.toFixed(1) + '%). Aim for at least 20-30%.' :
+              margin < 20 ? '💡 Decent margin. Try to reach 30%+ for better profitability.' :
+              '✅ Great margin (' + margin.toFixed(1) + '%)! You are pricing well.';
+  document.getElementById('resultTip').textContent = tip;
+  document.getElementById('result').style.display = 'block';
+}
 </script>
 </body></html>
