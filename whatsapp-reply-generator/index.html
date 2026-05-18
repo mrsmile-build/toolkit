@@ -6,8 +6,42 @@
   <title>WhatsApp Reply Generator — Free AI Business Reply Tool | ToolKit</title>
   <meta name="description" content="Free AI WhatsApp reply generator. Get professional, sales and polite replies to customer messages instantly.">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS">
+function shareResult(text, tool) {
+  const url = window.location.href;
+  const msg = encodeURIComponent(text.slice(0,200) + '...
+
+Generated free at ' + url);
+  const waUrl = 'https://wa.me/?text=' + msg;
+  const twUrl = 'https://twitter.com/intent/tweet?text=' + msg;
+  const shareBox = document.getElementById('shareBox');
+  if(shareBox) {
+    shareBox.innerHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' +
+      '<a href="' + waUrl + '" target="_blank" style="background:#25D366;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600">💬 Share on WhatsApp</a>' +
+      '<a href="' + twUrl + '" target="_blank" style="background:#1DA1F2;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600">🐦 Share on Twitter</a>' +
+      '</div>';
+    shareBox.style.display = 'block';
+  }
+}
+</script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
+function shareResult(text, tool) {
+  const url = window.location.href;
+  const msg = encodeURIComponent(text.slice(0,200) + '...
+
+Generated free at ' + url);
+  const waUrl = 'https://wa.me/?text=' + msg;
+  const twUrl = 'https://twitter.com/intent/tweet?text=' + msg;
+  const shareBox = document.getElementById('shareBox');
+  if(shareBox) {
+    shareBox.innerHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' +
+      '<a href="' + waUrl + '" target="_blank" style="background:#25D366;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600">💬 Share on WhatsApp</a>' +
+      '<a href="' + twUrl + '" target="_blank" style="background:#1DA1F2;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600">🐦 Share on Twitter</a>' +
+      '</div>';
+    shareBox.style.display = 'block';
+  }
+}
+</script>
 </head>
 <body>
 <nav>
@@ -119,6 +153,7 @@ async function generateReplies() {
         <button onclick="copyReply(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
       </div>`).join('');
     document.getElementById('replyResults').style.display = 'block';
+    if(!document.getElementById('shareBox')){const sb=document.createElement('div');sb.id='shareBox';document.getElementById('replyResults').appendChild(sb);} shareResult(storedReplies.join(' | '), 'WhatsApp Reply Generator');
   } catch(err) {
     document.getElementById('errReply').textContent = 'Error: ' + err.message + '. Please try again.';
     document.getElementById('errReply').style.display = 'block';
@@ -146,6 +181,23 @@ function fallbackCopy(btn, text) {
   catch(e) { btn.textContent='❌ Failed'; }
   document.body.removeChild(ta);
   setTimeout(() => btn.textContent='📋 Copy', 2000);
+}
+
+function shareResult(text, tool) {
+  const url = window.location.href;
+  const msg = encodeURIComponent(text.slice(0,200) + '...
+
+Generated free at ' + url);
+  const waUrl = 'https://wa.me/?text=' + msg;
+  const twUrl = 'https://twitter.com/intent/tweet?text=' + msg;
+  const shareBox = document.getElementById('shareBox');
+  if(shareBox) {
+    shareBox.innerHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' +
+      '<a href="' + waUrl + '" target="_blank" style="background:#25D366;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600">💬 Share on WhatsApp</a>' +
+      '<a href="' + twUrl + '" target="_blank" style="background:#1DA1F2;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600">🐦 Share on Twitter</a>' +
+      '</div>';
+    shareBox.style.display = 'block';
+  }
 }
 </script>
 </body></html>
