@@ -7,7 +7,7 @@
   <meta name="description" content="Free savings calculator. Calculate how long it takes to reach your savings goal, monthly savings needed and total interest earned.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS">
-let currSymbol = currSymbol;
+
 function setCurr(c, el) {
   currSymbol = c;
   document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
@@ -16,7 +16,7 @@ function setCurr(c, el) {
 }
 </script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
-let currSymbol = currSymbol;
+
 function setCurr(c, el) {
   currSymbol = c;
   document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
@@ -113,7 +113,7 @@ function calcGoal(){const goal=parseFloat(document.getElementById('g-goal').valu
 function calcMonthly(){const goal=parseFloat(document.getElementById('m-goal').value)||0;const months=parseFloat(document.getElementById('m-months').value)||0;const rate=(parseFloat(document.getElementById('m-rate').value)||0)/100/12;if(!goal||!months){alert('Please fill in all fields.');return;}const monthly=rate===0?goal/months:goal*rate/(Math.pow(1+rate,months)-1);showCards([{label:'Monthly Needed',value:fmt(monthly)},{label:'Total Goal',value:fmt(goal)},{label:'Time Period',value:months+' months'},{label:'Total Contributions',value:fmt(monthly*months)}],`💡 Save ${fmt(monthly)} every month to reach your goal in ${months} months.`);}
 function calcGrowth(){const initial=parseFloat(document.getElementById('gr-initial').value)||0;const monthly=parseFloat(document.getElementById('gr-monthly').value)||0;const rate=(parseFloat(document.getElementById('gr-rate').value)||0)/100/12;const years=parseFloat(document.getElementById('gr-years').value)||0;if(!years){alert('Please fill in years.');return;}let balance=initial;const months=years*12;for(let i=0;i<months;i++)balance=balance*(1+rate)+monthly;const total=initial+monthly*months;showCards([{label:'Final Balance',value:fmt(balance)},{label:'Total Contributed',value:fmt(total)},{label:'Interest Earned',value:fmt(balance-total)},{label:'Growth',value:Math.round((balance/total-1)*100)+'%'}],`📈 Your savings grow to ${fmt(balance)} in ${years} years.`);}
 
-let currSymbol = currSymbol;
+
 function setCurr(c, el) {
   currSymbol = c;
   document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));

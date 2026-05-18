@@ -7,7 +7,7 @@
   <meta name="description" content="Free pricing calculator. Find the perfect selling price for your product based on cost, desired profit margin or competitor pricing.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS">
-let currSymbol = currSymbol;
+
 function setCurr(c, el) {
   currSymbol = c;
   document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
@@ -16,7 +16,7 @@ function setCurr(c, el) {
 }
 </script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");
-let currSymbol = currSymbol;
+
 function setCurr(c, el) {
   currSymbol = c;
   document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
@@ -60,21 +60,21 @@ function setCurr(c, el) {
     </div>
     <div id="mode-margin">
       <div class="form-row">
-        <div class="form-group"><label>Total Cost ($)</label><input type="number" id="m-cost" placeholder="100" min="0"></div>
+        <div class="form-group"><label>Total Cost (currency)</label><input type="number" id="m-cost" placeholder="100" min="0"></div>
         <div class="form-group"><label>Desired Profit Margin (%)</label><input type="number" id="m-margin" placeholder="30" min="0" max="99"></div>
       </div>
       <button class="btn" onclick="calcMargin()">Calculate Price →</button>
     </div>
     <div id="mode-markup" style="display:none">
       <div class="form-row">
-        <div class="form-group"><label>Total Cost ($)</label><input type="number" id="mk-cost" placeholder="100" min="0"></div>
+        <div class="form-group"><label>Total Cost (currency)</label><input type="number" id="mk-cost" placeholder="100" min="0"></div>
         <div class="form-group"><label>Markup % (above cost)</label><input type="number" id="mk-markup" placeholder="50" min="0"></div>
       </div>
       <button class="btn" onclick="calcMarkup()">Calculate Price →</button>
     </div>
     <div id="mode-competitive" style="display:none">
-      <div class="form-group"><label>Your Cost ($)</label><input type="number" id="c-cost" placeholder="100" min="0"></div>
-      <div class="form-group"><label>Competitor Price ($)</label><input type="number" id="c-comp" placeholder="150" min="0"></div>
+      <div class="form-group"><label>Your Cost (currency)</label><input type="number" id="c-cost" placeholder="100" min="0"></div>
+      <div class="form-group"><label>Competitor Price (currency)</label><input type="number" id="c-comp" placeholder="150" min="0"></div>
       <div class="form-group"><label>Your Strategy</label>
         <select id="c-strategy">
           <option value="beat">Beat competitor (5% lower)</option>
@@ -109,7 +109,7 @@ function calcMargin(){const cost=parseFloat(document.getElementById('m-cost').va
 function calcMarkup(){const cost=parseFloat(document.getElementById('mk-cost').value)||0;const markup=parseFloat(document.getElementById('mk-markup').value)||0;if(!cost){alert('Enter your cost.');return;}const price=cost*(1+markup/100);showResult(price,cost);}
 function calcCompetitive(){const cost=parseFloat(document.getElementById('c-cost').value)||0;const comp=parseFloat(document.getElementById('c-comp').value)||0;const strategy=document.getElementById('c-strategy').value;if(!cost||!comp){alert('Fill in both fields.');return;}let price=strategy==='beat'?comp*0.95:strategy==='match'?comp:comp*1.10;if(price<cost){price=cost*1.1;}showResult(price,cost);}
 
-let currSymbol = currSymbol;
+
 function setCurr(c, el) {
   currSymbol = c;
   document.querySelectorAll('#currBtns .mode-btn').forEach(b => b.classList.remove('active'));
