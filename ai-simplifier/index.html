@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Text Simplifier — Simplify English to Simple Language or Pidgin | ToolKit</title>
+  <meta name="description" content="Free AI text simplifier. Paste any hard English text and get it simplified to easy English or Nigerian Pidgin instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../email-generator/index.html">Email Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Text Simplifier</h1>
+  <p class="page-subtitle">Paste any hard English text and get it simplified instantly. Supports simple English and Nigerian Pidgin.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Paste your text here</label>
+      <textarea id="inputText" placeholder="e.g. The implementation of fiscal consolidation measures necessitates a comprehensive evaluation of macroeconomic indicators..." rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Output style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="styleBtns">
+        <div class="mode-btn active" onclick="setStyle('Simple English',this)">📖 Simple English</div>
+        <div class="mode-btn" onclick="setStyle('Nigerian Pidgin',this)">🇳🇬 Nigerian Pidgin</div>
+        <div class="mode-btn" onclick="setStyle('Short Summary',this)">📝 Short Summary</div>
+        <div class="mode-btn" onclick="setStyle('Bullet Points',this)">• Bullet Points</div>
+        <div class="mode-btn" onclick="setStyle('Primary School Level',this)">🏫 Primary Level</div>
+      </div>
+    </div>
+    <button class="btn" onclick="simplify()" id="btnSimplify">✨ Simplify Text</button>
+    <div id="loadSimplify" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Simplifying... (may take 10-15 seconds)</p>
+    </div>
+    <div id="errSimplify" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="simplifyResult" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700">Simplified Text</div>
+        <button onclick="copyResult()" class="btn btn-outline" style="padding:8px 14px;font-size:.8rem">📋 Copy</button>
+      </div>
+      <div id="resultText" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;font-size:.9rem;line-height:1.8;color:#111;white-space:pre-wrap"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Create content that anyone can understand</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Find profitable digital product ideas for any niche.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">Why Simplify Your Text?</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">Simple language reaches more people. Research shows that content written at a simple reading level gets 3x more engagement than complex text. Whether you are writing for customers, students or social media, simpler text always wins.</p>
+    <p style="color:#6b7280;line-height:1.8">Nigerian Pidgin is understood by over 75 million people across Nigeria and West Africa. Use it to connect with a wider local audience on social media, WhatsApp broadcasts and marketing materials.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../word-counter/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📝 Word Counter</a>
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../email-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✉️ Email Gen</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Gen</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let outputStyle = 'Simple English';
+let storedResult = '';
+
+function setStyle(s, el) {
+  outputStyle = s;
+  document.querySelectorAll('#styleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function simplify() {
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) { alert('Please paste some text to simplify.'); return; }
+  document.getElementById('loadSimplify').style.display = 'block';
+  document.getElementById('simplifyResult').style.display = 'none';
+  document.getElementById('errSimplify').style.display = 'none';
+  document.getElementById('btnSimplify').disabled = true;
+
+  const prompts = {
+    'Simple English': `Rewrite this text in very simple English that anyone can understand. Use short sentences, common words, and clear explanations. Text: "${text}"`,
+    'Nigerian Pidgin': `Rewrite this text in Nigerian Pidgin English. Make it natural and authentic like how Nigerians speak. Text: "${text}"`,
+    'Short Summary': `Summarize this text in 3-5 short simple sentences. Get straight to the main point. Text: "${text}"`,
+    'Bullet Points': `Convert this text into clear bullet points. Each point should be one simple sentence. Text: "${text}"`,
+    'Primary School Level': `Rewrite this text so a primary school student can understand it. Use very simple words and short sentences. Text: "${text}"`
+  };
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompts[outputStyle]}],
+        temperature: 0.7,
+        max_tokens: 1000
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    storedResult = data.choices[0].message.content.trim();
+    document.getElementById('resultText').textContent = storedResult;
+    document.getElementById('simplifyResult').style.display = 'block';
+  } catch(err) {
+    document.getElementById('errSimplify').textContent = 'Error: ' + err.message + '. Please try again.';
+    document.getElementById('errSimplify').style.display = 'block';
+  } finally {
+    document.getElementById('loadSimplify').style.display = 'none';
+    document.getElementById('btnSimplify').disabled = false;
+  }
+}
+
+function copyResult() {
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(storedResult).then(() => {
+      const btn = event.target;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = storedResult; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  }
+}
+</script>
+</body></html>

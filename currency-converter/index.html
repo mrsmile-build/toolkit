@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter — Free Online Currency Exchange Calculator | ToolKit</title>
+  <meta name="description" content="Free currency converter. Convert Nigerian Naira, US Dollar, British Pound, Euro and 20+ currencies instantly with live-updated rates.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../savings-calculator/index.html">Savings</a></li>
+    <li><a href="../loan-calculator/index.html">Loan Calc</a></li>
+    <li><a href="../profit-calculator/index.html">Profit</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Currency Converter</h1>
+  <p class="page-subtitle">Convert between Nigerian Naira and 20+ world currencies instantly.</p>
+  <div class="tool-card">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Amount</label>
+        <input type="number" id="amount" placeholder="1000" value="1000" oninput="convert()">
+      </div>
+      <div class="form-group">
+        <label>From</label>
+        <select id="fromCurr" onchange="convert()"></select>
+      </div>
+    </div>
+    <div style="text-align:center;margin:8px 0">
+      <button onclick="swapCurrencies()" class="btn btn-outline" style="padding:8px 16px;font-size:.85rem">⇄ Swap</button>
+    </div>
+    <div class="form-group">
+      <label>To</label>
+      <select id="toCurr" onchange="convert()"></select>
+    </div>
+    <div id="convResult" style="display:none;background:#111;border-radius:12px;padding:24px;margin-top:16px;text-align:center">
+      <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px">Result</div>
+      <div id="resultVal" style="font-family:var(--font-head);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-1px"></div>
+      <div id="resultRate" style="font-size:.8rem;color:rgba(255,255,255,.4);margin-top:8px"></div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,.3);margin-top:4px">Rates updated regularly. For reference only.</div>
+    </div>
+    <div style="margin-top:20px">
+      <div style="font-weight:700;font-size:.9rem;margin-bottom:12px">Quick conversions</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px" id="quickConv"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Earn in dollars, spend in Naira</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Sell digital products globally and receive payments in any currency.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">Nigerian Naira Exchange Rates</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">The Nigerian Naira (NGN) exchange rate fluctuates daily based on CBN official rates and parallel market rates. This converter uses approximate market rates updated regularly for reference purposes.</p>
+    <p style="color:#6b7280;line-height:1.8">For business transactions always verify with your bank or a licensed forex bureau. Current approximate rates: 1 USD ≈ ₦1,580 · 1 GBP ≈ ₦2,000 · 1 EUR ≈ ₦1,720.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../savings-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🏦 Savings Calc</a>
+      <a href="../loan-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💵 Loan Calc</a>
+      <a href="../profit-calculator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💰 Profit Calc</a>
+      <a href="../unit-converter/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📐 Unit Converter</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+const rates = {
+  'NGN': 1,
+  'USD': 1/1580,
+  'GBP': 1/2000,
+  'EUR': 1/1720,
+  'GHS': 1/105,
+  'KES': 1/12.2,
+  'ZAR': 1/86,
+  'CAD': 1/1160,
+  'AUD': 1/1020,
+  'JPY': 1/10.5,
+  'CNY': 1/218,
+  'INR': 1/19,
+  'AED': 1/430,
+  'SAR': 1/421,
+  'XOF': 1/2.6,
+  'GBP': 1/2000,
+  'CHF': 1/1780,
+  'TZS': 1/0.62,
+  'UGX': 1/0.43,
+  'RWF': 1/1.1,
+};
+
+const names = {
+  'NGN':'Nigerian Naira (₦)','USD':'US Dollar ($)','GBP':'British Pound (£)',
+  'EUR':'Euro (€)','GHS':'Ghanaian Cedi','KES':'Kenyan Shilling',
+  'ZAR':'South African Rand','CAD':'Canadian Dollar','AUD':'Australian Dollar',
+  'JPY':'Japanese Yen','CNY':'Chinese Yuan','INR':'Indian Rupee',
+  'AED':'UAE Dirham','SAR':'Saudi Riyal','XOF':'West African CFA',
+  'CHF':'Swiss Franc','TZS':'Tanzanian Shilling','UGX':'Ugandan Shilling',
+  'RWF':'Rwandan Franc'
+};
+
+const symbols = {
+  'NGN':'₦','USD':'$','GBP':'£','EUR':'€','GHS':'₵','KES':'KSh',
+  'ZAR':'R','CAD':'C$','AUD':'A$','JPY':'¥','CNY':'¥','INR':'₹',
+  'AED':'د.إ','SAR':'﷼','XOF':'CFA','CHF':'CHF','TZS':'TSh',
+  'UGX':'USh','RWF':'RF'
+};
+
+function populateSelects() {
+  const keys = Object.keys(names);
+  const fromSel = document.getElementById('fromCurr');
+  const toSel = document.getElementById('toCurr');
+  fromSel.innerHTML = keys.map(k => `<option value="${k}" ${k==='NGN'?'selected':''}>${names[k]}</option>`).join('');
+  toSel.innerHTML = keys.map(k => `<option value="${k}" ${k==='USD'?'selected':''}>${names[k]}</option>`).join('');
+}
+
+function convert() {
+  const amount = parseFloat(document.getElementById('amount').value) || 0;
+  const from = document.getElementById('fromCurr').value;
+  const to = document.getElementById('toCurr').value;
+  const inNGN = amount / rates[from];
+  const result = inNGN * rates[to];
+  const sym = symbols[to] || to;
+  const fromSym = symbols[from] || from;
+  document.getElementById('resultVal').textContent = sym + result.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById('resultRate').textContent = `1 ${from} = ${sym}${(rates[to]/rates[from]).toFixed(4)} ${to}`;
+  document.getElementById('convResult').style.display = 'block';
+  updateQuick(from);
+}
+
+function updateQuick(from) {
+  const amount = parseFloat(document.getElementById('amount').value) || 1000;
+  const quick = ['USD','GBP','EUR','GHS','KES','ZAR'];
+  const inNGN = amount / rates[from];
+  document.getElementById('quickConv').innerHTML = quick.filter(c=>c!==from).map(c => {
+    const val = (inNGN * rates[c]).toLocaleString(undefined,{maximumFractionDigits:2});
+    return `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;cursor:pointer;font-size:.82rem" onclick="document.getElementById('toCurr').value='${c}';convert()">
+      <div style="color:#6b7280;font-size:.72rem">${names[c]}</div>
+      <div style="font-weight:700;margin-top:2px">${symbols[c]}${val}</div>
+    </div>`;
+  }).join('');
+}
+
+function swapCurrencies() {
+  const from = document.getElementById('fromCurr').value;
+  const to = document.getElementById('toCurr').value;
+  document.getElementById('fromCurr').value = to;
+  document.getElementById('toCurr').value = from;
+  convert();
+}
+
+populateSelects();
+convert();
+</script>
+</body></html>
