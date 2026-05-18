@@ -13,9 +13,9 @@
 <nav>
   <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
   <ul class="nav-links">
-    <li><a href="../caption-generator/index.html">Caption Gen</a></li>
-    <li><a href="../whatsapp-reply-generator/index.html">WhatsApp Reply</a></li>
-    <li><a href="../product-idea-generator/index.html">Idea Gen</a></li>
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../whatsapp-reply-generator/index.html">WA Reply</a></li>
+    <li><a href="../product-idea-generator/index.html">Ideas</a></li>
   </ul>
 </nav>
 <div class="page-wrapper">
@@ -65,25 +65,21 @@
       <div id="bioList"></div>
     </div>
   </div>
-
   <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
     <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Ready to monetize your profile?</h3>
     <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse digital products you can sell from your bio link today.</p>
     <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
   </div>
-
   <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
     <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What Makes a Good Social Media Bio?</h2>
-    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A great bio answers three questions instantly — who you are, what you do, and what the visitor should do next. It should be clear, specific and include a call to action like a link or contact detail.</p>
-    <p style="color:#6b7280;line-height:1.8">Instagram allows 150 characters. TikTok allows 80 characters. LinkedIn allows 220 characters. This generator creates bios optimized for each platform's limit and audience.</p>
+    <p style="color:#6b7280;line-height:1.8">A great bio answers three questions instantly — who you are, what you do, and what the visitor should do next. Instagram allows 150 characters. TikTok allows 80 characters. LinkedIn allows 220 characters.</p>
   </div>
-
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
-    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:16px">Other Free Tools</h2>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
-      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Generator</a>
-      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WhatsApp Reply</a>
-      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Generator</a>
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Gen</a>
       <a href="../business-name-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🚀 Business Names</a>
     </div>
   </div>
@@ -92,19 +88,9 @@
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <script>
 const PROXY = 'https://groq-proxy-7f82.onrender.com';
-async function fetchWithRetry(url, options, retries=2) {
-  for(let i=0; i<=retries; i++) {
-    try {
-      const res = await fetch(url, options);
-      return res;
-    } catch(e) {
-      if(i===retries) throw e;
-      await new Promise(r => setTimeout(r, 3000));
-    }
-  }
-}
 let bioPlatform = 'Instagram';
 let bioStyle = 'Professional';
+let storedBios = [];
 
 function setBioPlatform(p, el) {
   bioPlatform = p;
@@ -126,11 +112,9 @@ async function generateBios() {
   document.getElementById('bioResults').style.display = 'none';
   document.getElementById('errBio').style.display = 'none';
   document.getElementById('btnBio').disabled = true;
-
   const prompt = `You are a social media branding expert. Create 5 ${bioStyle} ${bioPlatform} bios ${name ? 'for ' + name : ''} who does: "${desc}". Make bios platform-optimized for ${bioPlatform}. Return ONLY a valid JSON array of 5 strings. Each string is a complete ready-to-use bio with emojis. No markdown, no extra text, no numbering.`;
-
   try {
-    const res = await fetchWithRetry(PROXY + '/generate', {
+    const res = await fetch(PROXY + '/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -143,37 +127,41 @@ async function generateBios() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error?.message || 'API error');
     let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
-    const bios = JSON.parse(text);
-    document.getElementById('bioList').innerHTML = bios.map((b, i) => `
+    storedBios = JSON.parse(text);
+    document.getElementById('bioList').innerHTML = storedBios.map((b, i) => `
       <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
         <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">Bio Option ${i+1}</div>
         <div style="font-size:.9rem;line-height:1.7;color:#111;margin-bottom:10px">${b}</div>
-        <button onclick="copyBio(this, ${JSON.stringify(b)})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+        <button onclick="copyBio(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
       </div>`).join('');
     document.getElementById('bioResults').style.display = 'block';
   } catch(err) {
-    const box = document.getElementById('errBio');
-    box.textContent = 'Error: ' + err.message + '. Please try again.';
-    box.style.display = 'block';
+    document.getElementById('errBio').textContent = 'Error: ' + err.message + '. Please try again.';
+    document.getElementById('errBio').style.display = 'block';
   } finally {
     document.getElementById('loadBio').style.display = 'none';
     document.getElementById('btnBio').disabled = false;
   }
 }
 
-function copyBio(btn, text) {
+function copyBio(btn, idx) {
+  const text = storedBios[idx];
   if(navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy', 2000);
-  });
-} else {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    }).catch(() => fallbackCopy(btn, text));
+  } else { fallbackCopy(btn, text); }
+}
+
+function fallbackCopy(btn, text) {
   const ta = document.createElement('textarea');
-  ta.value = text; document.body.appendChild(ta);
-  ta.select(); document.execCommand('copy');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); btn.textContent='✅ Copied!'; }
+  catch(e) { btn.textContent='❌ Failed'; }
   document.body.removeChild(ta);
-  btn.textContent = '✅ Copied!';
-  setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  setTimeout(() => btn.textContent='📋 Copy', 2000);
 }
 </script>
 </body></html>
