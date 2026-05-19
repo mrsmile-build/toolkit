@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes Workspace — Free Online Notepad & Clipboard | ToolKit</title>
+  <meta name="description" content="Free online notes workspace. Save copied results, write ideas and keep notes while using ToolKit tools. Auto-saves to your browser.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+  <style>
+    .note-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px;position:relative}
+    .note-card textarea{width:100%;border:none;outline:none;font-family:var(--font-body);font-size:.9rem;line-height:1.7;resize:vertical;min-height:80px;background:transparent;box-sizing:border-box}
+    .note-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .note-btn{background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280;transition:all .2s}
+    .note-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .note-btn.danger:hover{border-color:#ef4444;color:#ef4444}
+    .tag{display:inline-block;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:3px 10px;font-size:.75rem;margin:2px;cursor:pointer}
+    .tag.active{background:var(--ink);color:#fff}
+    #saveStatus{font-size:.75rem;color:#6b7280;margin-left:8px}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../word-counter/index.html">Word Counter</a></li>
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../product-idea-generator/index.html">Ideas</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">Notes Workspace</h1>
+  <p class="page-subtitle">Save copied results, write ideas and keep notes. Auto-saves to your browser — nothing sent to any server.</p>
+
+  <div class="tool-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div style="font-weight:700">My Notes <span id="noteCount" style="color:#6b7280;font-weight:400;font-size:.85rem"></span></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="saveStatus">Saved</span>
+        <button onclick="addNote()" class="btn" style="padding:8px 16px;font-size:.85rem">+ New Note</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <input type="text" id="searchNotes" placeholder="🔍 Search notes..." oninput="filterNotes()" style="font-size:.875rem">
+    </div>
+
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="tagFilters">
+      <span class="tag active" onclick="filterByTag('all',this)">All</span>
+      <span class="tag" onclick="filterByTag('caption',this)">📸 Captions</span>
+      <span class="tag" onclick="filterByTag('hook',this)">🔥 Hooks</span>
+      <span class="tag" onclick="filterByTag('idea',this)">💡 Ideas</span>
+      <span class="tag" onclick="filterByTag('reply',this)">💬 Replies</span>
+      <span class="tag" onclick="filterByTag('other',this)">📝 Other</span>
+    </div>
+
+    <div id="notesList"></div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button onclick="clearAll()" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:8px 16px;font-size:.8rem;cursor:pointer;color:#ef4444">🗑️ Clear All Notes</button>
+    </div>
+  </div>
+
+  <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:20px;margin-top:16px">
+    <h3 style="font-weight:700;margin-bottom:8px;font-size:.95rem">💡 Tips</h3>
+    <ul style="color:#6b7280;font-size:.85rem;line-height:1.9;margin:0;padding-left:16px">
+      <li>Notes auto-save as you type — no save button needed</li>
+      <li>Use tags to organize captions, hooks and ideas separately</li>
+      <li>Copy any note with one click to paste anywhere</li>
+      <li>Notes stay saved even after closing the browser</li>
+      <li>Clear all notes if you want a fresh start</li>
+    </ul>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Gen</a>
+      <a href="../word-counter/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📝 Word Counter</a>
+      <a href="../product-idea-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💡 Idea Gen</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<script>
+let notes = JSON.parse(localStorage.getItem('toolkit_notes') || '[]');
+let activeTag = 'all';
+let searchQ = '';
+
+function save() {
+  localStorage.setItem('toolkit_notes', JSON.stringify(notes));
+  document.getElementById('saveStatus').textContent = '✅ Saved';
+  setTimeout(() => document.getElementById('saveStatus').textContent = 'Saved', 2000);
+}
+
+function addNote(text='', tag='other') {
+  const note = {id: Date.now(), text, tag, created: new Date().toLocaleDateString()};
+  notes.unshift(note);
+  save();
+  render();
+  const first = document.querySelector('.note-card textarea');
+  if(first) first.focus();
+}
+
+function deleteNote(id) {
+  notes = notes.filter(n => n.id !== id);
+  save();
+  render();
+}
+
+function updateNote(id, field, value) {
+  const note = notes.find(n => n.id === id);
+  if(note) { note[field] = value; save(); }
+}
+
+function copyNote(text) {
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  }
+}
+
+function filterNotes() {
+  searchQ = document.getElementById('searchNotes').value.toLowerCase();
+  render();
+}
+
+function filterByTag(tag, el) {
+  activeTag = tag;
+  document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function clearAll() {
+  if(confirm('Delete all notes? This cannot be undone.')) {
+    notes = []; save(); render();
+  }
+}
+
+function render() {
+  let filtered = notes;
+  if(activeTag !== 'all') filtered = filtered.filter(n => n.tag === activeTag);
+  if(searchQ) filtered = filtered.filter(n => n.text.toLowerCase().includes(searchQ));
+
+  document.getElementById('noteCount').textContent = '(' + notes.length + ' notes)';
+
+  if(filtered.length === 0) {
+    document.getElementById('notesList').innerHTML = `
+      <div style="text-align:center;padding:40px;color:#6b7280">
+        <div style="font-size:2rem;margin-bottom:8px">📝</div>
+        <div style="font-weight:700;margin-bottom:4px">${notes.length === 0 ? 'No notes yet' : 'No notes match'}</div>
+        <div style="font-size:.875rem">${notes.length === 0 ? 'Click "+ New Note" to start' : 'Try a different search or tag'}</div>
+      </div>`;
+    return;
+  }
+
+  const tagColors = {caption:'#f97316',hook:'#ef4444',idea:'#8b5cf6',reply:'#22c55e',other:'#6b7280'};
+  const tagLabels = {caption:'📸 Caption',hook:'🔥 Hook',idea:'💡 Idea',reply:'💬 Reply',other:'📝 Note'};
+
+  document.getElementById('notesList').innerHTML = filtered.map(n => `
+    <div class="note-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <select onchange="updateNote(${n.id},'tag',this.value)" style="border:1px solid #e5e7eb;border-radius:6px;padding:3px 8px;font-size:.75rem;color:${tagColors[n.tag]};font-weight:600;background:#fff">
+          ${['caption','hook','idea','reply','other'].map(t => `<option value="${t}" ${t===n.tag?'selected':''}>${tagLabels[t]}</option>`).join('')}
+        </select>
+        <span style="font-size:.72rem;color:#9ca3af">${n.created}</span>
+      </div>
+      <textarea placeholder="Type or paste your note here..." oninput="updateNote(${n.id},'text',this.value)">${n.text}</textarea>
+      <div class="note-actions">
+        <button class="note-btn" onclick="copyNote('${n.text.replace(/'/g,"\\'")}');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='📋 Copy',2000)">📋 Copy</button>
+        <button class="note-btn" onclick="document.querySelector('#wc_${n.id}').textContent=this.previousElementSibling.previousElementSibling.value.trim().split(/\\s+/).filter(Boolean).length+' words'">📊 Count</button>
+        <span id="wc_${n.id}" style="font-size:.75rem;color:#6b7280;padding:5px 0"></span>
+        <button class="note-btn danger" onclick="deleteNote(${n.id})">🗑️ Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+// Start with one empty note if none exist
+if(notes.length === 0) addNote();
+else render();
+</script>
+</body></html>
