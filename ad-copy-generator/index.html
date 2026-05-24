@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Ad Copy Generator — Free Facebook, TikTok & Sales Copy | ToolKit</title>
+  <meta name="description" content="Free AI ad copy generator. Create Facebook ads, TikTok ads, sales copy and marketing text for any product instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../hook-generator/index.html">Hooks</a></li>
+    <li><a href="../email-generator/index.html">Email Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Ad Copy Generator</h1>
+  <p class="page-subtitle">Create high-converting ads and sales copy for any product or business instantly.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What are you selling?</label>
+      <textarea id="productDesc" placeholder="e.g. Handmade hair extensions, Online coaching program, Digital product about making money, Skincare cream for dark spots..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Target audience (optional)</label>
+      <input type="text" id="targetAudience" placeholder="e.g. Nigerian women age 18-35, Small business owners, Students...">
+    </div>
+    <div class="form-group">
+      <label>Ad platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="platformBtns">
+        <div class="mode-btn active" onclick="setPlatform('Facebook',this)">👥 Facebook</div>
+        <div class="mode-btn" onclick="setPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setPlatform('Instagram',this)">📸 Instagram</div>
+        <div class="mode-btn" onclick="setPlatform('WhatsApp',this)">💬 WhatsApp Broadcast</div>
+        <div class="mode-btn" onclick="setPlatform('Google',this)">🔍 Google Ad</div>
+        <div class="mode-btn" onclick="setPlatform('General Sales',this)">💰 Sales Copy</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Ad style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="styleBtns">
+        <div class="mode-btn active" onclick="setStyle('Emotional and persuasive',this)">❤️ Emotional</div>
+        <div class="mode-btn" onclick="setStyle('Problem and solution',this)">🎯 Problem/Solution</div>
+        <div class="mode-btn" onclick="setStyle('Urgency and scarcity',this)">⏰ Urgency</div>
+        <div class="mode-btn" onclick="setStyle('Story-based',this)">📖 Story</div>
+        <div class="mode-btn" onclick="setStyle('Direct and bold',this)">🔥 Direct</div>
+        <div class="mode-btn" onclick="setStyle('Nigerian Pidgin',this)">🇳🇬 Pidgin</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateAd()" id="btnAd">🚀 Generate Ad Copy</button>
+    <div id="loadAd" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Creating your ad copy... (may take 15 seconds)</p>
+    </div>
+    <div id="errAd" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="adResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Ad Copies</div>
+        <button class="btn btn-outline" onclick="generateAd()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="adList"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">📦 Want to sell digital products?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse ready-made digital products you can sell today.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What Makes a Good Ad?</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">The best ads speak directly to one person's pain or desire. They have a strong hook in the first line, clear benefits in the middle, and a specific call to action at the end. Avoid vague claims — be specific about what your product does and for whom.</p>
+    <p style="color:#6b7280;line-height:1.8">For Nigerian audiences, use relatable language, mention local context where relevant, and always include a direct call to action like "DM me now" or "Click the link in bio".</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Gen</a>
+      <a href="../email-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✉️ Email Gen</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let adPlatform = 'Facebook';
+let adStyle = 'Emotional and persuasive';
+let storedAds = [];
+
+function setPlatform(p, el) {
+  adPlatform = p;
+  document.querySelectorAll('#platformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setStyle(s, el) {
+  adStyle = s;
+  document.querySelectorAll('#styleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateAd() {
+  const product = document.getElementById('productDesc').value.trim();
+  if (!product) { alert('Please describe what you are selling.'); return; }
+  const audience = document.getElementById('targetAudience').value.trim();
+  document.getElementById('loadAd').style.display = 'block';
+  document.getElementById('adResults').style.display = 'none';
+  document.getElementById('errAd').style.display = 'none';
+  document.getElementById('btnAd').disabled = true;
+
+  const prompt = `You are an expert ${adPlatform} ads copywriter. Create 3 ${adStyle} ${adPlatform} ad copies for: "${product}". ${audience ? 'Target audience: ' + audience + '.' : ''} Return ONLY a valid JSON array of 3 objects. Each object must have: headline (short punchy headline), body (main ad body text with emojis), cta (call to action button text). No markdown, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.9,
+        max_tokens: 1500
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    storedAds = JSON.parse(text);
+    document.getElementById('adList').innerHTML = storedAds.map((ad, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:12px">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:10px">Ad Version ${i+1}</div>
+        <div style="font-weight:800;font-size:1rem;color:#111;margin-bottom:8px">${ad.headline}</div>
+        <div style="font-size:.875rem;line-height:1.8;color:#374151;margin-bottom:12px;white-space:pre-wrap">${ad.body}</div>
+cat > ~/toolkit/ad-copy-generator/index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Ad Copy Generator — Free Facebook, TikTok & Sales Copy | ToolKit</title>
+  <meta name="description" content="Free AI ad copy generator. Create Facebook ads, TikTok ads, sales copy and marketing text for any product instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../hook-generator/index.html">Hooks</a></li>
+    <li><a href="../email-generator/index.html">Email Gen</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Ad Copy Generator</h1>
+  <p class="page-subtitle">Create high-converting ads and sales copy for any product or business instantly.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What are you selling?</label>
+      <textarea id="productDesc" placeholder="e.g. Handmade hair extensions, Online coaching program, Digital product about making money, Skincare cream for dark spots..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Target audience (optional)</label>
+      <input type="text" id="targetAudience" placeholder="e.g. Nigerian women age 18-35, Small business owners, Students...">
+    </div>
+    <div class="form-group">
+      <label>Ad platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="platformBtns">
+        <div class="mode-btn active" onclick="setPlatform('Facebook',this)">👥 Facebook</div>
+        <div class="mode-btn" onclick="setPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setPlatform('Instagram',this)">📸 Instagram</div>
+        <div class="mode-btn" onclick="setPlatform('WhatsApp',this)">💬 WhatsApp Broadcast</div>
+        <div class="mode-btn" onclick="setPlatform('Google',this)">🔍 Google Ad</div>
+        <div class="mode-btn" onclick="setPlatform('General Sales',this)">💰 Sales Copy</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Ad style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="styleBtns">
+        <div class="mode-btn active" onclick="setStyle('Emotional and persuasive',this)">❤️ Emotional</div>
+        <div class="mode-btn" onclick="setStyle('Problem and solution',this)">🎯 Problem/Solution</div>
+        <div class="mode-btn" onclick="setStyle('Urgency and scarcity',this)">⏰ Urgency</div>
+        <div class="mode-btn" onclick="setStyle('Story-based',this)">📖 Story</div>
+        <div class="mode-btn" onclick="setStyle('Direct and bold',this)">🔥 Direct</div>
+        <div class="mode-btn" onclick="setStyle('Nigerian Pidgin',this)">🇳🇬 Pidgin</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateAd()" id="btnAd">🚀 Generate Ad Copy</button>
+    <div id="loadAd" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Creating your ad copy... (may take 15 seconds)</p>
+    </div>
+    <div id="errAd" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="adResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Ad Copies</div>
+        <button class="btn btn-outline" onclick="generateAd()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="adList"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">📦 Want to sell digital products?</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse ready-made digital products you can sell today.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Products on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">What Makes a Good Ad?</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">The best ads speak directly to one person's pain or desire. They have a strong hook in the first line, clear benefits in the middle, and a specific call to action at the end. Avoid vague claims — be specific about what your product does and for whom.</p>
+    <p style="color:#6b7280;line-height:1.8">For Nigerian audiences, use relatable language, mention local context where relevant, and always include a direct call to action like "DM me now" or "Click the link in bio".</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Gen</a>
+      <a href="../email-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✉️ Email Gen</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let adPlatform = 'Facebook';
+let adStyle = 'Emotional and persuasive';
+let storedAds = [];
+
+function setPlatform(p, el) {
+  adPlatform = p;
+  document.querySelectorAll('#platformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setStyle(s, el) {
+  adStyle = s;
+  document.querySelectorAll('#styleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateAd() {
+  const product = document.getElementById('productDesc').value.trim();
+  if (!product) { alert('Please describe what you are selling.'); return; }
+  const audience = document.getElementById('targetAudience').value.trim();
+  document.getElementById('loadAd').style.display = 'block';
+  document.getElementById('adResults').style.display = 'none';
+  document.getElementById('errAd').style.display = 'none';
+  document.getElementById('btnAd').disabled = true;
+
+  const prompt = `You are an expert ${adPlatform} ads copywriter. Create 3 ${adStyle} ${adPlatform} ad copies for: "${product}". ${audience ? 'Target audience: ' + audience + '.' : ''} Return ONLY a valid JSON array of 3 objects. Each object must have: headline (short punchy headline), body (main ad body text with emojis), cta (call to action button text). No markdown, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.9,
+        max_tokens: 1500
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    storedAds = JSON.parse(text);
+    document.getElementById('adList').innerHTML = storedAds.map((ad, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:12px">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:10px">Ad Version ${i+1}</div>
+        <div style="font-weight:800;font-size:1rem;color:#111;margin-bottom:8px">${ad.headline}</div>
+        <div style="font-size:.875rem;line-height:1.8;color:#374151;margin-bottom:12px;white-space:pre-wrap">${ad.body}</div>
+        <div style="background:#111;color:#fff;display:inline-block;padding:8px 20px;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:12px">${ad.cta}</div>
+        <div>
+          <button onclick="copyAd(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy All</button>
+        </div>
+      </div>`).join('');
+    document.getElementById('adResults').style.display = 'block';
+  } catch(err) {
+    document.getElementById('errAd').textContent = 'Error: ' + err.message + '. Please try again.';
+    document.getElementById('errAd').style.display = 'block';
+  } finally {
+    document.getElementById('loadAd').style.display = 'none';
+    document.getElementById('btnAd').disabled = false;
+  }
+}
+
+function copyAd(btn, idx) {
+  const ad = storedAds[idx];
+  const text = ad.headline + '\n\n' + ad.body + '\n\n' + ad.cta;
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy All', 2000);
+    }).catch(() => fallbackCopy(btn, text));
+  } else { fallbackCopy(btn, text); }
+}
+
+function fallbackCopy(btn, text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); btn.textContent='✅ Copied!'; }
+  catch(e) { btn.textContent='❌ Failed'; }
+  document.body.removeChild(ta);
+  setTimeout(() => btn.textContent='📋 Copy All', 2000);
+}
+</script>
+</body></html>

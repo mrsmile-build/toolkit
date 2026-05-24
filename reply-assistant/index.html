@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reply Assistant — Professional Replies for Any Situation | ToolKit</title>
+  <meta name="description" content="Free AI reply assistant. Generate professional replies for angry customers, negotiations, follow-ups, apologies and more instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../whatsapp-reply-generator/index.html">WA Reply</a></li>
+    <li><a href="../email-generator/index.html">Email Gen</a></li>
+    <li><a href="../proposal-generator/index.html">Proposals</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Reply Assistant</h1>
+  <p class="page-subtitle">Generate the perfect reply for any situation — angry customers, negotiations, follow-ups and more.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What was said to you?</label>
+      <textarea id="msgInput" placeholder="e.g. I have been waiting 3 days and my order has not arrived. I want a refund!" rows="4"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Situation type</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="situationBtns">
+        <div class="mode-btn active" onclick="setSituation('Angry customer complaint',this)">😡 Angry Customer</div>
+        <div class="mode-btn" onclick="setSituation('Price negotiation',this)">💰 Negotiation</div>
+        <div class="mode-btn" onclick="setSituation('Follow-up after no response',this)">🔄 Follow Up</div>
+        <div class="mode-btn" onclick="setSituation('Apology for mistake',this)">🙏 Apology</div>
+        <div class="mode-btn" onclick="setSituation('Declining a request politely',this)">🚫 Decline</div>
+        <div class="mode-btn" onclick="setSituation('Review or feedback response',this)">⭐ Review Reply</div>
+        <div class="mode-btn" onclick="setSituation('General professional reply',this)">💼 Professional</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Your context (optional)</label>
+      <input type="text" id="context" placeholder="e.g. I run a fashion business, I am a social media manager...">
+    </div>
+    <div class="form-group">
+      <label>Tone</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="toneBtns">
+        <div class="mode-btn active" onclick="setTone('Professional and empathetic',this)">💼 Professional</div>
+        <div class="mode-btn" onclick="setTone('Firm but respectful',this)">🤝 Firm</div>
+        <div class="mode-btn" onclick="setTone('Warm and friendly',this)">😊 Friendly</div>
+        <div class="mode-btn" onclick="setTone('Nigerian Pidgin',this)">🇳🇬 Pidgin</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateReply()" id="btnReply">💬 Generate Replies</button>
+    <div id="loadReply" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Generating replies... (may take 15 seconds)</p>
+    </div>
+    <div id="errReply" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="replyResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Replies</div>
+        <button class="btn btn-outline" onclick="generateReply()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+      </div>
+      <div id="replyList"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Grow your business communication</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse business guides and templates for entrepreneurs.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Guides on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Handle Difficult Messages</h2>
+    <p style="color:#6b7280;line-height:1.8">Always acknowledge the person's feeling before explaining or defending. Never reply when you are angry — take 5 minutes first. End every difficult reply with a clear next step or offer. A well-handled complaint often creates a more loyal customer than one who never complained.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply Gen</a>
+      <a href="../email-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✉️ Email Gen</a>
+      <a href="../proposal-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📋 Proposals</a>
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Captions</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let situation = 'Angry customer complaint';
+let tone = 'Professional and empathetic';
+let storedReplies = [];
+
+function setSituation(s, el) {
+  situation = s;
+  document.querySelectorAll('#situationBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function setTone(t, el) {
+  tone = t;
+  document.querySelectorAll('#toneBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateReply() {
+  const msg = document.getElementById('msgInput').value.trim();
+  if (!msg) { alert('Please paste the message you need to reply to.'); return; }
+  const context = document.getElementById('context').value.trim();
+  document.getElementById('loadReply').style.display = 'block';
+  document.getElementById('replyResults').style.display = 'none';
+  document.getElementById('errReply').style.display = 'none';
+  document.getElementById('btnReply').disabled = true;
+
+  const prompt = `You are an expert business communication coach. Someone received this message: "${msg}". Situation: ${situation}. ${context ? 'Context: ' + context + '.' : ''} Generate 3 ${tone} replies. Return ONLY a valid JSON array of 3 strings. Each string is a complete ready-to-send reply. No markdown, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.8,
+        max_tokens: 1200
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    let text = data.choices[0].message.content.trim().replace(/```json|```/g, '').trim();
+    storedReplies = JSON.parse(text);
+    const labels = ['Option 1 — ' + tone, 'Option 2 — Alternative', 'Option 3 — Short & Direct'];
+    document.getElementById('replyList').innerHTML = storedReplies.map((r, i) => `
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:10px">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f97316;margin-bottom:8px">${labels[i]}</div>
+        <div style="font-size:.875rem;line-height:1.8;color:#111;margin-bottom:10px;white-space:pre-wrap">${r}</div>
+        <button onclick="copyReply(this,${i})" style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:5px 12px;font-size:.75rem;cursor:pointer;color:#6b7280">📋 Copy</button>
+      </div>`).join('');
+    document.getElementById('replyResults').style.display = 'block';
+  } catch(err) {
+    document.getElementById('errReply').textContent = 'Error: ' + err.message + '. Please try again.';
+    document.getElementById('errReply').style.display = 'block';
+  } finally {
+    document.getElementById('loadReply').style.display = 'none';
+    document.getElementById('btnReply').disabled = false;
+  }
+}
+
+function copyReply(btn, idx) {
+  const text = storedReplies[idx];
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    }).catch(() => fallbackCopy(btn, text));
+  } else { fallbackCopy(btn, text); }
+}
+
+function fallbackCopy(btn, text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); btn.textContent='✅ Copied!'; }
+  catch(e) { btn.textContent='❌ Failed'; }
+  document.body.removeChild(ta);
+  setTimeout(() => btn.textContent='📋 Copy', 2000);
+}
+</script>
+</body></html>

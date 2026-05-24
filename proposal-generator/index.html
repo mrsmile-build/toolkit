@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Proposal Generator — Free Client Proposal Writer | ToolKit</title>
+  <meta name="description" content="Free AI proposal generator. Create professional client proposals for freelancers, social media managers, designers and agencies instantly.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../email-generator/index.html">Email Gen</a></li>
+    <li><a href="../cv-generator/index.html">CV Gen</a></li>
+    <li><a href="../invoice-generator/index.html">Invoice</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Proposal Generator</h1>
+  <p class="page-subtitle">Create professional client proposals in seconds. Win more clients with polished proposals.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>Your name or business name</label>
+      <input type="text" id="yourName" placeholder="e.g. Mr Smile Digital, Adaeze Creatives...">
+    </div>
+    <div class="form-group">
+      <label>Client name or business</label>
+      <input type="text" id="clientName" placeholder="e.g. Glamour Hair Salon, ABC Restaurant...">
+    </div>
+    <div class="form-group">
+      <label>Service you are offering</label>
+      <textarea id="serviceDesc" placeholder="e.g. Social media management — creating and posting content daily on Instagram and TikTok, running ads and growing followers..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Service type</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="serviceBtns">
+        <div class="mode-btn active" onclick="setService('Social Media Management',this)">📱 Social Media</div>
+        <div class="mode-btn" onclick="setService('Graphic Design',this)">🎨 Design</div>
+        <div class="mode-btn" onclick="setService('Content Creation',this)">🎬 Content</div>
+        <div class="mode-btn" onclick="setService('Web Development',this)">💻 Web Dev</div>
+        <div class="mode-btn" onclick="setService('Copywriting',this)">✍️ Copywriting</div>
+        <div class="mode-btn" onclick="setService('Photography/Videography',this)">📸 Photo/Video</div>
+        <div class="mode-btn" onclick="setService('Consulting',this)">💼 Consulting</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Monthly price (optional)</label>
+      <input type="text" id="price" placeholder="e.g. ₦150,000/month or $500/month">
+    </div>
+    <button class="btn" onclick="generateProposal()" id="btnProposal">📋 Generate Proposal</button>
+    <div id="loadProposal" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Writing your proposal... (may take 15 seconds)</p>
+    </div>
+    <div id="errProposal" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="proposalResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Proposal</div>
+        <button onclick="copyProposal()" class="btn btn-outline" style="padding:8px 14px;font-size:.8rem">📋 Copy</button>
+      </div>
+      <div id="proposalText" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;font-size:.875rem;line-height:1.9;color:#111;white-space:pre-wrap"></div>
+    </div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:28px;margin-top:24px;text-align:center">
+    <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">💡 Learn how to win more clients</h3>
+    <p style="color:rgba(255,255,255,.6);font-size:.875rem;margin-bottom:16px">Browse our freelancer guides and templates on Selar.</p>
+    <a href="https://selar.com/m/MrSmilewrite" target="_blank" class="btn">Browse Guides on Selar →</a>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Write a Winning Proposal</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">A strong proposal focuses on the client's problem first, not your services. Start by showing you understand their situation, then explain how you will solve it, followed by your specific deliverables, timeline and price. End with a clear next step.</p>
+    <p style="color:#6b7280;line-height:1.8">Keep proposals concise — one page is ideal for most freelance services. Follow up within 48 hours if you don't hear back. Most clients make decisions within 3 days of receiving a proposal.</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../email-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✉️ Email Gen</a>
+      <a href="../invoice-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🧾 Invoice Gen</a>
+      <a href="../cv-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📄 CV Generator</a>
+      <a href="../whatsapp-reply-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">💬 WA Reply</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let serviceType = 'Social Media Management';
+let storedProposal = '';
+
+function setService(s, el) {
+  serviceType = s;
+  document.querySelectorAll('#serviceBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateProposal() {
+  const yourName = document.getElementById('yourName').value.trim();
+  const clientName = document.getElementById('clientName').value.trim();
+  const service = document.getElementById('serviceDesc').value.trim();
+  if (!service) { alert('Please describe the service you are offering.'); return; }
+  const price = document.getElementById('price').value.trim();
+
+  document.getElementById('loadProposal').style.display = 'block';
+  document.getElementById('proposalResults').style.display = 'none';
+  document.getElementById('errProposal').style.display = 'none';
+  document.getElementById('btnProposal').disabled = true;
+
+  const prompt = `You are a professional freelance proposal writer. Write a complete ${serviceType} proposal ${yourName ? 'from ' + yourName : ''} ${clientName ? 'to ' + clientName : 'to a potential client'} for this service: "${service}". ${price ? 'Price: ' + price + '.' : ''} Write a professional proposal with these sections: greeting, understanding of their needs, proposed solution and deliverables, why choose us, ${price ? 'investment/pricing,' : ''} next steps, and sign-off. Make it warm, professional and persuasive. Return only the proposal text, no extra commentary.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.8,
+        max_tokens: 1500
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    storedProposal = data.choices[0].message.content.trim();
+    document.getElementById('proposalText').textContent = storedProposal;
+    document.getElementById('proposalResults').style.display = 'block';
+  } catch(err) {
+    document.getElementById('errProposal').textContent = 'Error: ' + err.message + '. Please try again.';
+    document.getElementById('errProposal').style.display = 'block';
+  } finally {
+    document.getElementById('loadProposal').style.display = 'none';
+    document.getElementById('btnProposal').disabled = false;
+  }
+}
+
+function copyProposal() {
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(storedProposal).then(() => {
+      const btn = event.target;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = storedProposal; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  }
+}
+</script>
+</body></html>
