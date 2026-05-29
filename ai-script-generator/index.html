@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Video Script Generator — Free TikTok & YouTube Script Writer | ToolKit</title>
+  <meta name="description" content="Free AI video script generator. Create ready-to-record TikTok, YouTube Shorts and Instagram Reels scripts in seconds.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CE6J71SBS"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6CE6J71SBS");</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Tool<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="../hook-generator/index.html">Hooks</a></li>
+    <li><a href="../caption-generator/index.html">Captions</a></li>
+    <li><a href="../content-planner/index.html">Planner</a></li>
+  </ul>
+</nav>
+<div class="page-wrapper">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <h1 class="page-title">AI Video Script Generator</h1>
+  <p class="page-subtitle">Generate ready-to-record video scripts for TikTok, YouTube Shorts and Instagram Reels instantly.</p>
+  <div class="tool-card">
+    <div class="form-group">
+      <label>What is your video about?</label>
+      <textarea id="topicInput" placeholder="e.g. How to start a hair business with 50k, 5 ways to save money in Nigeria, How I make money online as a student..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Platform</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="platformBtns">
+        <div class="mode-btn active" onclick="setPlatform('TikTok',this)">🎵 TikTok</div>
+        <div class="mode-btn" onclick="setPlatform('YouTube Shorts',this)">▶️ YouTube Shorts</div>
+        <div class="mode-btn" onclick="setPlatform('Instagram Reels',this)">📸 Instagram Reels</div>
+        <div class="mode-btn" onclick="setPlatform('Facebook Reels',this)">👥 Facebook</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Video length</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="lengthBtns">
+        <div class="mode-btn active" onclick="setLength('30 seconds',this)">⚡ 30 sec</div>
+        <div class="mode-btn" onclick="setLength('60 seconds',this)">📱 60 sec</div>
+        <div class="mode-btn" onclick="setLength('90 seconds',this)">🎬 90 sec</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Script style</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="styleBtns">
+        <div class="mode-btn active" onclick="setStyle('Entertaining and engaging',this)">🔥 Entertaining</div>
+        <div class="mode-btn" onclick="setStyle('Educational and informative',this)">🎓 Educational</div>
+        <div class="mode-btn" onclick="setStyle('Nigerian Pidgin',this)">🇳🇬 Pidgin</div>
+        <div class="mode-btn" onclick="setStyle('Storytelling',this)">📖 Story</div>
+        <div class="mode-btn" onclick="setStyle('Sales and promotional',this)">💰 Sales</div>
+      </div>
+    </div>
+    <button class="btn" onclick="generateScript()" id="btnScript">🎬 Generate Script</button>
+    <div id="loadScript" style="display:none;text-align:center;padding:24px">
+      <div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#f97316;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+      <p style="color:#6b7280">Writing your script... (may take 15 seconds)</p>
+    </div>
+    <div id="errScript" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;color:#991b1b;margin-top:12px;font-size:.875rem"></div>
+    <div id="scriptResults" style="display:none;margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700;font-size:1rem">Your Video Script</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="copyScript()" class="btn btn-outline" style="padding:8px 14px;font-size:.8rem">📋 Copy</button>
+          <button class="btn btn-outline" onclick="generateScript()" style="padding:8px 14px;font-size:.8rem">Regenerate</button>
+        </div>
+      </div>
+      <div id="scriptText" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;font-size:.875rem;line-height:1.9;color:#111;white-space:pre-wrap"></div>
+      <div style="background:#111;border-radius:10px;padding:16px;margin-top:12px;text-align:center">
+        <div style="color:#fff;font-weight:700;margin-bottom:8px">🎬 Turn this script into a video</div>
+        <a href="https://mrsmile-build.github.io/videokit/" target="_blank" class="btn">Open VideoKit →</a>
+      </div>
+    </div>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px;margin-top:16px">
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">How to Use Your Script</h2>
+    <p style="color:#6b7280;line-height:1.8;margin-bottom:12px">Once you have your script, paste it into VideoKit to generate an AI voiceover. Then record your screen or face while the script plays. Edit in VN Editor or CapCut — add captions, music and effects. Post on TikTok and Instagram Reels for maximum reach.</p>
+    <p style="color:#6b7280;line-height:1.8">The best performing videos are 30-60 seconds with a strong hook in the first 2 seconds. Always end with a clear call to action like "Follow for more" or "Link in bio".</p>
+  </div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-top:16px">
+    <h3 style="font-weight:800;margin-bottom:12px">Other Free Tools</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+      <a href="../hook-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🔥 Hook Generator</a>
+      <a href="../caption-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">✨ Caption Gen</a>
+      <a href="../content-planner/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">📅 Content Planner</a>
+      <a href="../hashtag-generator/index.html" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-decoration:none;color:#111;font-size:.875rem">🏷️ Hashtags</a>
+    </div>
+  </div>
+</div>
+<footer><p>© 2026 ToolKit · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">All Tools</a></p></footer>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script src="../assets/js/chat-bubble.js"></script>
+<script>
+const PROXY = 'https://groq-proxy-7f82.onrender.com';
+let platform = 'TikTok';
+let length = '30 seconds';
+let style = 'Entertaining and engaging';
+let storedScript = '';
+
+function setPlatform(p, el) {
+  platform = p;
+  document.querySelectorAll('#platformBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function setLength(l, el) {
+  length = l;
+  document.querySelectorAll('#lengthBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function setStyle(s, el) {
+  style = s;
+  document.querySelectorAll('#styleBtns .mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function generateScript() {
+  const topic = document.getElementById('topicInput').value.trim();
+  if (!topic) { alert('Please describe your video topic.'); return; }
+  document.getElementById('loadScript').style.display = 'block';
+  document.getElementById('scriptResults').style.display = 'none';
+  document.getElementById('errScript').style.display = 'none';
+  document.getElementById('btnScript').disabled = true;
+
+  const prompt = `You are a viral ${platform} content creator. Write a complete ${length} ${style} video script about: "${topic}". Format it with clear sections: [HOOK] (first 2-3 seconds), [MAIN CONTENT] (with timestamps), [CTA] (call to action). Include stage directions in brackets like [show screen], [zoom in], [text overlay]. Make it natural, conversational and optimized for ${platform}. Return only the script, no extra text.`;
+
+  try {
+    const res = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: prompt}],
+        temperature: 0.85,
+        max_tokens: 1500
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    storedScript = data.choices[0].message.content.trim();
+    document.getElementById('scriptText').textContent = storedScript;
+    document.getElementById('scriptResults').style.display = 'block';
+  } catch(e) {
+    document.getElementById('errScript').textContent = 'Error: ' + e.message + '. Please try again.';
+    document.getElementById('errScript').style.display = 'block';
+  } finally {
+    document.getElementById('loadScript').style.display = 'none';
+    document.getElementById('btnScript').disabled = false;
+  }
+}
+
+function copyScript() {
+  if(navigator.clipboard) {
+    navigator.clipboard.writeText(storedScript).then(() => {
+      const btn = event.target;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = storedScript; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  }
+}
+</script>
+</body></html>
