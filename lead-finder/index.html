@@ -99,24 +99,21 @@ async function findLeads() {
   document.getElementById('btnFind').disabled = true;
 
   try {
-    const q = `${biz} in ${loc}`;
-    const res = await fetch(PROXY + '/trending?q=' + encodeURIComponent(q), {signal: AbortSignal.timeout(30000)});
-    const data = await res.json();
-
-    if (data.trending && data.trending.length > 0) {
-      const aiRes = await fetch(PROXY + '/generate', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [{role: 'user', content: `Based on this search for "${biz} in ${loc}", generate ${leadCount} realistic business leads. Return ONLY a JSON array of ${leadCount} objects. Each object must have: name (business name), type (business type), location (specific area in ${loc}), phone (Nigerian phone number format), description (one line about the business), outreach (a short personalized WhatsApp outreach message for a social media manager). Make them realistic Nigerian businesses. No markdown.`}],
-          temperature: 0.8,
-          max_tokens: 1500
-        })
-      });
-      const aiData = await aiRes.json();
-      let text = aiData.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
-      const leads = JSON.parse(text);
+    const aiRes = await fetch(PROXY + '/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role: 'user', content: `Generate ${leadCount} realistic ${biz} business leads in ${loc}, Nigeria/Africa. Return ONLY a valid JSON array of ${leadCount} objects. Each object must have: name (realistic local business name), type (business type), location (specific area/street in ${loc}), phone (Nigerian phone number starting with 080, 081, 090 or 070), description (one line about the business), outreach (short personalized WhatsApp outreach message from a social media manager offering services). Make names and locations very realistic and specific. No markdown, no extra text.`}],
+        temperature: 0.85,
+        max_tokens: 1500
+      })
+    });
+    const aiData = await aiRes.json();
+    if (!aiData.choices) throw new Error('API error. Please try again.');
+    let text = aiData.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
+    const leads = JSON.parse(text);
+    if (leads && leads.length > 0) {
 
       document.getElementById('resultsTitle').textContent = `🎯 ${leads.length} Leads Found — ${biz} in ${loc}`;
       document.getElementById('leadsList').innerHTML = leads.map((l, i) => `
@@ -139,8 +136,6 @@ async function findLeads() {
           </div>
         </div>`).join('');
       document.getElementById('findResults').style.display = 'block';
-    } else {
-      throw new Error('No results found. Try a different search.');
     }
   } catch(e) {
     document.getElementById('errFind').textContent = 'Error: ' + e.message + '. Please try again.';
